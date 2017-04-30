@@ -1,0 +1,8 @@
+Para leer archivos de texto y grabarlos reemplazar el uso del método split de la class String por la class StringTokenizer de java.util y sus métodos. (nos da mas funcionalidad)
+
+Ejemplo:
+
+String s = in.readLine();
+StringTokenizer t = new StringTokenizer (s, “ “);
+nombre= t.nextToken();
+sueldo = double.parseDouble(t.nextToken());
