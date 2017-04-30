@@ -1,0 +1,10 @@
+Template Method
+
+Implemento un metodo en el padre final y eso llama a metodos de los hijos debenimplementar. Es decir, una secuencia logica que no cambia pero cambia lo que hacen los hijos
+
+JCF (Java Collection Framework)
+
+- List
+- Set    (Conjuntos, no tiene repetidos)      COmo es una bolsa de cosas no tiene orden
+  - Treeset (Esta ordenado)
+- Hash/Maps (Dos bolsas, clave - valor)
