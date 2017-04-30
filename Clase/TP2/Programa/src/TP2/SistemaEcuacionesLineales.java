@@ -1,10 +1,15 @@
-package TP2;
+package progava.tp2.app;
 
 public class SistemaEcuacionesLineales{
 	
 	private MatrizMath a;
 	private MatrizMath b;
 	
+	public SistemaEcuacionesLineales()
+	{
+		this.a=null;
+		this.b=null;
+	}
 	
 	public SistemaEcuacionesLineales(MatrizMath a, MatrizMath b)
 	{
@@ -12,11 +17,23 @@ public class SistemaEcuacionesLineales{
 		this.b=b;
 	}
 	
-	public MatrizMath resolverSistema() throws CloneNotSupportedException
+	public static boolean test(SistemaEcuacionesLineales obj)
+	{
+		if(obj.a.getCantColumnas()==obj.b.getCantFilas())
+			return true;
+		return false;
+	}
+	
+	public MatrizMath resolver() throws CloneNotSupportedException
 	{
 		return this.a.inversa().productoPorMatriz(this.b);
 	}
 
+	public MatrizMath calcularErrorSolucion(MatrizMath sol) throws IllegalArgumentException, ArithmeticException, CloneNotSupportedException
+	{
+		return this.a.inversa().productoPorMatriz(this.b).restar(this.a.productoPorMatriz(sol));
+	}
+	
 	private int getCantColumnasA() {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
