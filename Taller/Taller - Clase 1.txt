@@ -1,0 +1,22 @@
+git init
+git status
+git add "file"
+git commit -m "Commit inicial del proyecto"
+
+git log
+git lol
+
+git checkout [id commit]
+git checkout master ( vuelve al último )
+
+git checkout -b saludar-a-alguien ( nueva rama )
+
+git branch -D dar p
+
+git checkout .
+
+git remote add "URL"
+git push origin master
+
+git cracker ( application)
+cuenta en loom

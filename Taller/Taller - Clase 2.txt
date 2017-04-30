@@ -1,0 +1,15 @@
+Encapsulamiento
+f(0);
+o.f();
+
+Si tiene sus datos y los metodos que operan esos datos juntos.
+
+Information hidden
+Es esconder las variables.
+
+Javadoc
+Diagrama de clases
+
+1. Armado de grupo
+2. Seleccion de nombre
+3. agregar a todos los miembros
