@@ -1,4 +1,4 @@
-package progava.tp2.app;
+package TP2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -222,6 +222,7 @@ public class MatrizMath implements Cloneable
 		if	(dim != matriz.dim)
 			throw new ArithmeticException("No se pudo realizar producto de matrices ya que la cantidad de columnas de la primera matriz no coincide con la cantidad de filas de la segunda.");
 		
+		//TODO: Esto no se podrá optimizar? tiene un costo de N al Cubo
 		MatrizMath aux = new MatrizMath(cantFilas, matriz.cantColumnas);
 		for (int i = 0; i < cantFilas; i++)
 			for (int j = 0 ; j < matriz.cantColumnas ; j++)

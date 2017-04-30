@@ -1,4 +1,4 @@
-package progava.tp2.app;
+package TP2;
 
 public class InvalidInputException extends Exception
 {
