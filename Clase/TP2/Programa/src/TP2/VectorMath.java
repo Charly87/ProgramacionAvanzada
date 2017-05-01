@@ -271,17 +271,14 @@ public class VectorMath {
 
 		if (getClass() != obj.getClass())
 			return false;
-
+		
 		VectorMath other = (VectorMath) obj;
-		// TODO: ESTO ESTA MAL, compara punteros no el contenido de cada
-		// posicion del vector
-		if (!Arrays.equals(posiciones, other.posiciones))
-			return false;
-
 		if (dimension != other.dimension)
-			return false;
+			return false;		
+		
+		if (!Arrays.equals(posiciones, other.posiciones))
+			return false;		
 
 		return true;
 	}
-
 }
