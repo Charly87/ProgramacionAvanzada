@@ -140,7 +140,7 @@ public class VectorMath {
 	 *             - si la dimension del vector recibido no coincide con la del
 	 *             vector llamador.
 	 */
-	public double productoEscalar(VectorMath vector) throws IllegalArgumentException, DistDimException {
+	public double producto(VectorMath vector) throws IllegalArgumentException, DistDimException {
 		if (vector == null)
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto escalar ya que se recibio como parametro un vector nulo.");
@@ -165,7 +165,7 @@ public class VectorMath {
 	 *            - escalar con el cual realizar el producto.
 	 * @return vector multiplo del vector llamador.
 	 */
-	public VectorMath productoPorEscalar(double escalar) {
+	public VectorMath producto(double escalar) {
 		VectorMath aux = new VectorMath(this.dimension);
 		for (int i = 0; i < aux.dimension; i++)
 			aux.posiciones[i] = this.posiciones[i] * escalar;
@@ -183,7 +183,7 @@ public class VectorMath {
 	 * @return el vector que resulta del producto entre este objeto y el objeto
 	 *         MatrizMath especificado.
 	 */
-	public VectorMath productoPorMatriz(MatrizMath matriz) {
+	public VectorMath producto(MatrizMath matriz) {
 		if (matriz == null)
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto entre vector y matriz ya que se recibio como parametro una matriz nula.");

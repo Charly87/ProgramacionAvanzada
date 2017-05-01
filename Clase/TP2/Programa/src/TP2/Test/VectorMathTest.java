@@ -40,7 +40,7 @@ public class VectorMathTest {
 		VectorMath v1 = new VectorMath(new double[] { 1, 1 });
 		VectorMath v2 = new VectorMath(new double[] { 2, 3 });
 
-		double aux = v1.productoEscalar(v2);
+		double aux = v1.producto(v2);
 
 		Assert.assertEquals(5.0, aux, 0.1);
 	}
@@ -49,7 +49,7 @@ public class VectorMathTest {
 	public void productoPorEscalar() {
 		VectorMath v1 = new VectorMath(new double[] { 1, 2 });
 
-		VectorMath v2 = v1.productoPorEscalar(2);
+		VectorMath v2 = v1.producto(2);
 
 		VectorMath v3 = new VectorMath(new double[] { 2, 4 });
 		Assert.assertEquals(v2, v3);
@@ -60,7 +60,7 @@ public class VectorMathTest {
 		VectorMath v1 = new VectorMath(new double[] { 1, 2, 3 });
 		MatrizMath m1 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 }, { 3, 3 } });
 
-		VectorMath v2 = v1.productoPorMatriz(m1);
+		VectorMath v2 = v1.producto(m1);
 
 		VectorMath v3 = new VectorMath(new double[] { 14, 14 });
 		Assert.assertEquals(v2, v3);
