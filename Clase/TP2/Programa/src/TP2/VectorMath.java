@@ -12,6 +12,17 @@ public class VectorMath {
 	private double[] posiciones;
 
 	/**
+	 * Inicializa un objeto VectorMath con un vector dado.
+	 * 
+	 * @param posiciones
+	 *            - dimension del vector.
+	 */
+	public VectorMath(double[] posiciones) {
+		this.posiciones = posiciones;
+		this.dimension = posiciones.length;
+	}
+	
+	/**
 	 * Inicializa un objeto VectorMath con la dimension especificada.
 	 * 
 	 * @param dim
