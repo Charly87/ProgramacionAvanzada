@@ -79,8 +79,8 @@ public class MatrizMathTest {
 		VectorMath v8 = new VectorMath(path + "v8.in");
 		System.out.println("Matriz 11:" + m11);
 		System.out.println("Vector 6: " + v8);
-		MatrizMath m12 = m11.productoPorVector(v8);
-		System.out.println("Matriz 11 * Vector 3:" + m12);
+		VectorMath v18 = m11.productoPorVector(v8);
+		System.out.println("Matriz 11 * Vector 3:" + v18);
 	}
 	
 	@Test

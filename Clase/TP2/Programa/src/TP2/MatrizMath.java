@@ -3,6 +3,7 @@ package TP2;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class MatrizMath implements Cloneable {
@@ -56,6 +57,7 @@ public class MatrizMath implements Cloneable {
 	 */
 	public MatrizMath(String fileName) throws FileNotFoundException, InvalidInputException {
 		Scanner input = new Scanner(new File(fileName));
+		input.useLocale(Locale.US);
 
 		// la primera linea del archivo de entrada contiene la cantidad
 		// de filas y de columnas de la matriz separadas por un espacio
@@ -83,7 +85,7 @@ public class MatrizMath implements Cloneable {
 		for (int i = 0; i < cantComponentes; i++) {
 			fila = input.nextInt();
 			columna = input.nextInt();
-			matriz[fila][columna] = input.nextInt();
+			matriz[fila][columna] = input.nextDouble();
 		}
 
 		// si hay una linea mas en el archivo de entrada, entonces hay algo mal,
@@ -116,9 +118,15 @@ public class MatrizMath implements Cloneable {
 	public int getDim() {
 		return dim;
 	}
+	
 
 	public void setDim(int dim) {
 		this.dim = dim;
+	}
+	
+	public void setComp(int f, int c, double comp)
+	{
+		this.matriz[f][c] = comp;
 	}
 
 	public double[][] getComp() {
@@ -133,31 +141,28 @@ public class MatrizMath implements Cloneable {
 		this.matriz = comp;
 	}
 
-	// /**
-	// * Muestra la matriz con el formato:
-	// * <br>a11 a12 ... a1n
-	// * <br>a21 a22 ... a2n
-	// * <br>
-	// &nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	// * <br>
-	// &nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	// * <br>
-	// &nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	// * <br>am1 am2 ... amn
-	// */
-	// public String toString()
-	// {
-	// String ms = "\n";
-	//
-	// for (int i = 0 ; i < cantFilas ; i++)
-	// {
-	// for (int j = 0 ; j < cantColumnas ; j++)
-	// ms = ms.concat(matriz[i][j] + " ");
-	// ms = ms.concat("\n");
-	// }
-	//
-	// return ms;
-	// }
+	 /**
+	 * Muestra la matriz con el formato:
+	 * <br>a11 a12 ... a1n
+	 * <br>a21 a22 ... a2n
+	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>am1 am2 ... amn
+	 */
+	 public String toString()
+	 {
+		 String ms = "\n";
+	
+		 for (int i = 0 ; i < cantFilas ; i++)
+		 {
+			 for (int j = 0 ; j < cantColumnas ; j++)
+				 ms = ms.concat(matriz[i][j] + " ");
+			 ms = ms.concat("\n");
+		 }
+	
+		 return ms;
+	 }
 
 	/**
 	 * Devuelve la matriz que resulta de sumar la matriz llamadora mas la matriz
@@ -238,7 +243,6 @@ public class MatrizMath implements Cloneable {
 			throw new ArithmeticException(
 					"No se pudo realizar producto de matrices ya que la cantidad de columnas de la primera matriz no coincide con la cantidad de filas de la segunda.");
 
-		// TODO: Esto no se podrá optimizar? tiene un costo de N al Cubo
 		MatrizMath aux = new MatrizMath(cantFilas, matriz.cantColumnas);
 		for (int i = 0; i < cantFilas; i++)
 			for (int j = 0; j < matriz.cantColumnas; j++)
@@ -249,15 +253,13 @@ public class MatrizMath implements Cloneable {
 	}
 
 	/**
-	 * Realiza el producto entre este objeto y el objeto VectorMath
-	 * especificado.
+	 * Realiza el producto entre este objeto y el objeto VectorMath especificado.
 	 * 
-	 * @param vector
-	 *            - vector con el cual realizar el producto.
-	 * @return la matriz que resulta del producto entre este objeto y el objeto
-	 *         VectorMath especificado.
+	 * @param vector - vector con el cual realizar el producto.
+	 * @return la matriz que resulta del producto entre este objeto y el objeto VectorMath especificado.
 	 */
-	public MatrizMath productoPorVector(VectorMath vector) {
+	public VectorMath productoPorVector(VectorMath vector) 
+	{
 		if (vector == null)
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto entre matriz y vector ya que se recibio como parametro un vector nulo.");
@@ -266,12 +268,17 @@ public class MatrizMath implements Cloneable {
 			throw new ArithmeticException(
 					"No se pudo realizar producto entre matriz y vector ya que la cantidad de columnas de la matriz no coincide con la dimension del vector.");
 
-		MatrizMath m = new MatrizMath(cantFilas, 1);
+		VectorMath v = new VectorMath(cantFilas);
+		double suma = 0;
 		for (int i = 0; i < cantFilas; i++)
+		{
 			for (int j = 0; j < cantColumnas; j++)
-				m.matriz[i][0] += this.matriz[i][j] * vector.getPosicion(j);
+				suma += this.matriz[i][j] * vector.getPosicion(j);
+			
+			v.setPosicion(i, suma);
+		}		
 
-		return m;
+		return v;
 	}
 
 	/**
@@ -314,7 +321,7 @@ public class MatrizMath implements Cloneable {
 
 		MatrizMath aux = (MatrizMath) this.clone();
 
-		// TODO: Esto no se podrá optimizar? tiene un costo de N al Cubo
+		// TODO: Esto no se podrï¿½ optimizar? tiene un costo de N al Cubo
 		for (int k = 0; k < n - 1; k++)
 			for (int i = k + 1; i < n; i++)
 				for (int j = k + 1; j < n; j++)
@@ -324,9 +331,10 @@ public class MatrizMath implements Cloneable {
 		for (int i = 0; i < n; i++)
 			deter *= aux.matriz[i][i];
 
-		return Math.round(deter);
+		return deter;
 	}
 
+	
 	/**
 	 * Obtiene la matriz inversa de este MatrizMath.
 	 * 
@@ -348,7 +356,6 @@ public class MatrizMath implements Cloneable {
 		for (int i = 0; i < n; i++)
 			b.matriz[i][i] = 1.0;
 
-		// TODO: Esto no se podrá optimizar? tiene un costo de N al Cubo
 		// transformaciÃ³n de la matriz y de los tÃ©rminos independientes
 		for (int k = 0; k < n - 1; k++) {
 			for (int i = k + 1; i < n; i++) {
@@ -375,7 +382,8 @@ public class MatrizMath implements Cloneable {
 
 		return c;
 	}
-
+	
+	
 	/**
 	 * Calcula la norma uno de este MatrizMath. La norma uno es la maxima suma
 	 * en las columnas.

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Calendar;
 
 public class VectorMath {
@@ -49,6 +50,8 @@ public class VectorMath {
 	public VectorMath(String fileName) throws FileNotFoundException, InvalidInputException {
 
 		Scanner input = new Scanner(new File(fileName));
+		input.useLocale(Locale.US);
+		
 		dimension = input.nextInt();
 		if (dimension < 1) {
 			input.close();
@@ -58,7 +61,7 @@ public class VectorMath {
 			posiciones = new double[dimension];
 
 		for (int i = 0; i < dimension; i++)
-			posiciones[i] = input.nextInt();
+			posiciones[i] = input.nextDouble();
 
 		if (input.hasNextLine()) {
 			input.close();
@@ -261,9 +264,16 @@ public class VectorMath {
 		return posiciones;
 	}
 
-	public double getPosicion(int p) {
+	public void setPosicion(int p, double coord)
+	{
+		this.posiciones[p] = coord;
+	}
+	
+	public double getPosicion(int p) 
+	{
 		return posiciones[p];
 	}
+	
 
 	public void setPosiciones(double[] posiciones) {
 		this.posiciones = posiciones;
