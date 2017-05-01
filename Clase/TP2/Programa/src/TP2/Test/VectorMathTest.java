@@ -22,8 +22,8 @@ public class VectorMathTest {
 	public void PruebaVector() throws FileNotFoundException, InvalidInputException {
 		// prueba vectores
 		
-		VectorMath v1 = new VectorMath("dim500.in");
-		VectorMath v2 = new VectorMath("dim500_2.in");
+		VectorMath v1 = new VectorMath("dim1000.in");
+		VectorMath v2 = new VectorMath("dim1000_2.in");
         
 		System.out.println("Vector 1: " + v1);
 		System.out.println("Vector 2: " + v2);
