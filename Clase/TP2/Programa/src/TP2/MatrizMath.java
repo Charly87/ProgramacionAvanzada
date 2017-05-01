@@ -243,13 +243,13 @@ public class MatrizMath implements Cloneable
 		if (vector == null)
 			throw new IllegalArgumentException("No se pudo realizar producto entre matriz y vector ya que se recibio como parametro un vector nulo.");
 		
-		if (cantColumnas != vector.getDim())
+		if (cantColumnas != vector.getDimension())
 			throw new ArithmeticException("No se pudo realizar producto entre matriz y vector ya que la cantidad de columnas de la matriz no coincide con la dimension del vector.");
 		
         MatrizMath m = new MatrizMath(cantFilas, 1);
         for (int i = 0 ; i < cantFilas; i++)
             for(int j = 0 ; j < cantColumnas ; j++)
-                m.comp[i][0] += this.comp[i][j] * vector.getCoord(j);
+                m.comp[i][0] += this.comp[i][j] * vector.getPosicion(j);
 
         return m;
 	}
@@ -290,6 +290,7 @@ public class MatrizMath implements Cloneable
     	
         MatrizMath aux = (MatrizMath)this.clone();
         
+      //TODO: Esto no se podrá optimizar? tiene un costo de N al Cubo
         for (int k = 0 ; k < n - 1 ; k++)
             for (int i = k + 1 ; i < n ; i++)
                 for (int j = k + 1 ; j < n ; j++)
@@ -322,6 +323,7 @@ public class MatrizMath implements Cloneable
         for (int i = 0 ; i < n ; i++)
             b.comp[i][i] = 1.0;
         
+        //TODO: Esto no se podrá optimizar? tiene un costo de N al Cubo        
         // transformaciÃ³n de la matriz y de los tÃ©rminos independientes
         for (int k = 0 ; k < n - 1 ; k++)
         {

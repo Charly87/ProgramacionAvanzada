@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class VectorMath {
-	private int dim;
-	private double[] coord;
+	private int dimension;
+	private double[] posiciones;
 
 	/**
 	 * Inicializa un objeto VectorMath con la dimension especificada.
@@ -16,8 +16,8 @@ public class VectorMath {
 	 *            - dimension del vector.
 	 */
 	public VectorMath(int dim) {
-		this.dim = dim;
-		coord = new double[dim];
+		this.dimension = dim;
+		posiciones = new double[dim];
 	}
 
 	/**
@@ -30,29 +30,23 @@ public class VectorMath {
 	 * @throws FileNotFoundException
 	 *             - si no se encuentra el archivo de entrada especificado.
 	 * @throws InvalidInputException
-	 *             - si la dimension no es valida o si el archivo tiene lineas
-	 *             de mas.
+	 *             - si la dimension no es válida o si el archivo tiene lineas
+	 *             demás.
 	 */
 	public VectorMath(String fileName) throws FileNotFoundException, InvalidInputException {
 
 		Scanner input = new Scanner(new File(fileName));
-
-		// la primera linea del archivo de entrada contiene la dimension del
-		// vector
-		dim = input.nextInt();
-		if (dim < 1) {
+		dimension = input.nextInt();
+		if (dimension < 1) {
 			input.close();
 			throw new InvalidInputException(
 					"La dimension del vector no es valida. Revisar archivo \"" + fileName + "\".");
 		} else
-			coord = new double[dim];
+			posiciones = new double[dimension];
 
-		// las lineas siguientes contienen cada coordenada del vector
-		for (int i = 0; i < dim; i++)
-			coord[i] = input.nextInt();
+		for (int i = 0; i < dimension; i++)
+			posiciones[i] = input.nextInt();
 
-		// si hay una linea mas en el archivo de entrada, entonces hay algo mal,
-		// por lo tanto arrojo una excepcion
 		if (input.hasNextLine()) {
 			input.close();
 			throw new InvalidInputException(
@@ -62,34 +56,9 @@ public class VectorMath {
 		input.close();
 	}
 
-	public int getDim() {
-		return dim;
-	}
-
-	public void setDim(int dim) {
-		this.dim = dim;
-	}
-
-	public double[] getCoord() {
-		return coord;
-	}
-
-	public double getCoord(int c) {
-		return coord[c];
-	}
-
-	public void setCoord(double[] coord) {
-		this.coord = coord;
-	}
-
-	@Override
-	public String toString() {
-		return Arrays.toString(coord);
-	}
-
 	/**
 	 * Devuelve el vector que resulta de la suma del vector llamador mas el
-	 * vector recibido por parametro.
+	 * vector recibido por parametro. *
 	 * 
 	 * @param vector
 	 *            - vector a ser sumado.
@@ -97,8 +66,8 @@ public class VectorMath {
 	 * @throws IllegalArgumentException
 	 *             - si el vector recibido es null.
 	 * @throws DistDimException
-	 *             - si la dimension del vector recibido no coincide con la del
-	 *             vector llamador.
+	 *             - si la dimension del vector recibido no coincide con la
+	 *             delvector llamador.
 	 */
 	public VectorMath sumar(VectorMath vector) throws IllegalArgumentException, DistDimException {
 
@@ -106,12 +75,12 @@ public class VectorMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar suma de vectores ya que se recibio como parametro un vector nulo.");
 
-		if (dim != vector.dim)
+		if (dimension != vector.dimension)
 			throw new DistDimException("No se pudo realizar la suma de vectores por ser de distinta dimension.");
 
-		VectorMath aux = new VectorMath(dim);
-		for (int i = 0; i < dim; i++)
-			aux.coord[i] = this.coord[i] + vector.coord[i];
+		VectorMath aux = new VectorMath(dimension);
+		for (int i = 0; i < dimension; i++)
+			aux.posiciones[i] = this.posiciones[i] + vector.posiciones[i];
 
 		return aux;
 	}
@@ -135,15 +104,14 @@ public class VectorMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar resta de vectores ya que se recibio como parametro un vector nulo.");
 
-		if (dim != vector.dim)
+		if (dimension != vector.dimension)
 			throw new DistDimException("No se pudo realizar la resta de vectores por ser de distinta dimension.");
 
-		VectorMath aux = new VectorMath(dim);
-		for (int i = 0; i < dim; i++)
-			aux.coord[i] = this.coord[i] - vector.coord[i];
+		VectorMath aux = new VectorMath(dimension);
+		for (int i = 0; i < dimension; i++)
+			aux.posiciones[i] = this.posiciones[i] - vector.posiciones[i];
 
 		return aux;
-
 	}
 
 	/**
@@ -164,13 +132,13 @@ public class VectorMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto escalar ya que se recibio como parametro un vector nulo.");
 
-		if (dim != vector.dim)
+		if (dimension != vector.dimension)
 			throw new DistDimException(
 					"No se pudo realizar el producto escalar por ser los vectores de distinta dimension.");
 
 		double aux = 0;
-		for (int i = 0; i < dim; i++)
-			aux += this.coord[i] * vector.coord[i];
+		for (int i = 0; i < dimension; i++)
+			aux += this.posiciones[i] * vector.posiciones[i];
 
 		return aux;
 
@@ -185,9 +153,9 @@ public class VectorMath {
 	 * @return vector multiplo del vector llamador.
 	 */
 	public VectorMath productoPorEscalar(double escalar) {
-		VectorMath aux = new VectorMath(this.dim);
-		for (int i = 0; i < aux.dim; i++)
-			aux.coord[i] = this.coord[i] * escalar;
+		VectorMath aux = new VectorMath(this.dimension);
+		for (int i = 0; i < aux.dimension; i++)
+			aux.posiciones[i] = this.posiciones[i] * escalar;
 
 		return aux;
 
@@ -207,14 +175,14 @@ public class VectorMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto entre vector y matriz ya que se recibio como parametro una matriz nula.");
 
-		if (dim != matriz.getCantFilas())
+		if (dimension != matriz.getCantFilas())
 			throw new ArithmeticException(
 					"No se pudo realizar producto entre vector y matriz ya que la dimension del vector no coincide con la cantidad de filas de la matriz.");
 
 		VectorMath v = new VectorMath(matriz.getCantColumnas());
 		for (int j = 0; j < matriz.getCantColumnas(); j++)
 			for (int i = 0; i < matriz.getCantFilas(); i++)
-				v.coord[j] += coord[i] * matriz.getComp(i, j);
+				v.posiciones[j] += posiciones[i] * matriz.getComp(i, j);
 
 		return v;
 
@@ -228,8 +196,8 @@ public class VectorMath {
 	 */
 	public double normaUno() {
 		double suma = 0;
-		for (int i = 0; i < dim; i++)
-			suma += Math.abs(coord[i]);
+		for (int i = 0; i < dimension; i++)
+			suma += Math.abs(posiciones[i]);
 
 		return suma;
 	}
@@ -243,8 +211,8 @@ public class VectorMath {
 	 */
 	public double normaDos() {
 		double suma = 0;
-		for (int i = 0; i < dim; i++)
-			suma += Math.pow(coord[i], 2);
+		for (int i = 0; i < dimension; i++)
+			suma += Math.pow(posiciones[i], 2);
 
 		return Math.sqrt(suma);
 	}
@@ -257,17 +225,42 @@ public class VectorMath {
 	 * @return norma infinito
 	 */
 	public double normaInfinito() {
-		double mayor = Math.abs(coord[0]);
+		double mayor = Math.abs(posiciones[0]);
 
-		for (int i = 0; i < dim; i++) {
-			if (Math.abs(coord[i]) > mayor)
-				mayor = Math.abs(coord[i]);
+		for (int i = 0; i < dimension; i++) {
+			if (Math.abs(posiciones[i]) > mayor)
+				mayor = Math.abs(posiciones[i]);
 		}
 
 		return mayor;
 
 	}
+	
+	public int getDimension() {
+		return dimension;
+	}
 
+	public void setDimension(int dim) {
+		this.dimension = dim;
+	}
+
+	public double[] getPosiciones() {
+		return posiciones;
+	}
+
+	public double getPosicion(int p) {
+		return posiciones[p];
+	}
+
+	public void setPosiciones(double[] posiciones) {
+		this.posiciones = posiciones;
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(posiciones);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -280,11 +273,12 @@ public class VectorMath {
 			return false;
 
 		VectorMath other = (VectorMath) obj;
-		// TODO: ESTO ESTA MAL, compara punteros no el contenido de cada posicion del vector
-		if (!Arrays.equals(coord, other.coord))
+		// TODO: ESTO ESTA MAL, compara punteros no el contenido de cada
+		// posicion del vector
+		if (!Arrays.equals(posiciones, other.posiciones))
 			return false;
 
-		if (dim != other.dim)
+		if (dimension != other.dimension)
 			return false;
 
 		return true;
