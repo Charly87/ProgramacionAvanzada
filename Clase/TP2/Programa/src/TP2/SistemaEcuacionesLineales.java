@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class SistemaEcuacionesLineales{
 	
@@ -25,7 +26,7 @@ public class SistemaEcuacionesLineales{
 	public SistemaEcuacionesLineales(String fileName) throws FileNotFoundException, InvalidInputException
 	{
 		Scanner input = new Scanner(new File(fileName));
-		input.useLocale(Locale.US); // se setea para poder leer los numeros double
+		input.useLocale(Locale.US); 
 		
 		n = input.nextInt();
 		
@@ -37,11 +38,11 @@ public class SistemaEcuacionesLineales{
 		
 		matrizCoef = new MatrizMath(n, n);		
 		for (int i = 0 ; i < (n * n) ; i++)
-			matrizCoef.setMatriz(input.nextInt(), input.nextInt(), input.nextDouble());
+			matrizCoef.setPunto(input.nextInt(), input.nextInt(), input.nextDouble());
 			
 		vectorTermInd = new VectorMath(n);
 		for (int i = 0; i < n; i++)
-			vectorTermInd.setPosicion(i, input.nextDouble());
+			vectorTermInd.setValor(i, input.nextDouble());
 		
 		input.close();
 				
@@ -67,7 +68,8 @@ public class SistemaEcuacionesLineales{
 		 * 	 X = A^-1 * B
 		 * 
 		 */
-		vectorSol = matrizCoef.inversa().producto(vectorTermInd);
+		MatrizMath inversa = matrizCoef.inversa();
+		vectorSol = inversa.producto(vectorTermInd);
 		
 		/* Ahora obtengo el error de calculo, al despejar las incognitas matricialmente tengo que:
 		 * 	 A * X = Berr (al realizar el calculo obtengo el vector solucion mas o menos un error de redondeo)
@@ -75,7 +77,10 @@ public class SistemaEcuacionesLineales{
 		 * Para calcular ese error de redondeo, utilizo la longitud del vector, calculandola a traves de la norma dos, entonces:
 		 *   err = Modulo ( longitud de Berr - longitud de B )
 		 */
-		errorDeCalculo = Math.abs(matrizCoef.producto(vectorSol).normaDos() - vectorTermInd.normaDos()); 
+		VectorMath aux = matrizCoef.producto(vectorSol);
+		double norma2a = aux.normaDos();
+		double norma2b = vectorTermInd.normaDos();
+		errorDeCalculo = Math.abs(norma2a - norma2b);
 	}
 	
 
@@ -91,7 +96,7 @@ public class SistemaEcuacionesLineales{
 		output.println(n);
 	
 		for (int i = 0; i < vectorSol.getDimension(); i++) 
-			output.println(vectorSol.getPosicion(i));
+			output.println(vectorSol.getValor(i));
 		
 		output.println(); // linea en blanco
 		

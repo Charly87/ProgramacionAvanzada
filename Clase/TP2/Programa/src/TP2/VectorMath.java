@@ -10,7 +10,7 @@ import java.util.Calendar;
 
 public class VectorMath {
 	private int dimension;
-	private double[] posiciones;
+	private double[] vector;
 
 	/**
 	 * Inicializa un objeto VectorMath con un vector dado.
@@ -19,7 +19,7 @@ public class VectorMath {
 	 *            - dimension del vector.
 	 */
 	public VectorMath(double[] posiciones) {
-		this.posiciones = posiciones;
+		this.vector = posiciones;
 		this.dimension = posiciones.length;
 	}
 	
@@ -31,7 +31,7 @@ public class VectorMath {
 	 */
 	public VectorMath(int dim) {
 		this.dimension = dim;
-		posiciones = new double[dim];
+		vector = new double[dim];
 	}
 
 	/**
@@ -58,10 +58,10 @@ public class VectorMath {
 			throw new InvalidInputException(
 					"La dimension del vector no es valida. Revisar archivo \"" + fileName + "\".");
 		} else
-			posiciones = new double[dimension];
+			vector = new double[dimension];
 
 		for (int i = 0; i < dimension; i++)
-			posiciones[i] = input.nextDouble();
+			vector[i] = input.nextDouble();
 
 		if (input.hasNextLine()) {
 			input.close();
@@ -96,7 +96,7 @@ public class VectorMath {
 
 		VectorMath aux = new VectorMath(dimension);
 		for (int i = 0; i < dimension; i++)
-			aux.posiciones[i] = this.posiciones[i] + vector.posiciones[i];
+			aux.vector[i] = this.vector[i] + vector.vector[i];
 
 		return aux;
 	}
@@ -125,7 +125,7 @@ public class VectorMath {
 
 		VectorMath aux = new VectorMath(dimension);
 		for (int i = 0; i < dimension; i++)
-			aux.posiciones[i] = this.posiciones[i] - vector.posiciones[i];
+			aux.vector[i] = this.vector[i] - vector.vector[i];
 
 		return aux;
 	}
@@ -154,7 +154,7 @@ public class VectorMath {
 
 		double aux = 0;
 		for (int i = 0; i < dimension; i++)
-			aux += this.posiciones[i] * vector.posiciones[i];
+			aux += this.vector[i] * vector.vector[i];
 
 		return aux;
 
@@ -171,7 +171,7 @@ public class VectorMath {
 	public VectorMath producto(double escalar) {
 		VectorMath aux = new VectorMath(this.dimension);
 		for (int i = 0; i < aux.dimension; i++)
-			aux.posiciones[i] = this.posiciones[i] * escalar;
+			aux.vector[i] = this.vector[i] * escalar;
 
 		return aux;
 
@@ -198,7 +198,7 @@ public class VectorMath {
 		VectorMath v = new VectorMath(matriz.getCantColumnas());
 		for (int j = 0; j < matriz.getCantColumnas(); j++)
 			for (int i = 0; i < matriz.getCantFilas(); i++)
-				v.posiciones[j] += posiciones[i] * matriz.getValor(i, j);
+				v.vector[j] += vector[i] * matriz.getPunto(i, j);
 
 		return v;
 
@@ -213,7 +213,7 @@ public class VectorMath {
 	public double normaUno() {
 		double suma = 0;
 		for (int i = 0; i < dimension; i++)
-			suma += Math.abs(posiciones[i]);
+			suma += Math.abs(vector[i]);
 
 		return suma;
 	}
@@ -228,7 +228,7 @@ public class VectorMath {
 	public double normaDos() {
 		double suma = 0;
 		for (int i = 0; i < dimension; i++)
-			suma += Math.pow(posiciones[i], 2);
+			suma += Math.pow(vector[i], 2);
 
 		return Math.sqrt(suma);
 	}
@@ -241,47 +241,38 @@ public class VectorMath {
 	 * @return norma infinito
 	 */
 	public double normaInfinito() {
-		double mayor = Math.abs(posiciones[0]);
+		double mayor = Math.abs(vector[0]);
 
 		for (int i = 0; i < dimension; i++) {
-			if (Math.abs(posiciones[i]) > mayor)
-				mayor = Math.abs(posiciones[i]);
+			if (Math.abs(vector[i]) > mayor)
+				mayor = Math.abs(vector[i]);
 		}
 
 		return mayor;
 
 	}
 	
+	public void setValor(int indice, double valor)
+	{
+		this.vector[indice] = valor;
+	}
+	
 	public int getDimension() {
 		return dimension;
 	}
 
-	public void setDimension(int dim) {
-		this.dimension = dim;
-	}
-
 	public double[] getPosiciones() {
-		return posiciones;
-	}
-
-	public void setPosicion(int p, double coord)
-	{
-		this.posiciones[p] = coord;
+		return vector;
 	}
 	
-	public double getPosicion(int p) 
+	public double getValor(int indice) 
 	{
-		return posiciones[p];
+		return vector[indice];
 	}
 	
-
-	public void setPosiciones(double[] posiciones) {
-		this.posiciones = posiciones;
-	}
-
 	@Override
 	public String toString() {
-		return Arrays.toString(posiciones);
+		return Arrays.toString(vector);
 	}
 	
 	@Override
@@ -299,7 +290,7 @@ public class VectorMath {
 		if (dimension != other.dimension)
 			return false;		
 		
-		if (!Arrays.equals(posiciones, other.posiciones))
+		if (!Arrays.equals(vector, other.vector))
 			return false;		
 
 		return true;

@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 
+import TP2.Fuente.Matriz;
+
 public class MatrizMath {
 
 	private int cantFilas;
@@ -188,13 +190,15 @@ public class MatrizMath {
 	}
 
 	/**
-	 * Realiza el producto entre este objeto y el objeto VectorMath especificado.
+	 * Realiza el producto entre este objeto y el objeto VectorMath
+	 * especificado.
 	 * 
-	 * @param vector - vector con el cual realizar el producto.
-	 * @return la matriz que resulta del producto entre este objeto y el objeto VectorMath especificado.
+	 * @param vector
+	 *            - vector con el cual realizar el producto.
+	 * @return la matriz que resulta del producto entre este objeto y el objeto
+	 *         VectorMath especificado.
 	 */
-	public VectorMath producto(VectorMath vector) 
-	{
+	public VectorMath producto(VectorMath vector) {
 		if (vector == null)
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto entre matriz y vector ya que se recibio como parametro un vector nulo.");
@@ -203,16 +207,15 @@ public class MatrizMath {
 			throw new ArithmeticException(
 					"No se pudo realizar producto entre matriz y vector ya que la cantidad de columnas de la matriz no coincide con la dimension del vector.");
 
-		VectorMath v = new VectorMath(cantFilas);	
+		VectorMath v = new VectorMath(cantFilas);
 
-		for (int i = 0; i < cantFilas; i++)
-		{
+		for (int i = 0; i < cantFilas; i++) {
 			double suma = 0;
 			for (int j = 0; j < cantColumnas; j++)
-				suma += this.matriz[i][j] * vector.getPosicion(j);
-			
-			v.setPosicion(i, suma);
-		}		
+				suma += this.matriz[i][j] * vector.getValor(j);
+
+			v.setValor(i, suma);
+		}
 
 		return v;
 	}
@@ -267,7 +270,6 @@ public class MatrizMath {
 		return deter;
 	}
 
-	
 	/**
 	 * Obtiene la matriz inversa de este MatrizMath.
 	 * 
@@ -281,45 +283,80 @@ public class MatrizMath {
 
 		if (this.determinante() == 0.0)
 			throw new DistDimException("No se pudo calcular la inversa porque el determinante es cero.");
+
+		MatrizMath identidad = new MatrizMath(this.cantFilas, this.cantColumnas);
+		MatrizMath aux = (MatrizMath)this.clone();
+		int filaPrincipal, fi, co, filaTriangulacion, i, j, n, m;
+		int pivoteCero = 0;
+		for (i = 0; i < this.cantFilas; i++) {
+			for (j = 0; j < this.cantColumnas; j++) {
+				if (i != j) {
+					identidad.matriz[i][j] = 0;
+				} else {
+					identidad.matriz[i][j] = 1;
+				}
+			}
+		}
+
+		double pivote; 
+		filaPrincipal = 0;
 		
-		int n = cantFilas;
-		MatrizMath a = (MatrizMath) this.clone();
-		MatrizMath b = new MatrizMath(n, n); // matriz de los términos
-												// independientes
-		MatrizMath c = new MatrizMath(n, n); // matriz de las incógnitas
+		while (filaPrincipal < this.cantFilas - 1) {
 
-		// matriz identidad
-		for (int i = 0; i < n; i++)
-			b.matriz[i][i] = 1.0;
+			if (pivoteCero == 1) {
+				pivoteCero = 0;
+				filaPrincipal--;
+			}
+			if (aux.matriz[filaPrincipal][filaPrincipal] != 0) {
+				
+				for (filaTriangulacion = filaPrincipal + 1; filaTriangulacion < this.cantFilas; filaTriangulacion++) {
+					pivote = (aux.matriz[filaTriangulacion][filaPrincipal] / aux.matriz[filaPrincipal][filaPrincipal]);
+					
+					for (co = 0; co < this.cantColumnas; co++) {
+						aux.matriz[filaTriangulacion][co] -= pivote * aux.matriz[filaPrincipal][co];
+						identidad.matriz[filaTriangulacion][co] -= pivote * identidad.matriz[filaPrincipal][co];
+					}
+				}
+			} else {
+				m = 0;
+				n = filaPrincipal;
+				while (pivoteCero == 0) {
+					if (aux.matriz[n][filaPrincipal] != 0) {
+						while (m < this.cantColumnas) {
+							aux.matriz[filaPrincipal][m] += aux.matriz[n][m];
+							identidad.matriz[filaPrincipal][m] += identidad.matriz[n][m];
+							m++;
+						} 
+						pivoteCero = 1;
+					} 
+					n++;
+				} 
 
-		// transformación de la matriz y de los términos independientes
-		for (int k = 0; k < n - 1; k++) {
-			for (int i = k + 1; i < n; i++) {
-				// términos independientes
-				for (int s = 0; s < n; s++)
-					b.matriz[i][s] -= a.matriz[i][k] * b.matriz[k][s] / a.matriz[k][k];
+			} 
+			filaPrincipal++;
+		} 
+		
+		for (filaPrincipal = this.cantFilas - 1; filaPrincipal > 0; filaPrincipal--) {
+			for (filaTriangulacion = filaPrincipal - 1; filaTriangulacion >= 0; filaTriangulacion--) {
+				pivote = (aux.matriz[filaTriangulacion][filaPrincipal] / aux.matriz[filaPrincipal][filaPrincipal]);
+				for (co = 0; co < this.cantColumnas; co++) {
+					aux.matriz[filaTriangulacion][co] -= pivote * aux.matriz[filaPrincipal][co];
+					identidad.matriz[filaTriangulacion][co] -= pivote * identidad.matriz[filaPrincipal][co];
+				}
 
-				// elementos de la matriz
-				for (int j = k + 1; j < n; j++)
-					a.matriz[i][j] -= a.matriz[i][k] * a.matriz[k][j] / a.matriz[k][k];
 			}
 		}
-
-		// cálculo de las incógnitas, elementos de la matriz inversa
-		for (int s = 0; s < n; s++) {
-			c.matriz[n - 1][s] = b.matriz[n - 1][s] / a.matriz[n - 1][n - 1];
-			for (int i = n - 2; i >= 0; i--) {
-				c.matriz[i][s] = b.matriz[i][s] / a.matriz[i][i];
-
-				for (int k = n - 1; k > i; k--)
-					c.matriz[i][s] -= a.matriz[i][k] * c.matriz[k][s] / a.matriz[i][i];
+		for (fi = 0; fi < this.cantFilas; fi++) {
+			pivote = aux.matriz[fi][fi];
+			for (co = 0; co < this.cantColumnas; co++) {
+				aux.matriz[fi][co] /= pivote;
+				identidad.matriz[fi][co] /= pivote;
 			}
-		}
 
-		return c;
+		}
+		return identidad;
 	}
-	
-	
+
 	/**
 	 * Calcula la norma uno de este MatrizMath. La norma uno es la maxima suma
 	 * en las columnas.
@@ -327,6 +364,9 @@ public class MatrizMath {
 	 * @return norma uno
 	 */
 	public double normaUno() {
+		if (this.cantFilas != this.cantColumnas)
+			throw new DistDimException("Matriz no cuadrada");
+		
 		double mayor = 0;
 		double acum;
 
@@ -349,6 +389,9 @@ public class MatrizMath {
 	 * @return norma dos
 	 */
 	public double normaDos() {
+		if (this.cantFilas != this.cantColumnas)
+			throw new DistDimException("Matriz no cuadrada");
+		
 		double suma = 0;
 
 		for (int i = 0; i < cantFilas; i++)
@@ -379,71 +422,55 @@ public class MatrizMath {
 
 		return mayor;
 	}
-	
+
 	public int getCantFilas() {
 		return cantFilas;
-	}
-
-	public void setCantFilas(int cantFilas) {
-		this.cantFilas = cantFilas;
 	}
 
 	public int getCantColumnas() {
 		return cantColumnas;
 	}
 
-	public void setCantColumnas(int cantColumnas) {
-		this.cantColumnas = cantColumnas;
-	}
-
 	public int getDim() {
 		return dim;
 	}
-	
 
-	public void setDim(int dim) {
-		this.dim = dim;
+	public void setPunto(int fila, int columna, double valor) {
+		if (fila < this.cantFilas && columna < this.cantColumnas)
+			this.matriz[fila][columna] = valor;
 	}
-	
-	public void setMatriz(int fila, int columna, double valor)
-	{
-		this.matriz[fila][columna] = valor;
+
+	public double getPunto(int fila, int columna) {
+		return matriz[fila][columna];
 	}
 
 	public double[][] getMatriz() {
 		return matriz;
 	}
 
-	public double getValor(int fila, int columna) {
-		return matriz[fila][columna];
-	}
-
-	public void setMatriz(double[][] matriz) {
-		this.matriz = matriz;
-	}
-
-	 /**
-	 * Muestra la matriz con el formato:
-	 * <br>a11 a12 ... a1n
-	 * <br>a21 a22 ... a2n
-	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	 * <br>am1 am2 ... amn
+	/**
+	 * Muestra la matriz con el formato: <br>
+	 * a11 a12 ... a1n <br>
+	 * a21 a22 ... a2n <br>
+	 * &nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>
+	 * &nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>
+	 * &nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>
+	 * am1 am2 ... amn
 	 */
-	 public String toString()
-	 {
-		 String ms = "\n";
-	
-		 for (int i = 0 ; i < cantFilas ; i++)
-		 {
-			 for (int j = 0 ; j < cantColumnas ; j++)
-				 ms = ms.concat(matriz[i][j] + " ");
-			 ms = ms.concat("\n");
-		 }
-	
-		 return ms;
-	 }
+	public String toString() {
+		String ms = "\n";
+
+		for (int i = 0; i < cantFilas; i++) {
+			for (int j = 0; j < cantColumnas; j++)
+				ms = ms.concat(matriz[i][j] + " ");
+			ms = ms.concat("\n");
+		}
+
+		return ms;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -465,21 +492,21 @@ public class MatrizMath {
 
 		if (dim != other.dim)
 			return false;
-		
-		for(int i = 0; i < this.cantFilas; i++)
-			for(int j = 0; j < this.cantColumnas; j++)
-				if(Math.abs(other.getMatriz()[i][j] - this.matriz[i][j]) > 0.00001)
-					return false;	
+
+		for (int i = 0; i < this.cantFilas; i++)
+			for (int j = 0; j < this.cantColumnas; j++)
+				if (Math.abs(other.getMatriz()[i][j] - this.matriz[i][j]) > 0.00001)
+					return false;
 
 		return true;
 	}
-	
+
 	@Override
 	public Object clone() {
 		double[][] aux = new double[this.cantFilas][this.cantColumnas];
-		for(int i = 0; i < this.cantFilas; i++)
-			for(int j = 0; j < this.cantColumnas; j++)
+		for (int i = 0; i < this.cantFilas; i++)
+			for (int j = 0; j < this.cantColumnas; j++)
 				aux[i][j] = this.matriz[i][j];
-		return new MatrizMath(aux);	
+		return new MatrizMath(aux);
 	}
 }
