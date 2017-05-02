@@ -191,13 +191,13 @@ public class VectorMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto entre vector y matriz ya que se recibio como parametro una matriz nula.");
 
-		if (dimension != matriz.getCantFilas())
+		if (dimension != matriz.getFilas())
 			throw new ArithmeticException(
 					"No se pudo realizar producto entre vector y matriz ya que la dimension del vector no coincide con la cantidad de filas de la matriz.");
 
-		VectorMath v = new VectorMath(matriz.getCantColumnas());
-		for (int j = 0; j < matriz.getCantColumnas(); j++)
-			for (int i = 0; i < matriz.getCantFilas(); i++)
+		VectorMath v = new VectorMath(matriz.getColumnas());
+		for (int j = 0; j < matriz.getColumnas(); j++)
+			for (int i = 0; i < matriz.getFilas(); i++)
 				v.vector[j] += vector[i] * matriz.getPunto(i, j);
 
 		return v;
@@ -261,7 +261,7 @@ public class VectorMath {
 		return dimension;
 	}
 
-	public double[] getPosiciones() {
+	public double[] getVector() {
 		return vector;
 	}
 	

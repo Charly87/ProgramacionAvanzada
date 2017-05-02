@@ -16,7 +16,7 @@ public class Main {
 			Calendar tIni = new GregorianCalendar();
 
 			sel.resolver();
-
+			sel.calcularError();
 			Calendar tFin = new GregorianCalendar();
 
 			sel.mostrarResultado(path + "04_caso2x2cCasiLDsimple.out");

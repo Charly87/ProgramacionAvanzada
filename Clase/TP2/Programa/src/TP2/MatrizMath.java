@@ -10,9 +10,9 @@ import TP2.Fuente.Matriz;
 
 public class MatrizMath {
 
-	private int cantFilas;
-	private int cantColumnas;
-	private int dim;
+	private int filas;
+	private int columnas;
+	private int dimension;
 	private double[][] matriz;
 
 	/**
@@ -23,25 +23,25 @@ public class MatrizMath {
 	 */
 	public MatrizMath(double[][] matriz) {
 		this.matriz = matriz;
-		this.cantColumnas = matriz[0].length;
-		this.cantFilas = matriz.length;
-		this.dim = this.cantFilas * this.cantColumnas;
+		this.columnas = matriz[0].length;
+		this.filas = matriz.length;
+		this.dimension = this.filas * this.columnas;
 	}
 
 	/**
 	 * Inicializa un objeto MatrizMath con la cantidad de filas y la cantidad de
 	 * columnas especificadas.
 	 * 
-	 * @param cantFilas
+	 * @param filas
 	 *            - cantidad de filas de la matriz.
-	 * @param cantColumnas
+	 * @param columnas
 	 *            - cantidad de columnas de la matriz.
 	 */
-	public MatrizMath(int cantFilas, int cantColumnas) {
-		this.cantFilas = cantFilas;
-		this.cantColumnas = cantColumnas;
-		this.dim = cantFilas * cantColumnas;
-		matriz = new double[cantFilas][cantColumnas];
+	public MatrizMath(int filas, int columnas) {
+		this.filas = filas;
+		this.columnas = columnas;
+		this.dimension = filas * columnas;
+		matriz = new double[filas][columnas];
 	}
 
 	/**
@@ -63,25 +63,25 @@ public class MatrizMath {
 
 		// la primera linea del archivo de entrada contiene la cantidad
 		// de filas y de columnas de la matriz separadas por un espacio
-		cantFilas = input.nextInt();
-		cantColumnas = input.nextInt();
-		if (cantFilas < 1) {
+		filas = input.nextInt();
+		columnas = input.nextInt();
+		if (filas < 1) {
 			input.close();
 			throw new InvalidInputException(
 					"La cantidad de filas de la matriz no es valida. Revisar archivo " + fileName + "\".");
-		} else if (cantColumnas < 1) {
+		} else if (columnas < 1) {
 			input.close();
 			throw new InvalidInputException(
 					"La cantidad de columnas de la matriz no es valida. Revisar archivo " + fileName + "\".");
 		} else {
-			dim = cantFilas * cantColumnas;
-			matriz = new double[cantFilas][cantColumnas];
+			dimension = filas * columnas;
+			matriz = new double[filas][columnas];
 		}
 
 		// las lineas siguientes contienen cada componente de la matriz, con el
 		// formato:
 		// (nroFila) (nroColumna) (Componente)
-		int cantComponentes = cantFilas * cantColumnas;
+		int cantComponentes = filas * columnas;
 		int fila;
 		int columna;
 		for (int i = 0; i < cantComponentes; i++) {
@@ -119,12 +119,12 @@ public class MatrizMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar suma de matrices ya que se recibio como parametro una matriz nula.");
 
-		if (dim != matriz.dim)
+		if (dimension != matriz.dimension)
 			throw new DistDimException("No se pudo realizar la suma de matrices por ser de distinta dimension.");
 
-		MatrizMath aux = new MatrizMath(cantFilas, cantColumnas);
-		for (int i = 0; i < cantFilas; i++)
-			for (int j = 0; j < cantColumnas; j++)
+		MatrizMath aux = new MatrizMath(filas, columnas);
+		for (int i = 0; i < filas; i++)
+			for (int j = 0; j < columnas; j++)
 				aux.matriz[i][j] = this.matriz[i][j] + matriz.matriz[i][j];
 
 		return aux;
@@ -148,12 +148,12 @@ public class MatrizMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar resta de matrices ya que se recibio como parametro una matriz nula.");
 
-		if (dim != matriz.dim)
+		if (dimension != matriz.dimension)
 			throw new DistDimException("No se pudo realizar la resta de matrices por ser de distinta dimension.");
 
-		MatrizMath aux = new MatrizMath(cantFilas, cantColumnas);
-		for (int i = 0; i < cantFilas; i++)
-			for (int j = 0; j < cantColumnas; j++)
+		MatrizMath aux = new MatrizMath(filas, columnas);
+		for (int i = 0; i < filas; i++)
+			for (int j = 0; j < columnas; j++)
 				aux.matriz[i][j] = this.matriz[i][j] - matriz.matriz[i][j];
 
 		return aux;
@@ -176,14 +176,14 @@ public class MatrizMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto de matrices ya que se recibio como parametro una matriz nula.");
 
-		if (dim != matriz.dim)
+		if (dimension != matriz.dimension)
 			throw new ArithmeticException(
 					"No se pudo realizar producto de matrices ya que la cantidad de columnas de la primera matriz no coincide con la cantidad de filas de la segunda.");
 
-		MatrizMath aux = new MatrizMath(cantFilas, matriz.cantColumnas);
-		for (int i = 0; i < cantFilas; i++)
-			for (int j = 0; j < matriz.cantColumnas; j++)
-				for (int k = 0; k < cantColumnas; k++)
+		MatrizMath aux = new MatrizMath(filas, matriz.columnas);
+		for (int i = 0; i < filas; i++)
+			for (int j = 0; j < matriz.columnas; j++)
+				for (int k = 0; k < columnas; k++)
 					aux.matriz[i][j] += this.matriz[i][k] * matriz.matriz[k][j];
 
 		return aux;
@@ -203,15 +203,15 @@ public class MatrizMath {
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto entre matriz y vector ya que se recibio como parametro un vector nulo.");
 
-		if (cantColumnas != vector.getDimension())
+		if (columnas != vector.getDimension())
 			throw new ArithmeticException(
 					"No se pudo realizar producto entre matriz y vector ya que la cantidad de columnas de la matriz no coincide con la dimension del vector.");
 
-		VectorMath v = new VectorMath(cantFilas);
+		VectorMath v = new VectorMath(filas);
 
-		for (int i = 0; i < cantFilas; i++) {
+		for (int i = 0; i < filas; i++) {
 			double suma = 0;
-			for (int j = 0; j < cantColumnas; j++)
+			for (int j = 0; j < columnas; j++)
 				suma += this.matriz[i][j] * vector.getValor(j);
 
 			v.setValor(i, suma);
@@ -229,11 +229,11 @@ public class MatrizMath {
 	 *         recibido como parametro.
 	 */
 	public MatrizMath producto(float escalar) {
-		MatrizMath m = new MatrizMath(this.cantFilas, this.cantColumnas);
+		MatrizMath m = new MatrizMath(this.filas, this.columnas);
 		double esc = (double) escalar;
 
-		for (int i = 0; i < m.cantFilas; i++)
-			for (int j = 0; j < m.cantColumnas; j++)
+		for (int i = 0; i < m.filas; i++)
+			for (int j = 0; j < m.columnas; j++)
 				m.matriz[i][j] = this.matriz[i][j] * esc;
 
 		return m;
@@ -251,10 +251,10 @@ public class MatrizMath {
 	 */
 	public double determinante() throws CloneNotSupportedException, DistDimException {
 
-		if (cantFilas != cantColumnas)
+		if (filas != columnas)
 			throw new DistDimException("No se pudo calcular el determinante ya que no es una matriz cuadrada.");
 
-		int n = cantFilas;
+		int n = filas;
 
 		MatrizMath aux = (MatrizMath) this.clone();
 
@@ -278,18 +278,18 @@ public class MatrizMath {
 	 *             - si este objeto no es cloneable
 	 */
 	public MatrizMath inversa() throws CloneNotSupportedException {
-		if (cantFilas != cantColumnas)
+		if (filas != columnas)
 			throw new DistDimException("No se pudo calcular la inversa ya que no es una matriz cuadrada.");
 
 		if (this.determinante() == 0.0)
 			throw new DistDimException("No se pudo calcular la inversa porque el determinante es cero.");
 
-		MatrizMath identidad = new MatrizMath(this.cantFilas, this.cantColumnas);
+		MatrizMath identidad = new MatrizMath(this.filas, this.columnas);
 		MatrizMath aux = (MatrizMath)this.clone();
 		int filaPrincipal, fi, co, filaTriangulacion, i, j, n, m;
 		int pivoteCero = 0;
-		for (i = 0; i < this.cantFilas; i++) {
-			for (j = 0; j < this.cantColumnas; j++) {
+		for (i = 0; i < this.filas; i++) {
+			for (j = 0; j < this.columnas; j++) {
 				if (i != j) {
 					identidad.matriz[i][j] = 0;
 				} else {
@@ -301,7 +301,7 @@ public class MatrizMath {
 		double pivote; 
 		filaPrincipal = 0;
 		
-		while (filaPrincipal < this.cantFilas - 1) {
+		while (filaPrincipal < this.filas - 1) {
 
 			if (pivoteCero == 1) {
 				pivoteCero = 0;
@@ -309,10 +309,10 @@ public class MatrizMath {
 			}
 			if (aux.matriz[filaPrincipal][filaPrincipal] != 0) {
 				
-				for (filaTriangulacion = filaPrincipal + 1; filaTriangulacion < this.cantFilas; filaTriangulacion++) {
+				for (filaTriangulacion = filaPrincipal + 1; filaTriangulacion < this.filas; filaTriangulacion++) {
 					pivote = (aux.matriz[filaTriangulacion][filaPrincipal] / aux.matriz[filaPrincipal][filaPrincipal]);
 					
-					for (co = 0; co < this.cantColumnas; co++) {
+					for (co = 0; co < this.columnas; co++) {
 						aux.matriz[filaTriangulacion][co] -= pivote * aux.matriz[filaPrincipal][co];
 						identidad.matriz[filaTriangulacion][co] -= pivote * identidad.matriz[filaPrincipal][co];
 					}
@@ -322,7 +322,7 @@ public class MatrizMath {
 				n = filaPrincipal;
 				while (pivoteCero == 0) {
 					if (aux.matriz[n][filaPrincipal] != 0) {
-						while (m < this.cantColumnas) {
+						while (m < this.columnas) {
 							aux.matriz[filaPrincipal][m] += aux.matriz[n][m];
 							identidad.matriz[filaPrincipal][m] += identidad.matriz[n][m];
 							m++;
@@ -336,19 +336,19 @@ public class MatrizMath {
 			filaPrincipal++;
 		} 
 		
-		for (filaPrincipal = this.cantFilas - 1; filaPrincipal > 0; filaPrincipal--) {
+		for (filaPrincipal = this.filas - 1; filaPrincipal > 0; filaPrincipal--) {
 			for (filaTriangulacion = filaPrincipal - 1; filaTriangulacion >= 0; filaTriangulacion--) {
 				pivote = (aux.matriz[filaTriangulacion][filaPrincipal] / aux.matriz[filaPrincipal][filaPrincipal]);
-				for (co = 0; co < this.cantColumnas; co++) {
+				for (co = 0; co < this.columnas; co++) {
 					aux.matriz[filaTriangulacion][co] -= pivote * aux.matriz[filaPrincipal][co];
 					identidad.matriz[filaTriangulacion][co] -= pivote * identidad.matriz[filaPrincipal][co];
 				}
 
 			}
 		}
-		for (fi = 0; fi < this.cantFilas; fi++) {
+		for (fi = 0; fi < this.filas; fi++) {
 			pivote = aux.matriz[fi][fi];
-			for (co = 0; co < this.cantColumnas; co++) {
+			for (co = 0; co < this.columnas; co++) {
 				aux.matriz[fi][co] /= pivote;
 				identidad.matriz[fi][co] /= pivote;
 			}
@@ -364,15 +364,15 @@ public class MatrizMath {
 	 * @return norma uno
 	 */
 	public double normaUno() {
-		if (this.cantFilas != this.cantColumnas)
+		if (this.filas != this.columnas)
 			throw new DistDimException("Matriz no cuadrada");
 		
 		double mayor = 0;
 		double acum;
 
-		for (int j = 0; j < cantColumnas; j++) {
+		for (int j = 0; j < columnas; j++) {
 			acum = 0;
-			for (int i = 0; i < cantFilas; i++)
+			for (int i = 0; i < filas; i++)
 				acum += Math.abs(matriz[i][j]);
 
 			if (j == 0 || acum > mayor)
@@ -389,13 +389,13 @@ public class MatrizMath {
 	 * @return norma dos
 	 */
 	public double normaDos() {
-		if (this.cantFilas != this.cantColumnas)
+		if (this.filas != this.columnas)
 			throw new DistDimException("Matriz no cuadrada");
 		
 		double suma = 0;
 
-		for (int i = 0; i < cantFilas; i++)
-			for (int j = 0; j < cantColumnas; j++)
+		for (int i = 0; i < filas; i++)
+			for (int j = 0; j < columnas; j++)
 				suma += Math.pow(matriz[i][j], 2);
 
 		return Math.sqrt(suma);
@@ -411,9 +411,9 @@ public class MatrizMath {
 		double mayor = 0;
 		double acum;
 
-		for (int i = 0; i < cantFilas; i++) {
+		for (int i = 0; i < filas; i++) {
 			acum = 0;
-			for (int j = 0; j < cantColumnas; j++)
+			for (int j = 0; j < columnas; j++)
 				acum += Math.abs(matriz[i][j]);
 
 			if (i == 0 || acum > mayor)
@@ -423,20 +423,20 @@ public class MatrizMath {
 		return mayor;
 	}
 
-	public int getCantFilas() {
-		return cantFilas;
+	public int getFilas() {
+		return filas;
 	}
 
-	public int getCantColumnas() {
-		return cantColumnas;
+	public int getColumnas() {
+		return columnas;
 	}
 
 	public int getDim() {
-		return dim;
+		return dimension;
 	}
 
 	public void setPunto(int fila, int columna, double valor) {
-		if (fila < this.cantFilas && columna < this.cantColumnas)
+		if (fila < this.filas && columna < this.columnas)
 			this.matriz[fila][columna] = valor;
 	}
 
@@ -463,8 +463,8 @@ public class MatrizMath {
 	public String toString() {
 		String ms = "\n";
 
-		for (int i = 0; i < cantFilas; i++) {
-			for (int j = 0; j < cantColumnas; j++)
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++)
 				ms = ms.concat(matriz[i][j] + " ");
 			ms = ms.concat("\n");
 		}
@@ -484,17 +484,17 @@ public class MatrizMath {
 			return false;
 
 		MatrizMath other = (MatrizMath) obj;
-		if (cantColumnas != other.cantColumnas)
+		if (columnas != other.columnas)
 			return false;
 
-		if (cantFilas != other.cantFilas)
+		if (filas != other.filas)
 			return false;
 
-		if (dim != other.dim)
+		if (dimension != other.dimension)
 			return false;
 
-		for (int i = 0; i < this.cantFilas; i++)
-			for (int j = 0; j < this.cantColumnas; j++)
+		for (int i = 0; i < this.filas; i++)
+			for (int j = 0; j < this.columnas; j++)
 				if (Math.abs(other.getMatriz()[i][j] - this.matriz[i][j]) > 0.00001)
 					return false;
 
@@ -503,9 +503,9 @@ public class MatrizMath {
 
 	@Override
 	public Object clone() {
-		double[][] aux = new double[this.cantFilas][this.cantColumnas];
-		for (int i = 0; i < this.cantFilas; i++)
-			for (int j = 0; j < this.cantColumnas; j++)
+		double[][] aux = new double[this.filas][this.columnas];
+		for (int i = 0; i < this.filas; i++)
+			for (int j = 0; j < this.columnas; j++)
 				aux[i][j] = this.matriz[i][j];
 		return new MatrizMath(aux);
 	}
