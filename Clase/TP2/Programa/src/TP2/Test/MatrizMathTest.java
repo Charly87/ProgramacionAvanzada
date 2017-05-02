@@ -13,102 +13,100 @@ import TP2.MatrizMath;
 import TP2.VectorMath;
 
 public class MatrizMathTest {
-	private String path = "src/TP2/Test/Lotes/";
-
 	@Test
-	public void suma() throws FileNotFoundException, InvalidInputException {
-		MatrizMath m1 = new MatrizMath(path + "m1.in");
-		MatrizMath m2 = new MatrizMath(path + "m2.in");
-		System.out.println("Matriz 1: " + m1);
-		System.out.println("Matriz 2: " + m2);
-
+	public void suma() {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 } });
+		MatrizMath m2 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 } });
 		MatrizMath m3 = m1.sumar(m2);
-		System.out.println("Matriz 1 + Matriz 2: " + m3);		
+		MatrizMath m4 = new MatrizMath(new double[][] { { 2, 2 }, { 4, 4 } });
+		Assert.assertEquals(m4, m3);
 	}
-	
-	@Test
-	public void resta() throws FileNotFoundException, InvalidInputException {
-		MatrizMath m1 = new MatrizMath(path + "m1.in");
-		MatrizMath m2 = new MatrizMath(path + "m2.in");
-		System.out.println("Matriz 1: " + m1);
-		System.out.println("Matriz 2: " + m2);
 
+	@Test
+	public void resta() {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3 }, { 4, 4 } });
+		MatrizMath m2 = new MatrizMath(new double[][] { { 1, 1 }, { 3, 3 } });
 		MatrizMath m3 = m1.restar(m2);
-		System.out.println("Matriz 1 + Matriz 2: " + m3);		
+		MatrizMath m4 = new MatrizMath(new double[][] { { 2, 2 }, { 1, 1 } });
+		Assert.assertEquals(m4, m3);
 	}
-	
-	@Test
-	public void productoPorMatriz() throws FileNotFoundException, InvalidInputException {
-		MatrizMath m1 = new MatrizMath(path + "m1.in");
-		MatrizMath m2 = new MatrizMath(path + "m2.in");
-		System.out.println("Matriz 1: " + m1);
-		System.out.println("Matriz 2: " + m2);
 
+	@Test
+	public void productoPorMatrizMxM() {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3 }, { 2, 2 } });
+		MatrizMath m2 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 } });
 		MatrizMath m3 = m1.productoPorMatriz(m2);
-		System.out.println("Matriz 1 + Matriz 2: " + m3);		
-	}
-	
-	@Test
-	public void productoPorMatriz2() throws FileNotFoundException, InvalidInputException {
-		MatrizMath m6 = new MatrizMath(path + "m6.in");
-		MatrizMath m7 = new MatrizMath(path + "m7.in");
-		MatrizMath m8 = m6.productoPorMatriz(m7);
-		System.out.println("Matriz 6: " + m6);
-		System.out.println("Matriz 7: " + m7);
-		System.out.println("Matriz 6 * Matriz 7: " + m8);
-	}
-	
-	@Test
-	public void productoPorEscalar() throws FileNotFoundException, InvalidInputException {
-		MatrizMath m1 = new MatrizMath(path + "m1.in");
-		MatrizMath m2 = m1.productoPorEscalar(5);
-		System.out.println("Matriz 1 * 5: " + m2);
-	}
-	
-	@Test
-	public void determinante() throws FileNotFoundException, InvalidInputException, DistDimException, CloneNotSupportedException {
-		MatrizMath m10 = new MatrizMath(path + "m10.in");
-		System.out.println("Matriz 10: " + m10);
-		double determinante = m10.determinante();
-		System.out.println("Determinante Matriz 10: " + determinante + "\n");
+		MatrizMath m4 = new MatrizMath(new double[][] { { 9, 9 }, { 6, 6 } });
+		Assert.assertEquals(m4, m3);
 	}
 
 	@Test
-	public void productoPorVector() throws FileNotFoundException, InvalidInputException{
-		MatrizMath m11 = new MatrizMath(path + "m11.in");
-		VectorMath v8 = new VectorMath(path + "v8.in");
-		System.out.println("Matriz 11:" + m11);
-		System.out.println("Vector 6: " + v8);
-		VectorMath v18 = m11.productoPorVector(v8);
-		System.out.println("Matriz 11 * Vector 3:" + v18);
+	public void productoPorMatrizMxN() {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3, 3 }, { 2, 2, 2 } });
+		MatrizMath m2 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 }, { 3, 3 } });
+		MatrizMath m3 = m1.productoPorMatriz(m2);
+		MatrizMath m4 = new MatrizMath(new double[][] { { 18, 18 }, { 12, 12 } });
+		Assert.assertEquals(m4, m3);
 	}
-	
+
 	@Test
-	public void inversa() throws FileNotFoundException, InvalidInputException, CloneNotSupportedException{
-		MatrizMath m13 = new MatrizMath(path + "m13.in");
-		MatrizMath m14 = m13.inversa();
-		System.out.println("Matriz 13:" + m13);
-		System.out.println("Matriz inversa de la matriz 13:" + m14);
+	public void productoPorEscalar() {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3, 3 }, { 2, 2, 2 } });
+		MatrizMath m2 = m1.productoPorEscalar(2);
+		MatrizMath m3 = new MatrizMath(new double[][] { { 6, 6, 6 }, { 4, 4, 4 } });
+		Assert.assertEquals(m3, m2);
 	}
-	
+
+	@Test
+	public void determinante() throws DistDimException, CloneNotSupportedException {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 2, 2 }, { 3, 4 } });
+		double aux = m1.determinante();
+		Assert.assertEquals(2, aux, 0.1);
+	}
+
+	@Test
+	public void productoPorVector() throws FileNotFoundException, InvalidInputException {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3 }, { 2, 2 }, { 1, 1 } });
+		VectorMath v1 = new VectorMath(new double[] { 1, 2 });
+		VectorMath v2 = m1.productoPorVector(v1);
+		VectorMath v3 = new VectorMath(new double[] { 9, 6, 3 });
+		Assert.assertEquals(v3, v2);
+	}
+
+	@Test
+	public void inversa2x2() throws CloneNotSupportedException {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 1, -2 }, { -3, 5 } });
+		MatrizMath m2 = m1.inversa();
+		MatrizMath m3 = new MatrizMath(new double[][] { { -5, -2 }, { -3, -1 } });
+		Assert.assertEquals(m3, m2);
+	}
+
+	@Test
+	public void inversa3x3() throws CloneNotSupportedException {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 1, 0, 2 }, { 0, 1, 1 }, { 1, 0, 1 } });
+		MatrizMath m2 = m1.inversa();
+		MatrizMath m3 = new MatrizMath(new double[][] { { -1.0, 0.0, 2.0 }, { -1.0, 1.0, 1.0 }, { 1.0, 0.0, -1.0 } });
+		Assert.assertEquals(m3, m2);
+	}
+
 	@Test
 	public void normaUno() throws FileNotFoundException, InvalidInputException {
-		MatrizMath m15 = new MatrizMath(path + "m15.in");
-		double normaUnoMatriz = m15.normaUno();
-		System.out.println("Norma Uno Matriz 15: " + normaUnoMatriz);
+		MatrizMath m1 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 } });
+		double aux = m1.normaUno();
+		Assert.assertEquals(3.0, aux, 0.0001);
 	}
-	
+
 	@Test
 	public void normaDos() throws FileNotFoundException, InvalidInputException {
-		MatrizMath m15 = new MatrizMath(path + "m15.in");
-		double normaDosMatriz = m15.normaDos();
-		System.out.println("Norma Dos Matriz 15: " + normaDosMatriz);
+		MatrizMath m1 = new MatrizMath(new double[][] { { 2, 2 }, { 2, 2 } });
+		double aux = m1.normaDos();
+		Assert.assertEquals(4.0, aux, 0.0001);
 	}
-	
+
 	@Test
-	public void normaInfinito() throws FileNotFoundException, InvalidInputException{
-		MatrizMath m15 = new MatrizMath(path + "m15.in");
-		double normaInfinitoMatriz = m15.normaInfinito();
-		System.out.println("Norma Infinito Matriz 15: " + normaInfinitoMatriz);
+	public void normaInfinito() throws FileNotFoundException, InvalidInputException {
+		MatrizMath m1 = new MatrizMath(new double[][] { { 2, 2 }, { 2, 2 } });
+		double aux = m1.normaInfinito();
+		Assert.assertEquals(4.0, aux, 0.0001);
 	}
 }

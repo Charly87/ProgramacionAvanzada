@@ -44,8 +44,8 @@ public class VectorMath {
 	 * @throws FileNotFoundException
 	 *             - si no se encuentra el archivo de entrada especificado.
 	 * @throws InvalidInputException
-	 *             - si la dimension no es válida o si el archivo tiene lineas
-	 *             demás.
+	 *             - si la dimension no es vï¿½lida o si el archivo tiene lineas
+	 *             demï¿½s.
 	 */
 	public VectorMath(String fileName) throws FileNotFoundException, InvalidInputException {
 
@@ -198,7 +198,7 @@ public class VectorMath {
 		VectorMath v = new VectorMath(matriz.getCantColumnas());
 		for (int j = 0; j < matriz.getCantColumnas(); j++)
 			for (int i = 0; i < matriz.getCantFilas(); i++)
-				v.posiciones[j] += posiciones[i] * matriz.getComp(i, j);
+				v.posiciones[j] += posiciones[i] * matriz.getValor(i, j);
 
 		return v;
 

@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class MatrizMath implements Cloneable {
+public class MatrizMath {
 
 	private int cantFilas;
 	private int cantColumnas;
@@ -98,71 +98,6 @@ public class MatrizMath implements Cloneable {
 
 		input.close();
 	}
-
-	public int getCantFilas() {
-		return cantFilas;
-	}
-
-	public void setCantFilas(int cantFilas) {
-		this.cantFilas = cantFilas;
-	}
-
-	public int getCantColumnas() {
-		return cantColumnas;
-	}
-
-	public void setCantColumnas(int cantColumnas) {
-		this.cantColumnas = cantColumnas;
-	}
-
-	public int getDim() {
-		return dim;
-	}
-	
-
-	public void setDim(int dim) {
-		this.dim = dim;
-	}
-	
-	public void setComp(int f, int c, double comp)
-	{
-		this.matriz[f][c] = comp;
-	}
-
-	public double[][] getComp() {
-		return matriz;
-	}
-
-	public double getComp(int f, int c) {
-		return matriz[f][c];
-	}
-
-	public void setComp(double[][] comp) {
-		this.matriz = comp;
-	}
-
-	 /**
-	 * Muestra la matriz con el formato:
-	 * <br>a11 a12 ... a1n
-	 * <br>a21 a22 ... a2n
-	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
-	 * <br>am1 am2 ... amn
-	 */
-	 public String toString()
-	 {
-		 String ms = "\n";
-	
-		 for (int i = 0 ; i < cantFilas ; i++)
-		 {
-			 for (int j = 0 ; j < cantColumnas ; j++)
-				 ms = ms.concat(matriz[i][j] + " ");
-			 ms = ms.concat("\n");
-		 }
-	
-		 return ms;
-	 }
 
 	/**
 	 * Devuelve la matriz que resulta de sumar la matriz llamadora mas la matriz
@@ -268,10 +203,11 @@ public class MatrizMath implements Cloneable {
 			throw new ArithmeticException(
 					"No se pudo realizar producto entre matriz y vector ya que la cantidad de columnas de la matriz no coincide con la dimension del vector.");
 
-		VectorMath v = new VectorMath(cantFilas);
-		double suma = 0;
+		VectorMath v = new VectorMath(cantFilas);	
+
 		for (int i = 0; i < cantFilas; i++)
 		{
+			double suma = 0;
 			for (int j = 0; j < cantColumnas; j++)
 				suma += this.matriz[i][j] * vector.getPosicion(j);
 			
@@ -315,13 +251,10 @@ public class MatrizMath implements Cloneable {
 		if (cantFilas != cantColumnas)
 			throw new DistDimException("No se pudo calcular el determinante ya que no es una matriz cuadrada.");
 
-		int n = cantFilas; // como la matriz es cuadrada (cantFilas =
-							// cantColumnas) utilizo esta variable para evitar
-							// confusiones
+		int n = cantFilas;
 
 		MatrizMath aux = (MatrizMath) this.clone();
 
-		// TODO: Esto no se podr� optimizar? tiene un costo de N al Cubo
 		for (int k = 0; k < n - 1; k++)
 			for (int i = k + 1; i < n; i++)
 				for (int j = k + 1; j < n; j++)
@@ -346,6 +279,9 @@ public class MatrizMath implements Cloneable {
 		if (cantFilas != cantColumnas)
 			throw new DistDimException("No se pudo calcular la inversa ya que no es una matriz cuadrada.");
 
+		if (this.determinante() == 0.0)
+			throw new DistDimException("No se pudo calcular la inversa porque el determinante es cero.");
+		
 		int n = cantFilas;
 		MatrizMath a = (MatrizMath) this.clone();
 		MatrizMath b = new MatrizMath(n, n); // matriz de los términos
@@ -443,6 +379,71 @@ public class MatrizMath implements Cloneable {
 
 		return mayor;
 	}
+	
+	public int getCantFilas() {
+		return cantFilas;
+	}
+
+	public void setCantFilas(int cantFilas) {
+		this.cantFilas = cantFilas;
+	}
+
+	public int getCantColumnas() {
+		return cantColumnas;
+	}
+
+	public void setCantColumnas(int cantColumnas) {
+		this.cantColumnas = cantColumnas;
+	}
+
+	public int getDim() {
+		return dim;
+	}
+	
+
+	public void setDim(int dim) {
+		this.dim = dim;
+	}
+	
+	public void setMatriz(int fila, int columna, double valor)
+	{
+		this.matriz[fila][columna] = valor;
+	}
+
+	public double[][] getMatriz() {
+		return matriz;
+	}
+
+	public double getValor(int fila, int columna) {
+		return matriz[fila][columna];
+	}
+
+	public void setMatriz(double[][] matriz) {
+		this.matriz = matriz;
+	}
+
+	 /**
+	 * Muestra la matriz con el formato:
+	 * <br>a11 a12 ... a1n
+	 * <br>a21 a22 ... a2n
+	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp.
+	 * <br>am1 am2 ... amn
+	 */
+	 public String toString()
+	 {
+		 String ms = "\n";
+	
+		 for (int i = 0 ; i < cantFilas ; i++)
+		 {
+			 for (int j = 0 ; j < cantColumnas ; j++)
+				 ms = ms.concat(matriz[i][j] + " ");
+			 ms = ms.concat("\n");
+		 }
+	
+		 return ms;
+	 }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -464,10 +465,21 @@ public class MatrizMath implements Cloneable {
 
 		if (dim != other.dim)
 			return false;
+		
+		for(int i = 0; i < this.cantFilas; i++)
+			for(int j = 0; j < this.cantColumnas; j++)
+				if(Math.abs(other.getMatriz()[i][j] - this.matriz[i][j]) > 0.00001)
+					return false;	
 
-		if (!Arrays.deepEquals(matriz, other.matriz))
-			return false;
 		return true;
 	}
-
+	
+	@Override
+	public Object clone() {
+		double[][] aux = new double[this.cantFilas][this.cantColumnas];
+		for(int i = 0; i < this.cantFilas; i++)
+			for(int j = 0; j < this.cantColumnas; j++)
+				aux[i][j] = this.matriz[i][j];
+		return new MatrizMath(aux);	
+	}
 }

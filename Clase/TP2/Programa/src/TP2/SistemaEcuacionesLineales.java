@@ -37,7 +37,7 @@ public class SistemaEcuacionesLineales{
 		
 		matrizCoef = new MatrizMath(n, n);		
 		for (int i = 0 ; i < (n * n) ; i++)
-			matrizCoef.setComp(input.nextInt(), input.nextInt(), input.nextDouble());
+			matrizCoef.setMatriz(input.nextInt(), input.nextInt(), input.nextDouble());
 			
 		vectorTermInd = new VectorMath(n);
 		for (int i = 0; i < n; i++)
