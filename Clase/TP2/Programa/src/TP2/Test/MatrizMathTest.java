@@ -35,7 +35,7 @@ public class MatrizMathTest {
 	public void productoPorMatrizMxM() {
 		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3 }, { 2, 2 } });
 		MatrizMath m2 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 } });
-		MatrizMath m3 = m1.productoPorMatriz(m2);
+		MatrizMath m3 = m1.producto(m2);
 		MatrizMath m4 = new MatrizMath(new double[][] { { 9, 9 }, { 6, 6 } });
 		Assert.assertEquals(m4, m3);
 	}
@@ -44,7 +44,7 @@ public class MatrizMathTest {
 	public void productoPorMatrizMxN() {
 		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3, 3 }, { 2, 2, 2 } });
 		MatrizMath m2 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 }, { 3, 3 } });
-		MatrizMath m3 = m1.productoPorMatriz(m2);
+		MatrizMath m3 = m1.producto(m2);
 		MatrizMath m4 = new MatrizMath(new double[][] { { 18, 18 }, { 12, 12 } });
 		Assert.assertEquals(m4, m3);
 	}
@@ -52,7 +52,7 @@ public class MatrizMathTest {
 	@Test
 	public void productoPorEscalar() {
 		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3, 3 }, { 2, 2, 2 } });
-		MatrizMath m2 = m1.productoPorEscalar(2);
+		MatrizMath m2 = m1.producto(2);
 		MatrizMath m3 = new MatrizMath(new double[][] { { 6, 6, 6 }, { 4, 4, 4 } });
 		Assert.assertEquals(m3, m2);
 	}
@@ -68,7 +68,7 @@ public class MatrizMathTest {
 	public void productoPorVector() throws FileNotFoundException, InvalidInputException {
 		MatrizMath m1 = new MatrizMath(new double[][] { { 3, 3 }, { 2, 2 }, { 1, 1 } });
 		VectorMath v1 = new VectorMath(new double[] { 1, 2 });
-		VectorMath v2 = m1.productoPorVector(v1);
+		VectorMath v2 = m1.producto(v1);
 		VectorMath v3 = new VectorMath(new double[] { 9, 6, 3 });
 		Assert.assertEquals(v3, v2);
 	}
@@ -90,21 +90,21 @@ public class MatrizMathTest {
 	}
 
 	@Test
-	public void normaUno() throws FileNotFoundException, InvalidInputException {
+	public void normaUno()  {
 		MatrizMath m1 = new MatrizMath(new double[][] { { 1, 1 }, { 2, 2 } });
 		double aux = m1.normaUno();
 		Assert.assertEquals(3.0, aux, 0.0001);
 	}
 
 	@Test
-	public void normaDos() throws FileNotFoundException, InvalidInputException {
+	public void normaDos() {
 		MatrizMath m1 = new MatrizMath(new double[][] { { 2, 2 }, { 2, 2 } });
 		double aux = m1.normaDos();
 		Assert.assertEquals(4.0, aux, 0.0001);
 	}
 
 	@Test
-	public void normaInfinito() throws FileNotFoundException, InvalidInputException {
+	public void normaInfinito()  {
 		MatrizMath m1 = new MatrizMath(new double[][] { { 2, 2 }, { 2, 2 } });
 		double aux = m1.normaInfinito();
 		Assert.assertEquals(4.0, aux, 0.0001);

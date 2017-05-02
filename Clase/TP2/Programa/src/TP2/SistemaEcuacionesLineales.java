@@ -67,7 +67,7 @@ public class SistemaEcuacionesLineales{
 		 * 	 X = A^-1 * B
 		 * 
 		 */
-		vectorSol = matrizCoef.inversa().productoPorVector(vectorTermInd);
+		vectorSol = matrizCoef.inversa().producto(vectorTermInd);
 		
 		/* Ahora obtengo el error de calculo, al despejar las incognitas matricialmente tengo que:
 		 * 	 A * X = Berr (al realizar el calculo obtengo el vector solucion mas o menos un error de redondeo)
@@ -75,7 +75,7 @@ public class SistemaEcuacionesLineales{
 		 * Para calcular ese error de redondeo, utilizo la longitud del vector, calculandola a traves de la norma dos, entonces:
 		 *   err = Modulo ( longitud de Berr - longitud de B )
 		 */
-		errorDeCalculo = Math.abs(matrizCoef.productoPorVector(vectorSol).normaDos() - vectorTermInd.normaDos()); 
+		errorDeCalculo = Math.abs(matrizCoef.producto(vectorSol).normaDos() - vectorTermInd.normaDos()); 
 	}
 	
 

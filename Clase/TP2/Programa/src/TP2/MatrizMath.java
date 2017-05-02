@@ -169,7 +169,7 @@ public class MatrizMath {
 	 * @throws ArithmeticException
 	 *             - si el producto no es compatible.
 	 */
-	public MatrizMath productoPorMatriz(MatrizMath matriz) throws IllegalArgumentException, ArithmeticException {
+	public MatrizMath producto(MatrizMath matriz) throws IllegalArgumentException, ArithmeticException {
 		if (matriz == null)
 			throw new IllegalArgumentException(
 					"No se pudo realizar producto de matrices ya que se recibio como parametro una matriz nula.");
@@ -193,7 +193,7 @@ public class MatrizMath {
 	 * @param vector - vector con el cual realizar el producto.
 	 * @return la matriz que resulta del producto entre este objeto y el objeto VectorMath especificado.
 	 */
-	public VectorMath productoPorVector(VectorMath vector) 
+	public VectorMath producto(VectorMath vector) 
 	{
 		if (vector == null)
 			throw new IllegalArgumentException(
@@ -225,7 +225,7 @@ public class MatrizMath {
 	 * @return la matriz que resulta de realizar el producto por el escalar
 	 *         recibido como parametro.
 	 */
-	public MatrizMath productoPorEscalar(float escalar) {
+	public MatrizMath producto(float escalar) {
 		MatrizMath m = new MatrizMath(this.cantFilas, this.cantColumnas);
 		double esc = (double) escalar;
 
