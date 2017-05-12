@@ -23,6 +23,7 @@ public class Polinomio {
 		input.close();
 	}
 	
+	@Override
 	public String toString()
 	{
 		Double aux;
@@ -39,7 +40,6 @@ public class Polinomio {
 				else
 					cad=cad+aux.toString()+" "+pot.toString();
 			}
-		
 			
 		}
 		return cad;
@@ -96,17 +96,19 @@ public class Polinomio {
 	public double evaluarRecursivaPar()
 	{
 		double res=0;
-		for(int i = 0; i < cantele-1; i++)
+		int i;
+		for(i = 0; i < cantele-1; i++)
 		{
 			if(factores[i] != 0)
 			{
-				if((cantele-i) % 2 == 0)
+				if((cantele-i-1) % 2 == 0)
 					res += factores[i] * recPar(x,cantele-i);
 				else
 					res += factores[i] * recursiva(x,cantele-i-1);
 			}
 				 
 		}
+		res += factores[i];
 		return res;
 	}
 	
@@ -117,4 +119,20 @@ public class Polinomio {
 		return recPar(x*x , pot/2);
 	}
 	
+	public double evaluarDinamica()
+	{
+		double res=0;
+		double[] aux = new double[cantele-1];
+		for(int i = 0; i < cantele-1; i++)
+			aux[i]=1;
+		aux[0]=x;
+		for(int i = 1; i < cantele-1; i++)
+			aux[i] = x * aux[i-1];
+		int i;
+		for(i = 0; i < cantele-1; i++)
+			if(factores[i] != 0)
+				res += factores[i] * aux[cantele-i-2];
+		res += factores[i];
+		return res;
+	}
 }
