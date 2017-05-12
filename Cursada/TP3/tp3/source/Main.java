@@ -22,6 +22,6 @@ public class Main {
 		System.out.println(p1.evaluarMSucesivas());
 		System.out.println(p1.evaluarRecursiva());
 		System.out.println(p1.evaluarRecursivaPar());//Revisar
-		System.out.println(p1.evaluarDinamica());
+		System.out.println(p1.evaluarProgDinamica());
 	}
 }

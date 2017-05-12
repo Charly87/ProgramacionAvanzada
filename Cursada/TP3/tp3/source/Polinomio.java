@@ -16,7 +16,7 @@ public class Polinomio {
 		input.useLocale(Locale.US);
 		this.grado = input.nextInt();
 		this.x = input.nextDouble();
-		coheficientes = new double[grado + 1];
+		this.coheficientes = new double[grado + 1];
 		for (int i = 0; i <= this.grado; i++)
 			coheficientes[i] = input.nextDouble();
 		input.close();
@@ -28,7 +28,7 @@ public class Polinomio {
 		Integer pot;
 		String cad = "P[x]: ";
 		for (int i = 0; i <= this.grado; i++) {
-			aux = coheficientes[i];
+			aux = this.coheficientes[i];
 			pot = this.grado - i;
 			if (aux != 0) {
 				if (i < this.grado)
@@ -41,69 +41,41 @@ public class Polinomio {
 		return cad;
 	}
 
-	public double evaluarPow() {
-		double res = 0;
-		for (int i = 0; i <= this.grado; i++) {
-			if (coheficientes[i] != 0)
-				res += coheficientes[i] * Math.pow(x, this.grado - i);
-		}
-		return res;
-	}
-
 	public double evaluarMSucesivas() {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
-			if (coheficientes[i] != 0)
-				res += coheficientes[i] * producto(this.grado - i, x);
+			if (this.coheficientes[i] != 0)
+				res += this.coheficientes[i] * producto(this.grado - i, x);
 		}
 		return res;
 	}
-
-	public double producto(int pot, double x) {
-		double acu = 1;
-		for (int i = 0; i < pot; i++)
-			acu *= x;
-		return acu;
-	}
-
+	
 	public double evaluarRecursiva() {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
-			if (coheficientes[i] != 0)
-				res += coheficientes[i] * recursiva(x, this.grado - i);
+			if (this.coheficientes[i] != 0)
+				res += this.coheficientes[i] * recursiva(x, this.grado - i);
 		}
 		return res;
 	}
-
-	public double recursiva(double x, double pot) {
-		if (pot == 0)
-			return 1;
-		return x * (recursiva(x, pot - 1));
-	}
-
+	
 	public double evaluarRecursivaPar() {
 		double res = 0;
 		int i;
 		for (i = 0; i < this.grado; i++) { // Quizas esté aca el problema
-			if (coheficientes[i] != 0) {
+			if (this.coheficientes[i] != 0) {
 				if ((this.grado - i) % 2 == 0)
-					res += coheficientes[i] * recPar(x, this.grado - i + 1);
+					res += this.coheficientes[i] * recPar(x, this.grado - i + 1);
 				else
-					res += coheficientes[i] * recursiva(x, this.grado - i);
+					res += this.coheficientes[i] * recursiva(x, this.grado - i);
 			}
 
 		}
-		res += coheficientes[i];
+		res += this.coheficientes[i];
 		return res;
 	}
-
-	public double recPar(double x, int pot) {
-		if (pot == 1 || pot == 0)
-			return x;
-		return recPar(x * x, pot / 2);
-	}
-
-	public double evaluarDinamica() {
+	
+	public double evaluarProgDinamica() {
 		double res = 0;
 		double[] aux = new double[this.grado];
 		for (int i = 0; i < this.grado; i++)
@@ -113,9 +85,37 @@ public class Polinomio {
 			aux[i] = x * aux[i - 1];
 		int i;
 		for (i = 0; i < this.grado; i++)
-			if (coheficientes[i] != 0)
-				res += coheficientes[i] * aux[this.grado - i - 1];
-		res += coheficientes[i];
+			if (this.coheficientes[i] != 0)
+				res += this.coheficientes[i] * aux[this.grado - i - 1];
+		res += this.coheficientes[i];
 		return res;
+	}
+	
+	public double evaluarPow() {
+		double res = 0;
+		for (int i = 0; i <= this.grado; i++) {
+			if (this.coheficientes[i] != 0)
+				res += this.coheficientes[i] * Math.pow(x, this.grado - i);
+		}
+		return res;
+	}	
+
+	private double producto(int pot, double x) {
+		double acu = 1;
+		for (int i = 0; i < pot; i++)
+			acu *= x;
+		return acu;
+	}
+
+	private double recursiva(double x, double pot) {
+		if (pot == 0)
+			return 1;
+		return x * (recursiva(x, pot - 1));
+	}	
+
+	private double recPar(double x, int pot) {
+		if (pot == 1 || pot == 0)
+			return x;
+		return recPar(x * x, pot / 2);
 	}
 }
