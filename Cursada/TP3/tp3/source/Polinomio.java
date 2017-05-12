@@ -75,16 +75,29 @@ public class Polinomio {
 
 	public double evaluarProgDinamica(double x) {
 		double res = 0;
-		double[] aux = new double[this.grado];
-		for (int i = 0; i < this.grado; i++)
-			aux[i] = 1;
-		aux[0] = x;
+		double[] potencias = new double[this.grado];
+		potencias[0] = x;
 		for (int i = 1; i < this.grado; i++)
-			aux[i] = x * aux[i - 1];
+			potencias[i] = x * potencias[i - 1];
 		int i;
 		for (i = 0; i < this.grado; i++)
 			if (this.coheficientes[i] != 0)
-				res += this.coheficientes[i] * aux[this.grado - i - 1];
+				res += this.coheficientes[i] * potencias[this.grado - i - 1];
+		res += this.coheficientes[i];
+		return res;
+	}
+
+	public double evaluarMejorada(double x) {
+		double res = 0;
+		double[] potencias = new double[this.grado];
+		potencias[0] = x;
+		res += this.coheficientes[this.grado - 1] * x;
+		int i;
+		for (i = 1; i < this.grado; i++) {
+			potencias[i] = x * potencias[i - 1];
+			if (this.coheficientes[this.grado - i -1] != 0)
+				res += this.coheficientes[this.grado - i -1] * potencias[i];
+		}
 		res += this.coheficientes[i];
 		return res;
 	}
