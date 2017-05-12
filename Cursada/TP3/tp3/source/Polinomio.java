@@ -21,7 +21,6 @@ public class Polinomio {
 			coheficientes[i] = input.nextDouble();
 		input.close();
 
-	
 	}
 
 	public double getValorX() {
@@ -68,7 +67,7 @@ public class Polinomio {
 	public double evaluarRecursivaPar(double x) {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
-			if (this.coheficientes[i] != 0) 
+			if (this.coheficientes[i] != 0)
 				res += this.coheficientes[i] * recursivaPar(x, this.grado - i);
 		}
 		return res;
@@ -99,6 +98,10 @@ public class Polinomio {
 		return res;
 	}
 
+	public double evaluarHorner(double x) {
+		return horner(x, this.coheficientes, this.grado);
+	}
+
 	private double producto(int pot, double x) {
 		double acu = 1;
 		for (int i = 0; i < pot; i++)
@@ -112,14 +115,20 @@ public class Polinomio {
 		return x * (recursiva(x, pot - 1));
 	}
 
-	private double recursivaPar(double x, int pot) {	
+	private double recursivaPar(double x, int pot) {
 		if (pot == 0)
 			return 1;
 		if (pot == 1)
 			return x;
-		if(pot % 2 == 0)			
+		if (pot % 2 == 0)
 			return recursivaPar(x * x, pot / 2);
 		else
 			return recursiva(x, pot);
+	}
+
+	private double horner(double x, double[] coeficientes, int grado) {
+		if (grado == 0)
+			return coeficientes[0];
+		return horner(x, coeficientes, grado - 1) * x + coeficientes[grado];
 	}
 }

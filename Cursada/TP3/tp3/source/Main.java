@@ -22,7 +22,8 @@ public class Main {
 
 		System.out.println("MSucesivas:\t" + p1.evaluarMSucesivas(p1.getValorX()));
 		System.out.println("Recursiva:\t" + p1.evaluarRecursiva( p1.getValorX()));
-		System.out.println("RecursivaPar:\t" + p1.evaluarRecursivaPar(p1.getValorX()));// Revisar
+		System.out.println("RecursivaPar:\t" + p1.evaluarRecursivaPar(p1.getValorX()));
 		System.out.println("ProgDinamica:\t" + p1.evaluarProgDinamica(p1.getValorX()));
+		System.out.println("Horner:\t\t" + p1.evaluarHorner(p1.getValorX()));
 	}
 }
