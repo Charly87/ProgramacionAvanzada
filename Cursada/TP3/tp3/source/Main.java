@@ -10,7 +10,7 @@ public class Main {
 		System.out.println(p1);
 		
 		long now = System.nanoTime();
-		System.out.println(p1.evaluarMSucesivas());
+		System.out.println(p1.evaluarMSucesivas(p1.getValorX()));
 		//System.out.println(p1.evaluarPow());
 		//System.out.println(p1.evaluarDinamica());
 		//System.out.println(p1.evaluarRecursiva());
@@ -19,9 +19,9 @@ public class Main {
 		long diff = end-now;
 		System.out.println("Tiempo: " + diff);
 		
-		System.out.println(p1.evaluarMSucesivas());
-		System.out.println(p1.evaluarRecursiva());
-		System.out.println(p1.evaluarRecursivaPar());//Revisar
-		System.out.println(p1.evaluarProgDinamica());
+		System.out.println(p1.evaluarMSucesivas(p1.getValorX()));
+		System.out.println(p1.evaluarRecursiva(p1.getValorX()));
+		System.out.println(p1.evaluarRecursivaPar(p1.getValorX()));//Revisar
+		System.out.println(p1.evaluarProgDinamica(p1.getValorX()));
 	}
 }

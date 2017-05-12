@@ -9,19 +9,24 @@ public class Polinomio {
 
 	private int grado;
 	private double[] coheficientes;
-	private double x;
+	private double valorX;
 
 	public Polinomio(String path) throws FileNotFoundException {
 		Scanner input = new Scanner(new File(path));
 		input.useLocale(Locale.US);
 		this.grado = input.nextInt();
-		this.x = input.nextDouble();
+		this.valorX = input.nextDouble();
 		this.coheficientes = new double[grado + 1];
 		for (int i = 0; i <= this.grado; i++)
 			coheficientes[i] = input.nextDouble();
 		input.close();
 	}
-
+	
+	public double getValorX()
+	{
+		return this.valorX;
+	}
+	
 	@Override
 	public String toString() {
 		Double aux;
@@ -41,7 +46,7 @@ public class Polinomio {
 		return cad;
 	}
 
-	public double evaluarMSucesivas() {
+	public double evaluarMSucesivas(double x) {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
 			if (this.coheficientes[i] != 0)
@@ -50,7 +55,7 @@ public class Polinomio {
 		return res;
 	}
 	
-	public double evaluarRecursiva() {
+	public double evaluarRecursiva(double x) {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
 			if (this.coheficientes[i] != 0)
@@ -59,7 +64,7 @@ public class Polinomio {
 		return res;
 	}
 	
-	public double evaluarRecursivaPar() {
+	public double evaluarRecursivaPar(double x) {
 		double res = 0;
 		int i;
 		for (i = 0; i < this.grado; i++) { // Quizas esté aca el problema
@@ -75,7 +80,7 @@ public class Polinomio {
 		return res;
 	}
 	
-	public double evaluarProgDinamica() {
+	public double evaluarProgDinamica(double x) {
 		double res = 0;
 		double[] aux = new double[this.grado];
 		for (int i = 0; i < this.grado; i++)
@@ -91,7 +96,7 @@ public class Polinomio {
 		return res;
 	}
 	
-	public double evaluarPow() {
+	public double evaluarPow(double x) {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
 			if (this.coheficientes[i] != 0)
