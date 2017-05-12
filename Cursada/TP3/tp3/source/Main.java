@@ -17,7 +17,7 @@ public class Main {
 		long end = System.nanoTime();
 		
 		long diff = end-now;
-		System.out.println(diff);
+		System.out.println("Tiempo: " + diff);
 		
 		System.out.println(p1.evaluarMSucesivas());
 		System.out.println(p1.evaluarRecursiva());

@@ -6,133 +6,116 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Polinomio {
-	
-	private int cantele;
-	private double[] factores;
+
+	private int grado;
+	private double[] coheficientes;
 	private double x;
-	
-	public Polinomio(String path) throws FileNotFoundException
-	{
+
+	public Polinomio(String path) throws FileNotFoundException {
 		Scanner input = new Scanner(new File(path));
 		input.useLocale(Locale.US);
-		this.cantele = input.nextInt();
-		this.x = input.nextInt();
-		factores = new double[cantele];
-		for(int i = 0; i < this.cantele; i ++)
-			factores[i] = input.nextDouble();
+		this.grado = input.nextInt();
+		this.x = input.nextDouble();
+		coheficientes = new double[grado + 1];
+		for (int i = 0; i <= this.grado; i++)
+			coheficientes[i] = input.nextDouble();
 		input.close();
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		Double aux;
 		Integer pot;
-		String cad="P[x]: ";
-		for(int i = 0; i < this.cantele; i ++)
-		{
-			aux=factores[i];
-			pot=(cantele-i)-1;
-			if(aux!=0)
-			{
-				if(i<cantele-1)
-					cad=cad+aux.toString()+"X^"+pot.toString()+" + ";
+		String cad = "P[x]: ";
+		for (int i = 0; i <= this.grado; i++) {
+			aux = coheficientes[i];
+			pot = this.grado - i;
+			if (aux != 0) {
+				if (i < this.grado)
+					cad = cad + aux.toString() + "X^" + pot.toString() + " + ";
 				else
-					cad=cad+aux.toString()+" "+pot.toString();
+					cad = cad + aux.toString() + " " + pot.toString();
 			}
-			
+
 		}
 		return cad;
 	}
-	
-	public double evaluarPow()
-	{
-		double res=0;
-		for(int i = 0; i < cantele; i++)
-		{
-			if(factores[i] != 0)
-				res += factores[i] * Math.pow(x,cantele-i-1); 
+
+	public double evaluarPow() {
+		double res = 0;
+		for (int i = 0; i <= this.grado; i++) {
+			if (coheficientes[i] != 0)
+				res += coheficientes[i] * Math.pow(x, this.grado - i);
 		}
 		return res;
 	}
-	
-	public double evaluarMSucesivas()
-	{
-		double res=0;
-		for(int i = 0; i < cantele; i++)
-		{
-			if(factores[i] != 0)
-				res += factores[i] * producto(cantele-i-1,x); 
+
+	public double evaluarMSucesivas() {
+		double res = 0;
+		for (int i = 0; i <= this.grado; i++) {
+			if (coheficientes[i] != 0)
+				res += coheficientes[i] * producto(this.grado - i, x);
 		}
 		return res;
 	}
-	
-	public double producto(int pot, double x)
-	{
-		double acu=1;
-		for(int i = 0; i < pot; i++)
-			acu*=x;
+
+	public double producto(int pot, double x) {
+		double acu = 1;
+		for (int i = 0; i < pot; i++)
+			acu *= x;
 		return acu;
 	}
-	
-	public double evaluarRecursiva()
-	{
-		double res=0;
-		for(int i = 0; i < cantele; i++)
-		{
-			if(factores[i] != 0)
-				res += factores[i] * recursiva(x,cantele-i-1); 
+
+	public double evaluarRecursiva() {
+		double res = 0;
+		for (int i = 0; i <= this.grado; i++) {
+			if (coheficientes[i] != 0)
+				res += coheficientes[i] * recursiva(x, this.grado - i);
 		}
 		return res;
 	}
-	
-	public double recursiva(double x, double pot)
-	{
-		if(pot==0)
+
+	public double recursiva(double x, double pot) {
+		if (pot == 0)
 			return 1;
-		return x*(recursiva(x,pot-1));
+		return x * (recursiva(x, pot - 1));
 	}
-	
-	public double evaluarRecursivaPar()
-	{
-		double res=0;
+
+	public double evaluarRecursivaPar() {
+		double res = 0;
 		int i;
-		for(i = 0; i < cantele-1; i++)
-		{
-			if(factores[i] != 0)
-			{
-				if((cantele-i-1) % 2 == 0)
-					res += factores[i] * recPar(x,cantele-i);
+		for (i = 0; i < this.grado; i++) { // Quizas esté aca el problema
+			if (coheficientes[i] != 0) {
+				if ((this.grado - i) % 2 == 0)
+					res += coheficientes[i] * recPar(x, this.grado - i + 1);
 				else
-					res += factores[i] * recursiva(x,cantele-i-1);
+					res += coheficientes[i] * recursiva(x, this.grado - i);
 			}
-				 
+
 		}
-		res += factores[i];
+		res += coheficientes[i];
 		return res;
 	}
-	
-	public double recPar(double x, int pot)
-	{
-		if(pot == 1 || pot == 0)
+
+	public double recPar(double x, int pot) {
+		if (pot == 1 || pot == 0)
 			return x;
-		return recPar(x*x , pot/2);
+		return recPar(x * x, pot / 2);
 	}
-	
-	public double evaluarDinamica()
-	{
-		double res=0;
-		double[] aux = new double[cantele-1];
-		for(int i = 0; i < cantele-1; i++)
-			aux[i]=1;
-		aux[0]=x;
-		for(int i = 1; i < cantele-1; i++)
-			aux[i] = x * aux[i-1];
+
+	public double evaluarDinamica() {
+		double res = 0;
+		double[] aux = new double[this.grado];
+		for (int i = 0; i < this.grado; i++)
+			aux[i] = 1;
+		aux[0] = x;
+		for (int i = 1; i < this.grado; i++)
+			aux[i] = x * aux[i - 1];
 		int i;
-		for(i = 0; i < cantele-1; i++)
-			if(factores[i] != 0)
-				res += factores[i] * aux[cantele-i-2];
-		res += factores[i];
+		for (i = 0; i < this.grado; i++)
+			if (coheficientes[i] != 0)
+				res += coheficientes[i] * aux[this.grado - i - 1];
+		res += coheficientes[i];
 		return res;
 	}
 }
