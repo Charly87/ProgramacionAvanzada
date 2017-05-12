@@ -20,13 +20,14 @@ public class Polinomio {
 		for (int i = 0; i <= this.grado; i++)
 			coheficientes[i] = input.nextDouble();
 		input.close();
-	}
+
 	
-	public double getValorX()
-	{
+	}
+
+	public double getValorX() {
 		return this.valorX;
 	}
-	
+
 	@Override
 	public String toString() {
 		Double aux;
@@ -54,7 +55,7 @@ public class Polinomio {
 		}
 		return res;
 	}
-	
+
 	public double evaluarRecursiva(double x) {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
@@ -63,23 +64,16 @@ public class Polinomio {
 		}
 		return res;
 	}
-	
+
 	public double evaluarRecursivaPar(double x) {
 		double res = 0;
-		int i;
-		for (i = 0; i < this.grado; i++) { // Quizas esté aca el problema
-			if (this.coheficientes[i] != 0) {
-				if ((this.grado - i) % 2 == 0)
-					res += this.coheficientes[i] * recPar(x, this.grado - i + 1);
-				else
-					res += this.coheficientes[i] * recursiva(x, this.grado - i);
-			}
-
+		for (int i = 0; i <= this.grado; i++) {
+			if (this.coheficientes[i] != 0) 
+				res += this.coheficientes[i] * recursivaPar(x, this.grado - i);
 		}
-		res += this.coheficientes[i];
 		return res;
 	}
-	
+
 	public double evaluarProgDinamica(double x) {
 		double res = 0;
 		double[] aux = new double[this.grado];
@@ -95,7 +89,7 @@ public class Polinomio {
 		res += this.coheficientes[i];
 		return res;
 	}
-	
+
 	public double evaluarPow(double x) {
 		double res = 0;
 		for (int i = 0; i <= this.grado; i++) {
@@ -103,7 +97,7 @@ public class Polinomio {
 				res += this.coheficientes[i] * Math.pow(x, this.grado - i);
 		}
 		return res;
-	}	
+	}
 
 	private double producto(int pot, double x) {
 		double acu = 1;
@@ -116,11 +110,16 @@ public class Polinomio {
 		if (pot == 0)
 			return 1;
 		return x * (recursiva(x, pot - 1));
-	}	
+	}
 
-	private double recPar(double x, int pot) {
-		if (pot == 1 || pot == 0)
+	private double recursivaPar(double x, int pot) {	
+		if (pot == 0)
+			return 1;
+		if (pot == 1)
 			return x;
-		return recPar(x * x, pot / 2);
+		if(pot % 2 == 0)			
+			return recursivaPar(x * x, pot / 2);
+		else
+			return recursiva(x, pot);
 	}
 }
