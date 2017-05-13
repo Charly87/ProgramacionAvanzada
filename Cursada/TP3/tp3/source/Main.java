@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		Polinomio p1 = new Polinomio(path + "06_Fatiga.in");
+		Polinomio p1 = new Polinomio(path + "test.in");
 		long ini;
 		long fin;
 		long dif;
@@ -77,6 +77,12 @@ public class Main {
 		fin = System.nanoTime();
 		dif = fin - ini;
 		System.out.println("Tiempo:\t\t" + dif);
+		
+		BinomioDeNewton bdn1 = new BinomioDeNewton(path + "07_binomio.in");
+		//System.out.println(p1);
+		System.out.println(bdn1.obtenerTermino(3));
+		System.out.println(bdn1.calcularBinomioCompleto());
+		System.out.println(bdn1.calcularXPolinomioCompleto(100));
 		
 	}
 }
