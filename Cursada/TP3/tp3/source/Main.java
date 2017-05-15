@@ -84,5 +84,7 @@ public class Main {
 		System.out.println(bdn1.calcularBinomioCompleto());
 		System.out.println(bdn1.calcularXPolinomioCompleto(100));
 		
+		System.out.println(bdn1.calcularBinomioCompletoOptimizado());
+		
 	}
 }
