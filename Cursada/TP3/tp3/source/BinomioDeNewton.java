@@ -20,13 +20,11 @@ public class BinomioDeNewton {
 		input.close();
 	}
 
-	public String obtenerTermino(int termino) {
-		int k = termino + 1;
+	public String obtenerTermino(int k) {
 		if (this.n >= 0) {
-			if (k > 0 && k <= this.n) {
-				int comb = this.combinatoria(this.n, k);
-				double neg = this.b < 0 ? Math.pow(-1, k - 1) : 1;
-				double factor = neg * comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
+			if (k >= 0 && k <= this.n) {
+				int comb = this.combinatoria(this.n, k);				
+				double factor = comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
 				String aux = "x^" + k + "*" + factor;
 				return aux;
 			}
