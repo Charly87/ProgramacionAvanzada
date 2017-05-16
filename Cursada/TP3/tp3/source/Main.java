@@ -84,7 +84,7 @@ public class Main {
 		
 		// Tiempo metodo "obtenerTermino"
 		ini = System.nanoTime();
-		System.out.println("\nObtener Termino:\n" + bdn.obtenerTermino(3));
+		System.out.println("\nObtener Termino:\n" + bdn.obtenerTermino(0));
 		fin = System.nanoTime();
 		dif = fin - ini;
 		System.out.println("Tiempo:" + dif);

@@ -20,26 +20,34 @@ public class BinomioDeNewton {
 		input.close();
 	}
 
-	public String obtenerTermino(int k) {
-		if (k > 0 && k <= this.n) {
-			int comb = this.combinatoria(this.n, k);
-			double factor = comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
-			String aux = "x^" + k + "*" + factor;
-			return aux;
+	public String obtenerTermino(int termino) {
+		int k = termino + 1;
+		if (this.n >= 0) {
+			if (k > 0 && k <= this.n) {
+				int comb = this.combinatoria(this.n, k);
+				double neg = this.b < 0 ? Math.pow(-1, k - 1) : 1;
+				double factor = neg * comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
+				String aux = "x^" + k + "*" + factor;
+				return aux;
+			}
+			return "El término " + k + " no es válido en un polinomio de grado " + this.n;
 		}
-		return "El término " + k + " no es válido en un polinomio de grado " + this.n;
+		return "El binomio debe tener exponente positivo";
 	}
 
 	public String calcularBinomioCompleto() {
-		String aux = "P[x]: ";
-		int comb;
-		double factor;
-		for (int k = this.n; k >= 0; k--) {
-			comb = combinatoria(this.n, k);
-			factor = comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
-			aux += "x^" + k + "*" + factor + (k != 0 ? " + " : "");
+		if (this.n >= 0) {
+			String aux = "P[x]: ";
+			int comb;
+			double factor;
+			for (int k = this.n; k >= 0; k--) {
+				comb = combinatoria(this.n, k);
+				factor = comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
+				aux += "x^" + k + "*" + factor + (k != 0 ? " + " : "");
+			}
+			return aux;
 		}
-		return aux;
+		return "El binomio debe tener exponente positivo";
 	}
 
 	public double calcularXPolinomioCompleto(double x) {
@@ -50,30 +58,30 @@ public class BinomioDeNewton {
 	}
 
 	public String calcularBinomioCompletoOptimizado() {
-		
-		int exp = Math.abs(this.n);
-		int[][] tartaglia = new int[exp + 1][];
-		tartaglia[0] = new int[] { 1 };
-		int j;
-		for (int i = 1; i <= exp; i++) {
-			tartaglia[i] = new int[i + 1];
-			tartaglia[i][0] = 1;
-			for (j = 1; j < i; j++)
-				tartaglia[i][j] = tartaglia[i - 1][j - 1] + tartaglia[i - 1][j];
-			tartaglia[i][j] = 1;
-		}
+		if (this.n >= 0) {
+			int[][] tartaglia = new int[this.n + 1][];
+			tartaglia[0] = new int[] { 1 };
+			int j;
+			for (int i = 1; i <= this.n; i++) {
+				tartaglia[i] = new int[i + 1];
+				tartaglia[i][0] = 1;
+				for (j = 1; j < i; j++)
+					tartaglia[i][j] = tartaglia[i - 1][j - 1] + tartaglia[i - 1][j];
+				tartaglia[i][j] = 1;
+			}
 
-		String aux = "P[x]: ";
-		int t;
-		double factor;
-		String signo;
-		for (int k = 0; k <= exp; k++) {
-			t = tartaglia[exp][k];
-			factor = t * Math.pow(this.a, this.n - k) * Math.pow(this.b, k);
-			signo = k < exp ? (this.n < 0 && exp % 2 == 0 ? " + " : " - ") : "";
-			aux += "x^" + (this.n - k) + "*" + factor + signo;
+			String aux = "P[x]: ";
+			int t;
+			double factor;
+			String signo;
+			for (int k = 0; k <= this.n; k++) {
+				t = tartaglia[this.n][k];
+				factor = t * Math.pow(this.a, this.n - k) * Math.pow(this.b, k);
+				aux += "x^" + (this.n - k) + "*" + factor + (k < this.n ? " + " : "");
+			}
+			return aux;
 		}
-		return aux;
+		return "El binomio debe tener exponente positivo";
 	}
 
 	private int combinatoria(int n, int k) {
