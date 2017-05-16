@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		Polinomio p1 = new Polinomio(path + "test.in");
+		Polinomio p1 = new Polinomio(path + "01_RaizNula.in");
 		long ini;
 		long fin;
 		long dif;
