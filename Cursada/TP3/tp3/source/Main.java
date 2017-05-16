@@ -80,7 +80,7 @@ public class Main {
 		
 		//// Tiempos Binomio de Newton
 		System.out.println("\n\nTIEMPOS BINOMIO DE NEWTON");
-		BinomioDeNewton bdn = new BinomioDeNewton(path + "08_BinomioExpNegativo.in");
+		BinomioDeNewton bdn = new BinomioDeNewton(path + "10_BinomioFatiga.in");
 		
 		// Tiempo metodo "obtenerTermino"
 		ini = System.nanoTime();
