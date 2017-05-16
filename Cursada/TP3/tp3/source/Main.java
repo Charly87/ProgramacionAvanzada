@@ -78,13 +78,37 @@ public class Main {
 		dif = fin - ini;
 		System.out.println("Tiempo:\t\t" + dif);
 		
-		BinomioDeNewton bdn1 = new BinomioDeNewton(path + "07_binomio.in");
-		//System.out.println(p1);
-		System.out.println(bdn1.obtenerTermino(3));
-		System.out.println(bdn1.calcularBinomioCompleto());
-		System.out.println(bdn1.calcularXPolinomioCompleto(100));
+		//// Tiempos Binomio de Newton
+		System.out.println("\n\nTIEMPOS BINOMIO DE NEWTON");
+		BinomioDeNewton bdn = new BinomioDeNewton(path + "07_BinomioDeNewtonTrivial.in");
 		
-		System.out.println(bdn1.calcularBinomioCompletoOptimizado());
+		// Tiempo metodo "obtenerTermino"
+		ini = System.nanoTime();
+		System.out.println("\nObtener Termino:\n" + bdn.obtenerTermino(3));
+		fin = System.nanoTime();
+		dif = fin - ini;
+		System.out.println("Tiempo:" + dif);
+		
+		// Tiempo metodo "calcularBinomioCompleto"
+		ini = System.nanoTime();
+		System.out.println("\nCalcular Binomio Completo:\n" + bdn.calcularBinomioCompleto());
+		fin = System.nanoTime();
+		dif = fin - ini;
+		System.out.println("Tiempo:" + dif);
+		
+		// Tiempo metodo "calcularBinomioCompletoOptimizado"
+		ini = System.nanoTime();
+		System.out.println("\nCalcular Binomio Completo Optimizado:\n" + bdn.calcularBinomioCompletoOptimizado());
+		fin = System.nanoTime();
+		dif = fin - ini;
+		System.out.println("Tiempo:" + dif);
+		
+		// Tiempo metodo "calcularXPolinomioCompleto"
+		ini = System.nanoTime();
+		System.out.println("\nCalcular X con Binomio de Newton:\n" + bdn.calcularXPolinomioCompleto(100));
+		fin = System.nanoTime();
+		dif = fin - ini;
+		System.out.println("Tiempo:" + dif);
 		
 	}
 }
