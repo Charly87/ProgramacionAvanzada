@@ -21,14 +21,13 @@ public class BinomioDeNewton {
 	}
 
 	public String obtenerTermino(int k) {
-		String aux;
-		int comb;
-		double factor;
-		comb = combinatoria(this.n, k);
-		factor = comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
-		aux = "x^" + k + "*" + factor;
-		return aux;
-
+		if (k > 0 && k <= this.n) {
+			int comb = this.combinatoria(this.n, k);
+			double factor = comb * Math.pow(this.a, k) * Math.pow(this.b, (this.n) - k);
+			String aux = "x^" + k + "*" + factor;
+			return aux;
+		}
+		return "El término " + k + " no es válido en un polinomio de grado " + this.n;
 	}
 
 	public String calcularBinomioCompleto() {
@@ -50,14 +49,15 @@ public class BinomioDeNewton {
 		return total;
 	}
 
-	public String calcularBinomioCompletoOptimizado() {		
-		int[][] tartaglia = new int[this.n + 1][];
-		tartaglia[0]= new int[]{1};
+	public String calcularBinomioCompletoOptimizado() {
+		
+		int exp = Math.abs(this.n);
+		int[][] tartaglia = new int[exp + 1][];
+		tartaglia[0] = new int[] { 1 };
 		int j;
-		for (int i = 1; i < this.n + 1; i++) {
+		for (int i = 1; i <= exp; i++) {
 			tartaglia[i] = new int[i + 1];
 			tartaglia[i][0] = 1;
-			
 			for (j = 1; j < i; j++)
 				tartaglia[i][j] = tartaglia[i - 1][j - 1] + tartaglia[i - 1][j];
 			tartaglia[i][j] = 1;
@@ -66,10 +66,12 @@ public class BinomioDeNewton {
 		String aux = "P[x]: ";
 		int t;
 		double factor;
-		for (int k = 0; k <= this.n; k++) {
-			t = tartaglia[this.n][k];
+		String signo;
+		for (int k = 0; k <= exp; k++) {
+			t = tartaglia[exp][k];
 			factor = t * Math.pow(this.a, this.n - k) * Math.pow(this.b, k);
-			aux += "x^" + (this.n - k) + "*" + factor + (k < this.n ? " + " : "");
+			signo = k < exp ? (this.n < 0 && exp % 2 == 0 ? " + " : " - ") : "";
+			aux += "x^" + (this.n - k) + "*" + factor + signo;
 		}
 		return aux;
 	}
