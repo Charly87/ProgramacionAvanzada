@@ -1,0 +1,13 @@
+limitaCon(argentina,chile).
+limitaCon(argentina,uruguay).
+limitaCon(argentina,bolivia).
+limitaCon(argentina,paraguay).
+limitaCon(argentina,brasil).
+limitaCon(brasil,uruguay).
+limitaCon(brasil,paraguay).
+
+
+
+
+
+

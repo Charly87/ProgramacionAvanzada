@@ -1,0 +1,20 @@
+esUnPais(argentina).
+esUnPais(chile).
+esUnPais(uruguay).
+esUnPais(peru).
+
+// Imprime en pantalla todos los paises
+esUnPais(X),write(X),nl,fail.
+
+
+// Imprime en pantalla todos los paises limitrofes de un pais
+sonLimitrofes(argentina,Y),write(Y),nl,fail.
+sonLimitrofes(X,Y),X==argentina,write(Y),nl,fail.
+
+sonLimitrofes(X,Y),X==argentina,write(X*Y),nl,fail.
+argentina*chile
+argentina*uruguay
+argentina*bolivia
+argentina*paraguay
+argentina*brasil
+false.
