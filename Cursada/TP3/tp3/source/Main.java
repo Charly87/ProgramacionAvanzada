@@ -7,13 +7,14 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		Polinomio p1 = new Polinomio(path + "01_RaizNula.in");
+		Polinomio p1 = new Polinomio(path + "04_GradoTres.in");
 		long ini;
 		long fin;
 		long dif;
-		
+		System.out.println(p1.evaluarRecursiva(20));
+		System.out.println(p1.evaluarRecursivaPar(20));
 		// Muestro polinomio
-		System.out.println(p1);
+		/*System.out.println(p1);
 		
 		System.out.println();
 				
@@ -108,7 +109,7 @@ public class Main {
 		System.out.println("\nCalcular X con Binomio de Newton:\n" + bdn.calcularXPolinomioCompleto(100));
 		fin = System.nanoTime();
 		dif = fin - ini;
-		System.out.println("Tiempo:" + dif);
+		System.out.println("Tiempo:" + dif);*/
 		
 	}
 }

@@ -72,7 +72,7 @@ public class Polinomio {
 		}
 		return res;
 	}
-	//Corregir word
+	//Corregir word al final quedo 1 solo loop
 	public double evaluarProgDinamica(double x) {
 		double res = 0;
 		double acumulado = 1;
@@ -84,7 +84,7 @@ public class Polinomio {
 		res += this.coeficientes[this.grado];
 		return res;
 	}
-	//Corregir
+	
 	public double evaluarMejorada(double x) {
 		double res = 0;
 		int i;
@@ -119,7 +119,7 @@ public class Polinomio {
 			return 1;
 		return x * (recursiva(x, pot - 1));
 	}
-	//Corregir: no debe llamar a recursiva
+	
 	private double recursivaPar(double x, int pot) {
 		if (pot == 0)
 			return 1;
@@ -128,8 +128,10 @@ public class Polinomio {
 		if (pot % 2 == 0)
 			return recursivaPar(x * x, pot / 2);
 		else
-			return recursiva(x, pot);
+			return x*recursivaPar(x, pot-1);
 	}
+	
+	
 
 	private double horner(double x, double[] coeficientes, int grado) {
 		if (grado == 0)

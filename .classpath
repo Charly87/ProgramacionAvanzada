@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="Ejemplos Práctica/" kind="src" path="Cursada/Documentos"/>
+	<classpathentry kind="src" path="Cursada/Documentos/Ejemplos Práctica"/>
+	<classpathentry kind="src" path="Cursada/Practica"/>
+	<classpathentry kind="src" path="Cursada/Teoria"/>
+	<classpathentry kind="src" path="Cursada/TP2"/>
+	<classpathentry kind="src" path="Cursada/TP3"/>
+	<classpathentry kind="src" path="Taller/Practica 22-04/Carlos-Rodrigo/src"/>
+	<classpathentry kind="src" path="Taller/Practica 29-04/Carlos-Rodrigo/src"/>
+	<classpathentry kind="src" path="Taller1/Practica1305"/>
+	<classpathentry kind="src" path="Taller1/Practica2005"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
