@@ -34,18 +34,6 @@ public class Server implements Runnable {
 		}
 	}
 
-	// public void open() throws IOException {
-	// streamIn = new DataInputStream(new
-	// BufferedInputStream(socket.getInputStream()));
-	// }
-
-	// public void close() throws IOException {
-	// if (socket != null)
-	// socket.close();
-	// if (streamIn != null)
-	// streamIn.close();
-	// }
-
 	@Override
 	public void run() {
 
@@ -59,18 +47,7 @@ public class Server implements Runnable {
 				clients.add(client);
 				client.run();
 				
-				// open();
-				// boolean done = false;
-				// while (!done) {
-				// try {
-				// String line = streamIn.readUTF();
-				// System.out.println(line);
-				// done = line.equals(".bye");
-				// } catch (IOException ioe) {
-				// done = true;
-				// }
-				// }
-				// close();
+		
 			} catch (Exception ie) {
 				this.uiServer.log("Exception running Server: " + ie.toString());
 			}

@@ -41,13 +41,11 @@ public class UIChat {
 	public UIChat() {
 		try {
 			client = new Client("Cliente 1");
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+		} catch (UnknownHostException e) {			
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {		
 			e.printStackTrace();
-		}
+		}		
 		initialize();
 		initializeEvents();
 	}
