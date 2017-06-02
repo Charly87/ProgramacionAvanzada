@@ -25,8 +25,7 @@ public class FileProperties {
 			property.load(new FileInputStream(file));
 			ip = property.getProperty("IP", "localhost");
 			port = Integer.parseInt(property.getProperty("PUERTO", "10000"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {			
 			e.printStackTrace();
 		}
 	}
@@ -37,11 +36,9 @@ public class FileProperties {
 			property.setProperty("PUERTO", "" + puerto);
 			
 			property.store(new FileOutputStream(file), null);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {		
 			e.printStackTrace();
 		}
 	}
@@ -53,5 +50,4 @@ public class FileProperties {
 	public int getPuerto() {
 		return port;
 	}
-
 }

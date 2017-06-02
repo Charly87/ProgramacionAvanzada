@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -31,10 +33,10 @@ public class UIClients extends JFrame {
 	private JList<String> usersList;
 	private JLabel lblUsers;
 
-	private JMenuItem mntmSalir;
-	private JMenuItem mntmSalaDeChat;
-	private JMenuItem mntmSesionPrivada;
-	private JMenuItem mntmConfigIpPuerto;
+	private JMenuItem mntmExit;
+	private JMenuItem mntmExitChatRoom;
+	private JMenuItem mntmPrivateSession;
+	private JMenuItem mntmConfigIpPort;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -76,23 +78,23 @@ public class UIClients extends JFrame {
 		JMenuItem mntmConectar = new JMenuItem("Conectar");
 		mnArchivo.add(mntmConectar);
 
-		mntmSalir = new JMenuItem("Salir");
-		mnArchivo.add(mntmSalir);
+		mntmExit = new JMenuItem("Salir");
+		mnArchivo.add(mntmExit);
 
 		JMenu mnChat = new JMenu("Chat");
 		menuBar.add(mnChat);
 
-		mntmSalaDeChat = new JMenuItem("Sala de Chat");
-		mnChat.add(mntmSalaDeChat);
+		mntmExitChatRoom = new JMenuItem("Sala de Chat");
+		mnChat.add(mntmExitChatRoom);
 
-		mntmSesionPrivada = new JMenuItem("Sesión privada");
-		mnChat.add(mntmSesionPrivada);
+		mntmPrivateSession = new JMenuItem("Sesión privada");
+		mnChat.add(mntmPrivateSession);
 
 		JMenu mnAyuda = new JMenu("Ayuda");
 		menuBar.add(mnAyuda);
 
-		mntmConfigIpPuerto = new JMenuItem("Configurar IP-Puerto");
-		mnAyuda.add(mntmConfigIpPuerto);
+		mntmConfigIpPort = new JMenuItem("Configurar IP-Puerto");
+		mnAyuda.add(mntmConfigIpPort);
 
 		JMenuItem mntmAcerca = new JMenuItem("Acerca");
 		mnAyuda.add(mntmAcerca);
@@ -127,24 +129,24 @@ public class UIClients extends JFrame {
 				openExitWindowConfirmation();
 			}
 		});
-		mntmSalir.addActionListener(new ActionListener() {
+		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				openExitWindowConfirmation();
 			}
 		});
 
-		mntmSalaDeChat.addActionListener(new ActionListener() {
+		mntmExitChatRoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new UIChat();
 			}
 		});
 
-		mntmSesionPrivada.addActionListener(new ActionListener() {
+		mntmPrivateSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				openPrivateWindowChat();
 			}
 		});
-		mntmConfigIpPuerto.addActionListener(new ActionListener() {
+		mntmConfigIpPort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openConfigurationWindow();
 			}
@@ -158,19 +160,19 @@ public class UIClients extends JFrame {
 		});
 	}
 
-	private void openExitWindowConfirmation() {
-		int opcion = JOptionPane.showConfirmDialog(this, "Desea salir del Chat", "Confirmación",
-				JOptionPane.YES_NO_OPTION);
-		if (opcion == JOptionPane.YES_OPTION)
-			System.exit(0);
-	}
-
 	public void addUser(String str[]) {
 		DefaultListModel<String> modeloLista = new DefaultListModel<String>();
 		for (String item : str)
 			modeloLista.addElement(item);
 		usersList.setModel(modeloLista);
 		lblUsers.setText("Cantidad de Usuarios Conectados: " + modeloLista.getSize());
+	}
+	
+	private void openExitWindowConfirmation() {
+		int opcion = JOptionPane.showConfirmDialog(this, "Desea salir del Chat", "Confirmación",
+				JOptionPane.YES_NO_OPTION);
+		if (opcion == JOptionPane.YES_OPTION)
+			System.exit(0);
 	}
 
 	private void openPrivateWindowChat() {
@@ -183,5 +185,9 @@ public class UIClients extends JFrame {
 
 	private void openConfigurationWindow() {
 		new UIConfiguration(this);
+	}
+	
+	private void openLoginWindow() {
+		new UILogin(this);
 	}
 }

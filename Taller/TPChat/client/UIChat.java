@@ -38,14 +38,7 @@ public class UIChat {
 		});
 	}
 
-	public UIChat() {
-		try {
-			client = new Client("Cliente 1");
-		} catch (UnknownHostException e) {			
-			e.printStackTrace();
-		} catch (IOException e) {		
-			e.printStackTrace();
-		}		
+	public UIChat() {		
 		initialize();
 		initializeEvents();
 	}
