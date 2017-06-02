@@ -53,6 +53,11 @@ public class Client extends Thread {
 			}
 		}
 	}
+	
+	public void Connect(String username, String password)
+	{
+	 // Acá deberia ir toda la logica de crear el socket, conectarse, y si se conectó correctamente, dejar corriendo el run.
+	}
 
 	public void Send(String msg) {
 		try {
