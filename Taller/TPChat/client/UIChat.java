@@ -20,31 +20,23 @@ import java.awt.event.KeyEvent;
 public class UIChat {
 
 	private JFrame frame;
-	private JTextField txtMensaje;
-	private JTextArea txtPrincipal;
-	private JButton btnEnviar;
-	private Client client;
+	private JTextField txtMessage;
+	private JTextArea txtAreaMessage;
+	private JButton btnSend;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIChat window = new UIChat();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private User user;
+	private UIClients uiClients;
 
-	public UIChat() {		
+	public UIChat(User user, UIClients uiClients) {
+		this.user = user;
+		this.uiClients = uiClients;
 		initialize();
 		initializeEvents();
 	}
 
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle(this.user.getUserName());
 		frame.setBounds(100, 100, 482, 327);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -55,29 +47,29 @@ public class UIChat {
 		frame.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 0));
 
-		btnEnviar = new JButton("ENVIAR");
-		panel.add(btnEnviar, BorderLayout.EAST);
+		btnSend = new JButton("ENVIAR");
+		panel.add(btnSend, BorderLayout.EAST);
 
-		txtMensaje = new JTextField();
-		panel.add(txtMensaje, BorderLayout.CENTER);
-		txtMensaje.setColumns(10);
+		txtMessage = new JTextField();
+		panel.add(txtMessage, BorderLayout.CENTER);
+		txtMessage.setColumns(10);
 
 		JScrollPane scrollPane = new JScrollPane();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-		txtPrincipal = new JTextArea();
-		txtPrincipal.setEditable(false);
-		scrollPane.setViewportView(txtPrincipal);
+		txtAreaMessage = new JTextArea();
+		txtAreaMessage.setEditable(false);
+		scrollPane.setViewportView(txtAreaMessage);
 	}
 
 	private void initializeEvents() {
-		btnEnviar.addMouseListener(new MouseAdapter() {
+		btnSend.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				onSendClick(e);
 			}
 		});
-		txtMensaje.addKeyListener(new KeyAdapter() {
+		txtMessage.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent VK) {
 				if (VK.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -88,17 +80,20 @@ public class UIChat {
 	}
 
 	private void onSendClick(MouseEvent e) {
-		this.Send();
+		this.sendMessage();
 	}
 
 	private void onPressEnter() {
-		this.Send();
+		this.sendMessage();
 	}
 
-	private void Send() {
-		this.client.Send(txtMensaje.getText());
-		txtPrincipal.append(txtMensaje.getText() + "\n");
-		txtMensaje.setText("");
+	private void sendMessage() {
+		this.uiClients.SendMessage(this.user, txtMessage.getText());
+		this.receiveMessage(txtMessage.getText());
+		this.txtMessage.setText("");
+	}
 
+	public void receiveMessage(String message) {
+		txtAreaMessage.append(message + "\n");
 	}
 }

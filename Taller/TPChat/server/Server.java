@@ -47,6 +47,7 @@ public class Server implements Runnable {
 				clients.add(client);
 				client.run();
 				
+				// Swtich
 		
 			} catch (Exception ie) {
 				this.uiServer.log("Exception running Server: " + ie.toString());
