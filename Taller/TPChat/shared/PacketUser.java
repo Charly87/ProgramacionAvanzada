@@ -1,7 +1,6 @@
 package shared;
 
 public class PacketUser extends Packet {
-	private int id;
 	private String username;
 	private String password;
 	private boolean logged;
@@ -9,11 +8,7 @@ public class PacketUser extends Packet {
 	public PacketUser(String username, String password) {
 		this.username = username;
 		this.password = password;
-	}
-	
-	public int getId() {
-		return this.id;
-	}
+	}	
 
 	public String getUsername() {
 		return this.username;
@@ -29,9 +24,5 @@ public class PacketUser extends Packet {
 
 	public void setLogged(boolean logged) {
 		this.logged = logged;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 }

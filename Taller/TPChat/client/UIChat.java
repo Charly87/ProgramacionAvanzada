@@ -24,11 +24,11 @@ public class UIChat {
 	private JTextArea txtAreaMessage;
 	private JButton btnSend;
 
-	private User user;
+	private String username;
 	private UIClients uiClients;
 
-	public UIChat(User user, UIClients uiClients) {
-		this.user = user;
+	public UIChat(String username, UIClients uiClients) {
+		this.username = username;
 		this.uiClients = uiClients;
 		initialize();
 		initializeEvents();
@@ -36,7 +36,7 @@ public class UIChat {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setTitle(this.user.getUserName());
+		frame.setTitle(this.username);
 		frame.setBounds(100, 100, 482, 327);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -60,6 +60,8 @@ public class UIChat {
 		txtAreaMessage = new JTextArea();
 		txtAreaMessage.setEditable(false);
 		scrollPane.setViewportView(txtAreaMessage);
+		
+		frame.setVisible(true);
 	}
 
 	private void initializeEvents() {
@@ -88,7 +90,7 @@ public class UIChat {
 	}
 
 	private void sendMessage() {
-		this.uiClients.SendMessage(this.user, txtMessage.getText());
+		this.uiClients.sendMessage(this.username, txtMessage.getText());
 		this.receiveMessage(txtMessage.getText());
 		this.txtMessage.setText("");
 	}

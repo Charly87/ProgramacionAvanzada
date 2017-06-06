@@ -1,14 +1,14 @@
 package shared;
 
 public class PacketMessage extends Packet {
-	private int idFrom;
-	private int idTo;
+	private String from;
+	private String to;
 	private String message;
 
-	public PacketMessage(int idFrom, int idTo, String message) {
+	public PacketMessage(String from, String to, String message) {
 		super(Command.MESSAGE);
-		this.idFrom = idFrom;
-		this.idTo = idTo;
+		this.from = from;
+		this.to = to;
 		this.message = message;
 	}
 
@@ -16,11 +16,11 @@ public class PacketMessage extends Packet {
 		return this.message;
 	}
 
-	public int getFrom() {
-		return this.idFrom;
+	public String getFrom() {
+		return this.from;
 	}
 	
-	public int getTo() {
-		return this.idTo;
+	public String getTo() {
+		return this.to;
 	}
 }

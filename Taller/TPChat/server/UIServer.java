@@ -90,13 +90,13 @@ public class UIServer {
 	private void onStartClick(MouseEvent e) {
 		try {
 			if (server == null) {
-				log("Creating server on port " + 1001);
+				log("Creando servidor en puerto " + 1001);
 				server = new Server(this, 1001);
 			}
-			log("Starting Server.");
+			log("Iniciando servidor...");
 			server.start();
 		} catch (IOException ex) {
-			log("Exception starting server:" + ex.toString());
+			log("Excepción en el servidor:" + ex.toString());
 		}
 	}
 

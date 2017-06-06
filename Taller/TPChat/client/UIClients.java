@@ -32,23 +32,26 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class UIClients extends JFrame {
 
 	private JPanel contentPane;
-	private JList<User> usersList;
+	private JList<String> usersList;
 	private JLabel lblUsers;
 
 	private JMenuItem mntmExit;
+	private JMenuItem mntmConectar;
 	private JMenuItem mntmExitChatRoom;
 	private JMenuItem mntmPrivateSession;
 	private JMenuItem mntmConfigIpPort;
 
 	private Client client;
-	private HashMap<Integer, UIChat> uiChats;
-	private HashMap<Integer, User> users;
+	private Map<String, UIChat> uiChats;
+	private FileProperties file;
+
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -75,6 +78,8 @@ public class UIClients extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		this.file = new FileProperties("config.properties");
 
 		setTitle("Chat");
 		setResizable(false);
@@ -87,7 +92,7 @@ public class UIClients extends JFrame {
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
 
-		JMenuItem mntmConectar = new JMenuItem("Conectar");
+		mntmConectar = new JMenuItem("Conectar");
 		mnArchivo.add(mntmConectar);
 
 		mntmExit = new JMenuItem("Salir");
@@ -120,42 +125,37 @@ public class UIClients extends JFrame {
 		scrollPane.setBounds(0, 0, 373, 462);
 		contentPane.add(scrollPane);
 
-		usersList = new JList<User>();
+		uiChats = new HashMap<String, UIChat>();
 
-		uiChats = new HashMap<Integer, UIChat>();
-
+		usersList = new JList<String>();
 		scrollPane.setViewportView(usersList);
 
 		lblUsers = new JLabel("Cantidad de Usuarios conectados: ");
 		lblUsers.setBounds(0, 464, 373, 14);
 		contentPane.add(lblUsers);
-
-		User[] users = { new User(1, "Pepe"), new User(2, "Juan"), new User(3, "Julio"), new User(4, "Lucas"),
-				new User(5, "Leo") };
-		addUser(users);
 	}
 
 	public void initializeEvents() {
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent arg0) {
+			public void windowClosing(WindowEvent e) {
 				openExitWindowConfirmation();
 			}
 		});
 		mntmExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				openExitWindowConfirmation();
 			}
 		});
 
 		mntmExitChatRoom.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new UIChat();
+			public void actionPerformed(ActionEvent e) {
+				// new UIChat();
 			}
 		});
 
 		mntmPrivateSession.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				openPrivateWindowChat();
 			}
 		});
@@ -171,12 +171,19 @@ public class UIClients extends JFrame {
 					openPrivateWindowChat();
 			}
 		});
+
+		mntmConectar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openLoginWindow();
+			}
+		});
 	}
 
-	public void addUser(User[] user) {
+	public void addUser(List<String> user) {
 
-		DefaultListModel<User> modeloLista = new DefaultListModel<User>();
-		for (User item : user)
+		DefaultListModel<String> modeloLista = new DefaultListModel<String>();
+		for (String item : user)
 			modeloLista.addElement(item);
 		usersList.setModel(modeloLista);
 
@@ -186,8 +193,8 @@ public class UIClients extends JFrame {
 			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				if (renderer instanceof JLabel && value instanceof User) {
-					((JLabel) renderer).setText(((User) value).getUserName());
+				if (renderer instanceof JLabel && value instanceof String) {
+					((JLabel) renderer).setText(((String) value));
 				}
 				return renderer;
 			}
@@ -204,49 +211,59 @@ public class UIClients extends JFrame {
 
 	private void openPrivateWindowChat() {
 		if (!usersList.isSelectionEmpty()) {
-			User user = usersList.getSelectedValue();
-			new UIChat(user, this);
+			new UIChat(usersList.getSelectedValue(), this);
 		} else
 			JOptionPane.showMessageDialog(this, "Seleccione un elemento de la lista", "Seleccionar Usuario",
 					JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void openConfigurationWindow() {
-		new UIConfiguration(this);
+		new UIConfiguration(this, file);
 	}
 
 	private void openLoginWindow() {
-		new UILogin(this);
-	}
-
-	public void updateChat(int userId, String message) {
-		UIChat uiChat;
-
-		if (uiChats.containsValue(userId)) {
-			uiChat = uiChats.get(userId);
-			uiChat.receiveMessage(message);
-
-		} else if (users.containsKey(userId)) {
-			uiChat = new UIChat(users.get(userId), this);
-			uiChats.put(userId, uiChat);
-			uiChat.receiveMessage(message);
-		}		
+		this.file.read();
+		if (file.getIP() != null && file.getIP() != "" && file.getPuerto() > 0)
+			new UILogin(this);
+		else
+		{
+			JOptionPane.showMessageDialog(this, "Antes de conectar debe configurar una IP y un Puerto en el menú de Configuración", "Configuración",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	public void setClient(Client client) {
 		this.client = client;
 	}
 
-	public boolean SendMessage(User user, String message) {
+	public boolean login(String username, String password) {
+		if (this.client == null)
+			this.client = new Client(this, this.file);
 
-		if (this.client != null) {
-			return this.client.Send(user.getId(), message);
+		return this.client.Login(username, password);
+	}
+
+	public void sendMessage(String username, String message) {
+		if (this.client != null)
+			this.client.Send(username, message);
+	}
+
+	public void receiveMessage(String username, String message) {
+		UIChat uiChat;
+
+		if (uiChats.containsValue(username)) {
+			uiChat = uiChats.get(username);
+			uiChat.receiveMessage(message);
+
+		} else {
+			uiChat = new UIChat(username, this);
+			uiChats.put(username, uiChat);
+			uiChat.receiveMessage(message);
 		}
-		return false;
 	}
 
 	public void updateUsers(List<String> users) {
-		// TODO Auto-generated method stub
-		
+		this.addUser(users);
+
 	}
 }

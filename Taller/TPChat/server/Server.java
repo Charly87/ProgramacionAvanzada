@@ -22,7 +22,7 @@ public class Server implements Runnable {
 		if (thread == null) {
 			thread = new Thread(this);
 			thread.start();
-			this.uiServer.log("Server started.");
+			this.uiServer.log("Servidor iniciado.");
 		}
 	}
 
@@ -30,7 +30,7 @@ public class Server implements Runnable {
 		if (thread != null) {
 			thread.stop();
 			thread = null;
-			this.uiServer.log("Server stopped.");
+			this.uiServer.log("Servidor detenido.");
 		}
 	}
 
@@ -39,21 +39,23 @@ public class Server implements Runnable {
 
 		while (thread != null) {
 			try {
-				System.out.println("Waiting for a client ...");
+				this.uiServer.log("Esperando a un cliente...");
 				Socket socketClient = this.serverSocket.accept();
-				System.out.println("Client accepted: " + socketClient);		
+				this.uiServer.log("Cliente conectado: " + socketClient);		
 				
-				Client client = new Client(this.uiServer, "Cliente", socketClient, clients);				
+				Client client = new Client(this.uiServer,this, socketClient);				
 				clients.add(client);
 				client.run();
-				
-				// Swtich
-		
 			} catch (Exception ie) {
-				this.uiServer.log("Exception running Server: " + ie.toString());
+				this.uiServer.log("Excepción en el servidor: " + ie.toString());
 			}
 		}
 
+	}
+	
+	public List<Client> getClients()
+	{
+		return this.clients;
 	}
 
 }

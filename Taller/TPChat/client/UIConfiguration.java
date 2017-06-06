@@ -21,24 +21,16 @@ public class UIConfiguration extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtIp;
 	private JTextField txtPort;
-	private FileProperties fileProperties;
+	private FileProperties file;
 
-	public static void main(String[] args) {
-		try {
-			UIConfiguration dialog = new UIConfiguration(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	public UIConfiguration(UIClients uiClients, FileProperties file) {
+		this.file = file;
 
-	public UIConfiguration(JFrame parentFrame) {
-		fileProperties = new FileProperties("config.properties");
-
-		setTitle("Configurar IP + Puerto");
+		setTitle("Conectar");
 		setAlwaysOnTop(true);
 		setModal(true);
-
 		setBounds(100, 100, 319, 100);
+		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -80,7 +72,9 @@ public class UIConfiguration extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (txtIp.getText().length() > 0 && txtPort.getText().length() > 0)
-							fileProperties.write(txtIp.getText(), Integer.parseInt(txtPort.getText()));
+						{
+							file.write(txtIp.getText(), Integer.parseInt(txtPort.getText()));							
+						}
 						dispose();
 					}
 				});
@@ -101,11 +95,11 @@ public class UIConfiguration extends JDialog {
 		}
 
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-		fileProperties.read();
-		txtIp.setText(fileProperties.getIP());
-		txtPort.setText("" + fileProperties.getPuerto());
-		setLocationRelativeTo(parentFrame);
+		
+		file.read();
+		txtIp.setText(file.getIP());
+		txtPort.setText("" + file.getPuerto());
+		setLocationRelativeTo(uiClients);
 		setVisible(true);
 		txtIp.requestFocus();
 		txtIp.selectAll();

@@ -13,7 +13,6 @@ import com.google.gson.Gson;
 
 import shared.Command;
 import shared.Packet;
-import shared.PacketLogin;
 import shared.PacketLogout;
 import shared.PacketMessage;
 import shared.PacketUpdate;
@@ -23,31 +22,33 @@ public class Client extends Thread {
 	private UIClients uiClients;
 	private Socket socket;
 	private FileProperties fileProperties;
-	private ObjectInputStream inputStream;
-	private ObjectOutputStream outputStream;
-	private Gson gson = new Gson();
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
+	private Gson gson;
 	private Packet packet;
+	private PacketUser user;
 
 	public Client(UIClients uiClients, FileProperties fileProperties) {
 		this.uiClients = uiClients;
 		this.fileProperties = fileProperties;
+		this.gson = new Gson();
 	}
 
 	public void run() {
-		while (true) {
-			try {
 
-				String readedObject = (String) this.inputStream.readObject();
+		try {
+			while (this.packet != null && this.packet.getCommand() != Command.LOGOUT) {
+				String readedObject = (String) this.in.readObject();
 				this.packet = gson.fromJson(readedObject, Packet.class);
 				switch (this.packet.getCommand()) {
 				case LOGOUT: {
 					PacketLogout packetLogout = gson.fromJson(readedObject, PacketLogout.class);
-					this.uiClients.removeUser(packetLogout.getUsername());
+					// this.uiClients.removeUser(packetLogout.getUsername());
 					break;
 				}
 				case MESSAGE: {
 					PacketMessage packetMessage = gson.fromJson(readedObject, PacketMessage.class);
-					this.uiClients.updateChat(packetMessage.getFrom(), packetMessage.getMessage());
+					this.uiClients.receiveMessage(packetMessage.getFrom(), packetMessage.getMessage());
 					break;
 				}
 				case UPDATE: {
@@ -58,35 +59,34 @@ public class Client extends Thread {
 				default:
 					break;
 				}
-
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
 		}
+		this.uiClients.setClient(null);
 	}
 
 	public boolean Login(String username, String password) {
 		try {
 			this.socket = new Socket(fileProperties.getIP(), fileProperties.getPuerto());
-			this.inputStream = new ObjectInputStream(this.socket.getInputStream());
-			this.outputStream = new ObjectOutputStream(this.socket.getOutputStream());
-
+			
 			// Login
-			PacketUser packetUser = new PacketUser(username, password);
-			packetUser.setCommand(Command.LOGIN);
-			this.outputStream.writeObject(gson.toJson(packetUser, PacketUser.class));
+			this.user = new PacketUser(username, password);
+			this.user.setCommand(Command.LOGIN);
+			this.out = new ObjectOutputStream(this.socket.getOutputStream());
+			this.out.writeObject(gson.toJson(this.user, PacketUser.class));
 
 			// Respuesta del server
-			String readedObject = (String) this.inputStream.readObject();
+			this.in = new ObjectInputStream(this.socket.getInputStream());
+			String readedObject = (String) this.in.readObject();
 			this.packet = gson.fromJson(readedObject, Packet.class);
 
 			if (this.packet.getCommand() == Command.LOGIN) {
 				// Si el comando fue exitoso
 				if (this.packet.getStatus()) {
+					this.user.setLogged(true);
 					PacketUpdate packetUpdate = gson.fromJson(readedObject, PacketUpdate.class);
-					this.uiClients.closeLogin();
 					this.uiClients.updateUsers(packetUpdate.getUsers());
 
 					// Inicio el thread para que escuche mensajes
@@ -97,25 +97,30 @@ public class Client extends Thread {
 			}
 
 			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return false;
-		}
 
-	}
-
-	public void Send(String msg) {
-		try {
-			DataOutputStream streamOut = new DataOutputStream(this.socket.getOutputStream());
-			streamOut.writeUTF(msg);
-			streamOut.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
-    
+
+	public void Send(String username, String msg) {
+		// try {
+		//
+		// PacketMessage pm = new PacketMessage(this.user.getId(), idTo,
+		// message)
+		// this.out.writeObject(pm.);
+		//
+		//
+		// streamOut.writeUTF(msg);
+		// streamOut.flush();
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+	}
+
+	public String getUsername() {
+		return this.user.getUsername();
+	}
 }
