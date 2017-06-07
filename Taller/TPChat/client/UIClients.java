@@ -267,6 +267,9 @@ public class UIClients extends JFrame {
 		this.selectChat(username).receiveMessage(from, message);
 	}
 
+	/*
+	 * Selecciona o crea la ventana chat del cliente
+	 */
 	public UIChat selectChat(String username) {
 		UIChat uiChat;
 		if (uiChats.containsKey(username)) {
@@ -294,19 +297,28 @@ public class UIClients extends JFrame {
 	 * Actualiza la lista de usuarios conectados en la UI
 	 */
 	public void updateUsers(List<String> users) {
+		// Actualizo la lista
 		DefaultListModel<String> modeloLista = new DefaultListModel<String>();
 		if (users == null || users.size() == 0) {
-			usersList.setModel(modeloLista);
+			this.usersList.setModel(modeloLista);
 		} else {
 			for (String user : users) {
 				// Si el usuario soy "yo" no lo agrego a la lista
 				if (!this.client.getUsername().equals(user))
 					modeloLista.addElement(user);
 			}
-			usersList.setModel(modeloLista);
+			this.usersList.setModel(modeloLista);
 		}
-
+		
+		// Actualizo la cantidad de usuarios
 		lblUsers.setText("Cantidad de Usuarios Conectados: " + modeloLista.getSize());
+		
+		// Cierro la ventana de los usuarios deconectados
+		for(String username : this.uiChats.keySet())
+		{
+			if(!modeloLista.contains(username))
+				this.removeChat(username);
+		}
 	}
 
 	/*
