@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
+
 import net.miginfocom.swing.MigLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -22,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class UILogin extends JDialog {
 	private JTextField txtUsername;
@@ -30,7 +33,7 @@ public class UILogin extends JDialog {
 
 	public UILogin(UIClients uiClients) {
 
-		this.uiClients = uiClients;		
+		this.uiClients = uiClients;
 
 		setLocationRelativeTo(uiClients);
 		getContentPane().setLayout(null);
@@ -71,9 +74,8 @@ public class UILogin extends JDialog {
 		JButton btnCancel = new JButton("Cancelar");
 		btnCancel.setBounds(132, 83, 89, 23);
 		getContentPane().add(btnCancel);
-		
-		
-		setBounds(100, 100, 274, 158);		
+
+		setBounds(100, 100, 274, 158);
 		setTitle("Configurar IP + Puerto");
 		setAlwaysOnTop(true);
 		setModal(true);
@@ -81,12 +83,23 @@ public class UILogin extends JDialog {
 		setVisible(true);
 	}
 
+	/*
+	 * Se loguea en el servidor usando la UIClients
+	 */
 	private void onConnectClick(MouseEvent e) {
-		if (this.uiClients.login(this.txtUsername.getText(), this.txtPassword.getText())) {
-			this.dispose();
-		} else {
-			JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecto", "Login",
+
+		try {
+			if (this.uiClients.login(this.txtUsername.getText(), this.txtPassword.getText())) {
+				this.dispose();
+			} else {
+				JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecto", "Login",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		} catch (HeadlessException | ClassNotFoundException | IOException e1) {
+			JOptionPane.showMessageDialog(this,
+					"No se puede conectar al servidor. Compruebe la dirección y puerto configurados.", "Erro servidor",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+
 	}
 }

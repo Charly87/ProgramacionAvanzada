@@ -3,23 +3,28 @@ package client;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class UIChat {
+public class UIChat extends JDialog {
 
-	private JFrame frame;
+
 	private JTextField txtMessage;
 	private JTextArea txtAreaMessage;
 	private JButton btnSend;
@@ -35,16 +40,16 @@ public class UIChat {
 	}
 
 	private void initialize() {
-		frame = new JFrame();
-		frame.setTitle(this.username);
-		frame.setBounds(100, 100, 482, 327);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+				
+		this.setTitle(this.username);
+		this.setBounds(100, 100, 482, 327);
+		this.setDefaultCloseOperation( JDialog.DISPOSE_ON_CLOSE );
+		this.getContentPane().setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(10, 50));
-		panel.setMinimumSize(new Dimension(10, 50));
-		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+		panel.setMinimumSize(new Dimension(10, 50));		
+		this.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 0));
 
 		btnSend = new JButton("ENVIAR");
@@ -54,17 +59,23 @@ public class UIChat {
 		panel.add(txtMessage, BorderLayout.CENTER);
 		txtMessage.setColumns(10);
 
-		JScrollPane scrollPane = new JScrollPane();
-		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane();		
+		this.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 		txtAreaMessage = new JTextArea();
 		txtAreaMessage.setEditable(false);
 		scrollPane.setViewportView(txtAreaMessage);
 		
-		frame.setVisible(true);
+		this.setVisible(true);	
 	}
 
 	private void initializeEvents() {
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				openExitWindowConfirmation();
+			}
+		});
 		btnSend.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -81,6 +92,15 @@ public class UIChat {
 		});
 	}
 
+	private void openExitWindowConfirmation() {
+		int opcion = JOptionPane.showConfirmDialog(this, "Si sale del chat se eliminarán todas las conversaciones",
+				"Confirmación", JOptionPane.YES_NO_OPTION);
+		if (opcion == JOptionPane.YES_OPTION)
+		{
+			this.uiClients.removeChat(this.username);			
+		}
+	}
+
 	private void onSendClick(MouseEvent e) {
 		this.sendMessage();
 	}
@@ -89,13 +109,23 @@ public class UIChat {
 		this.sendMessage();
 	}
 
+	/*
+	 * Envia un mensaje usando la UIClients
+	 */
 	private void sendMessage() {
-		this.uiClients.sendMessage(this.username, txtMessage.getText());
-		this.receiveMessage(txtMessage.getText());
+		try {
+			this.uiClients.sendMessage(this.username, txtMessage.getText());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "No se pudo enviar el mensaje.", "Error con servidor",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
 		this.txtMessage.setText("");
 	}
 
-	public void receiveMessage(String message) {
-		txtAreaMessage.append(message + "\n");
+	/*
+	 * Recibe un mensaje y lo muestra en pantalla
+	 */
+	public void receiveMessage(String username, String message) {
+		txtAreaMessage.append(username + ": " + message + "\n");
 	}
 }
