@@ -29,9 +29,10 @@ public class Server implements Runnable {
 	}
 
 	public void stop() {
-		if (thread != null) {
-			thread.stop();
+		if (thread != null) {			
 			thread = null;
+			this.closeClients();
+			this.closeServer();
 			this.uiServer.log("Servidor detenido.");
 		}
 	}
@@ -50,6 +51,24 @@ public class Server implements Runnable {
 				client.start();
 			} catch (Exception ie) {
 				this.uiServer.log("Excepción en el servidor: " + ie.toString());
+			}
+		}
+	}
+	
+	private void closeClients()
+	{
+		for(Client client : this.clients.values())
+			client.close();
+	}
+	
+	private void closeServer()
+	{
+		if(this.serverSocket != null)
+		{
+			try {
+				this.serverSocket.close();
+			} catch (IOException e) {
+				this.serverSocket = null;
 			}
 		}
 	}

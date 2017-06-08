@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -64,8 +65,10 @@ public class UIChat extends JDialog {
 
 		txtAreaMessage = new JTextArea();
 		txtAreaMessage.setEditable(false);
+		txtAreaMessage.setFont(new Font("Verdana", Font.BOLD, 12));
 		scrollPane.setViewportView(txtAreaMessage);
 		
+		this.setLocationRelativeTo(uiClients);
 		this.setVisible(true);	
 	}
 

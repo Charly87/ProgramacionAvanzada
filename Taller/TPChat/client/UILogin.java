@@ -76,10 +76,11 @@ public class UILogin extends JDialog {
 		getContentPane().add(btnCancel);
 
 		setBounds(100, 100, 274, 158);
-		setTitle("Configurar IP + Puerto");
+		setTitle("Loguearse");
 		setAlwaysOnTop(true);
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(uiClients);
 		setVisible(true);
 	}
 

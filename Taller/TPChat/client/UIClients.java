@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 
@@ -128,6 +129,8 @@ public class UIClients extends JFrame {
 		uiChats = new HashMap<String, UIChat>();
 
 		usersList = new JList<String>();
+		this.usersList.setEnabled(false);
+		this.usersList.setBackground(Color.LIGHT_GRAY);
 		usersList.setCellRenderer(new DefaultListCellRenderer() {
 			@Override
 			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
@@ -238,6 +241,12 @@ public class UIClients extends JFrame {
 	 * Setea el cliente
 	 */
 	public void setClient(Client client) {
+		if(client == null)
+		{
+			this.usersList.setEnabled(false);
+			this.usersList.setBackground(Color.LIGHT_GRAY);
+			lblUsers = new JLabel("Desconectado.");
+		}
 		this.client = client;
 	}
 
@@ -248,7 +257,13 @@ public class UIClients extends JFrame {
 		if (this.client == null)
 			this.client = new Client(this, this.file);
 
-		return this.client.Login(username, password);
+		boolean logged = this.client.Login(username, password);
+		if(logged)
+		{
+			this.usersList.setEnabled(true);
+			this.usersList.setBackground(Color.WHITE);
+		}
+		return true;
 	}
 
 	/*
@@ -283,13 +298,13 @@ public class UIClients extends JFrame {
 	}
 
 	/*
-	 * Elimina la ventana chat de la lista
+	 * Elimina la ventana chat del map
 	 */
 	public void removeChat(String username) {
 		if (uiChats.containsKey(username)) {
 			UIChat uiChat = uiChats.get(username);
+			uiChats.remove(username);
 			uiChat.dispose();
-			uiChats.remove(username);			
 		}
 	}
 

@@ -172,4 +172,19 @@ public class Client extends Thread {
 			this.uiServer.log(e.toString());
 		}
 	}
+	
+	/*
+	 * Detiene el cliente
+	 */
+	public void close() {
+		if(this.socket != null)
+		{
+			try {
+				this.socket.close();
+			} catch (IOException e) {	
+				this.socket = null;
+			}
+		}
+		
+	}
 }
