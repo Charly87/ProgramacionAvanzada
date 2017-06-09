@@ -36,21 +36,22 @@ public class Client extends Thread {
 	}
 
 	/*
-	 * Escucha mensajes provenientes desde cliente y realiza las acciones pertinentes
+	 * Escucha mensajes provenientes desde cliente y realiza las acciones
+	 * pertinentes
 	 */
 	public void run() {
 
 		try {
 			this.in = new ObjectInputStream(this.socket.getInputStream());
 			this.out = new ObjectOutputStream(this.socket.getOutputStream());
-			
+
 			while (packet == null || packet.getCommand() != Command.LOGOUT) {
 				// Bloqueo leyendo lo que hay en el socket
 				String readedObject = (String) this.in.readObject();
-				
+
 				// Deserializo la info a la clase padre Packet
 				packet = this.gson.fromJson(readedObject, Packet.class);
-				
+
 				// Verifico que comando fue enviado desde el cliente
 				switch (packet.getCommand()) {
 				case LOGIN: {
@@ -62,12 +63,13 @@ public class Client extends Thread {
 						this.user = packetUser;
 						// Seteo al usuario como logueado
 						this.user.setLogged(true);
-						
-						// Genero paquete de tipo LOGIN para la actualizacion de usuarios
+
+						// Genero paquete de tipo LOGIN para la actualizacion de
+						// usuarios
 						List<String> users = new LinkedList<String>(this.server.getClients().keySet());
 						packet = new PacketUpdate(users);
 						packet.setCommand(Command.LOGIN);
-						
+
 						// Seteo al usuario local como logueado
 						packet.setStatus(true);
 						this.uiServer.log("Usuario " + this.user.getUsername() + " logueado correctamente.");
@@ -97,21 +99,34 @@ public class Client extends Thread {
 				}
 				case MESSAGE: {
 					PacketMessage packetMessage = gson.fromJson(readedObject, PacketMessage.class);
-					// Si el cliente está conectado
-					if (this.server.getClients().containsKey(packetMessage.getTo())) {
-						// Obtengo el cliente
-						Client client = this.server.getClients().get(packetMessage.getTo());
-						// Le envio el mensaje
-						client.sendMessage(packetMessage.getFrom(), packetMessage.getTo(), packetMessage.getMessage());	
-						// Logueo
-						this.uiServer.log("Mensaje de " + packetMessage.getFrom() + " para " + packetMessage.getTo() + " : "
-								+ packetMessage.getMessage());						
-						// Seteo que el comando fue realizado correctamente
-						packetMessage.setStatus(true);
-						// Doy aviso al cliente
-						this.out.writeObject(gson.toJson(packetMessage, PacketMessage.class));
+
+					if (packetMessage.isPrivate()) {
+						// Si el cliente está conectado
+						if (this.server.getClients().containsKey(packetMessage.getTo())) {
+							// Obtengo el cliente
+							Client client = this.server.getClients().get(packetMessage.getTo());
+							// Le envio el mensaje
+							client.sendMessage(packetMessage.getFrom(), packetMessage.getTo(),
+									packetMessage.getMessage(), packetMessage.isPrivate());
+							// Logueo
+							this.uiServer.log("Mensaje de " + packetMessage.getFrom() + " para " + packetMessage.getTo()
+									+ " : " + packetMessage.getMessage());
+							// Seteo que el comando fue realizado correctamente
+							packetMessage.setStatus(true);
+							// Doy aviso al cliente
+							this.out.writeObject(gson.toJson(packetMessage, PacketMessage.class));
+						}
+					} else {
+						// Recorro todos los clientes conectados
+						for (Client client : this.server.getClients().values()) {
+							// Le envio el mensaje a todos
+							client.sendMessage(packetMessage.getFrom(), packetMessage.getTo(),
+									packetMessage.getMessage(), packetMessage.isPrivate());
+							// Logueo
+							this.uiServer.log("Mensaje de " + packetMessage.getFrom() + " para TODOS: "
+									+ packetMessage.getMessage());
+						}
 					}
-					else
 
 					break;
 				}
@@ -128,7 +143,7 @@ public class Client extends Thread {
 
 		// Envio lista de clientes conectados
 		this.updateAllClients();
-		
+
 		// Logueo en el server la desconexion
 		this.uiServer.log("Cliente " + this.user.getUsername() + " desconectado.");
 	}
@@ -164,27 +179,26 @@ public class Client extends Thread {
 	/*
 	 * Envia un mensae a un determinado cliente
 	 */
-	public void sendMessage(String from, String to, String message) {
+	public void sendMessage(String from, String to, String message, boolean isPrivate) {
 		try {
-			PacketMessage packetMessage = new PacketMessage(from, to, message);
+			PacketMessage packetMessage = new PacketMessage(from, to, message, isPrivate);
 			this.out.writeObject(this.gson.toJson(packetMessage));
 		} catch (IOException e) {
 			this.uiServer.log(e.toString());
 		}
 	}
-	
+
 	/*
 	 * Detiene el cliente
 	 */
 	public void close() {
-		if(this.socket != null)
-		{
+		if (this.socket != null) {
 			try {
 				this.socket.close();
-			} catch (IOException e) {	
+			} catch (IOException e) {
 				this.socket = null;
 			}
 		}
-		
+
 	}
 }

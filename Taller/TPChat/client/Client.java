@@ -54,7 +54,7 @@ public class Client extends Thread {
 				}
 				case MESSAGE: {
 					PacketMessage packetMessage = gson.fromJson(readedObject, PacketMessage.class);
-					this.uiClients.receiveMessage(packetMessage.getFrom(), packetMessage.getTo(),packetMessage.getMessage());
+					this.uiClients.receiveMessage(packetMessage.getFrom(), packetMessage.getTo(),packetMessage.getMessage(), packetMessage.isPrivate());
 					break;
 				}
 				case UPDATE: {
@@ -123,9 +123,9 @@ public class Client extends Thread {
 	/*
 	 * Envia mensaje al servidor
 	 */
-	public void sendMessage(String username, String message) throws IOException {
+	public void sendMessage(String username, String message, boolean isPrivate) throws IOException {
 		// Envío paquete al servidor de tipo mensaje
-		PacketMessage packetMessage = new PacketMessage(this.user.getUsername(), username, message);
+		PacketMessage packetMessage = new PacketMessage(this.user.getUsername(), username, message, isPrivate);
 		this.out.writeObject(gson.toJson(packetMessage, PacketMessage.class));
 	}
 

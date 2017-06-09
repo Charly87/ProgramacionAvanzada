@@ -51,7 +51,8 @@ public class UIClients extends JFrame {
 	private JMenuItem mntmConfigIpPort;
 
 	private Client client;
-	private HashMap<String, UIChat> uiChats;
+	private UIChat publicChat;
+	private HashMap<String, UIChat> privateChats;
 	private FileProperties file;
 
 	public static void main(String[] args) {
@@ -126,7 +127,7 @@ public class UIClients extends JFrame {
 		scrollPane.setBounds(0, 0, 373, 462);
 		contentPane.add(scrollPane);
 
-		uiChats = new HashMap<String, UIChat>();
+		privateChats = new HashMap<String, UIChat>();
 
 		usersList = new JList<String>();
 		this.usersList.setEnabled(false);
@@ -164,7 +165,7 @@ public class UIClients extends JFrame {
 
 		mntmPublicSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// new UIChat();
+				openPublicWindowChat();
 			}
 		});
 
@@ -206,6 +207,15 @@ public class UIClients extends JFrame {
 	}
 
 	/*
+	 * Abre una ventana publica de chat
+	 */
+	private void openPublicWindowChat() {
+		if (this.publicChat == null)
+			this.publicChat = new UIChat("Sala", this, false);
+		this.publicChat.setVisible(true);
+	}
+
+	/*
 	 * Abre una ventana privada de chat
 	 */
 	private void openPrivateWindowChat() {
@@ -241,8 +251,7 @@ public class UIClients extends JFrame {
 	 * Setea el cliente
 	 */
 	public void setClient(Client client) {
-		if(client == null)
-		{
+		if (client == null) {
 			this.usersList.setEnabled(false);
 			this.usersList.setBackground(Color.LIGHT_GRAY);
 			lblUsers = new JLabel("Desconectado.");
@@ -258,8 +267,7 @@ public class UIClients extends JFrame {
 			this.client = new Client(this, this.file);
 
 		boolean logged = this.client.Login(username, password);
-		if(logged)
-		{
+		if (logged) {
 			this.usersList.setEnabled(true);
 			this.usersList.setBackground(Color.WHITE);
 		}
@@ -269,17 +277,21 @@ public class UIClients extends JFrame {
 	/*
 	 * Envia el mensaje usando el cliente
 	 */
-	public void sendMessage(String username, String message) throws IOException {
+	public void sendMessage(String username, String message, boolean isPrivate) throws IOException {
 		if (this.client != null)
-			this.client.sendMessage(username, message);
+			this.client.sendMessage(username, message, isPrivate);
 	}
 
 	/*
 	 * Recibe un mensaje a mostrar, abre el chat correspondiente y lo muestra
 	 */
-	public void receiveMessage(String from, String to, String message) {
-		String username = from.equals(this.client.getUsername()) ? to : from;
-		this.selectChat(username).receiveMessage(from, message);
+	public void receiveMessage(String from, String to, String message, boolean isPrivate) {
+		if (isPrivate) {
+			String username = from.equals(this.client.getUsername()) ? to : from;
+			this.selectChat(username).receiveMessage(from, message);
+		} else if (this.publicChat != null) {
+			this.publicChat.receiveMessage(from, message);
+		}
 	}
 
 	/*
@@ -287,11 +299,11 @@ public class UIClients extends JFrame {
 	 */
 	public UIChat selectChat(String username) {
 		UIChat uiChat;
-		if (uiChats.containsKey(username)) {
-			uiChat = uiChats.get(username);
+		if (privateChats.containsKey(username)) {
+			uiChat = privateChats.get(username);
 		} else {
-			uiChat = new UIChat(username, this);
-			uiChats.put(username, uiChat);
+			uiChat = new UIChat(username, this, true);
+			privateChats.put(username, uiChat);
 		}
 		uiChat.setVisible(true);
 		return uiChat;
@@ -301,9 +313,9 @@ public class UIClients extends JFrame {
 	 * Elimina la ventana chat del map
 	 */
 	public void removeChat(String username) {
-		if (uiChats.containsKey(username)) {
-			UIChat uiChat = uiChats.get(username);
-			uiChats.remove(username);
+		if (privateChats.containsKey(username)) {
+			UIChat uiChat = privateChats.get(username);
+			privateChats.remove(username);
 			uiChat.dispose();
 		}
 	}
@@ -324,14 +336,13 @@ public class UIClients extends JFrame {
 			}
 			this.usersList.setModel(modeloLista);
 		}
-		
+
 		// Actualizo la cantidad de usuarios
 		lblUsers.setText("Cantidad de Usuarios Conectados: " + modeloLista.getSize());
-		
+
 		// Cierro la ventana de los usuarios deconectados
-		for(String username : this.uiChats.keySet())
-		{
-			if(!modeloLista.contains(username))
+		for (String username : this.privateChats.keySet()) {
+			if (!modeloLista.contains(username))
 				this.removeChat(username);
 		}
 	}

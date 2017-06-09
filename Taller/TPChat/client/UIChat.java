@@ -32,10 +32,13 @@ public class UIChat extends JDialog {
 
 	private String username;
 	private UIClients uiClients;
+	private boolean isPrivate;
 
-	public UIChat(String username, UIClients uiClients) {
+	public UIChat(String username, UIClients uiClients, boolean isPrivate) {
 		this.username = username;
 		this.uiClients = uiClients;
+		this.isPrivate = isPrivate;
+		
 		initialize();
 		initializeEvents();
 	}
@@ -117,7 +120,7 @@ public class UIChat extends JDialog {
 	 */
 	private void sendMessage() {
 		try {
-			this.uiClients.sendMessage(this.username, txtMessage.getText());
+			this.uiClients.sendMessage(this.username, txtMessage.getText(), this.isPrivate);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, "No se pudo enviar el mensaje.", "Error con servidor",
 					JOptionPane.INFORMATION_MESSAGE);

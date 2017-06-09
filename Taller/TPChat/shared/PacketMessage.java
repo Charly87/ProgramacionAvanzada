@@ -4,12 +4,14 @@ public class PacketMessage extends Packet {
 	private String from;
 	private String to;
 	private String message;
+	private boolean isPrivate;
 
-	public PacketMessage(String from, String to, String message) {
+	public PacketMessage(String from, String to, String message, boolean isPrivate) {
 		super(Command.MESSAGE);
 		this.from = from;
 		this.to = to;
 		this.message = message;
+		this.isPrivate = isPrivate;
 	}
 
 	public String getMessage() {
@@ -22,5 +24,9 @@ public class PacketMessage extends Packet {
 	
 	public String getTo() {
 		return this.to;
+	}
+	
+	public boolean isPrivate() {
+		return this.isPrivate;
 	}
 }
