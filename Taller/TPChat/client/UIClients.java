@@ -37,6 +37,8 @@ import java.util.Map;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class UIClients extends JFrame {
 
@@ -54,6 +56,7 @@ public class UIClients extends JFrame {
 	private UIChat publicChat;
 	private HashMap<String, UIChat> privateChats;
 	private FileProperties file;
+	private boolean loggued;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -104,9 +107,11 @@ public class UIClients extends JFrame {
 		menuBar.add(mnChat);
 
 		mntmPublicSession = new JMenuItem("Sala de Chat");
+		mntmPublicSession.setEnabled(false);
 		mnChat.add(mntmPublicSession);
 
 		mntmPrivateSession = new JMenuItem("Sesión privada");
+		mntmPrivateSession.setEnabled(false);
 		mnChat.add(mntmPrivateSession);
 
 		JMenu mnAyuda = new JMenu("Ayuda");
@@ -186,11 +191,16 @@ public class UIClients extends JFrame {
 					openPrivateWindowChat();
 			}
 		});
+		usersList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				mntmPrivateSession.setEnabled(!usersList.isSelectionEmpty());
+			}
+		});
 
 		mntmConectar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				openLoginWindow();
+				openLoginLogoutWindow();
 			}
 		});
 	}
@@ -202,8 +212,11 @@ public class UIClients extends JFrame {
 	private void openExitWindowConfirmation() {
 		int opcion = JOptionPane.showConfirmDialog(this, "Desea salir del Chat", "Confirmación",
 				JOptionPane.YES_NO_OPTION);
-		if (opcion == JOptionPane.YES_OPTION)
+		if (opcion == JOptionPane.YES_OPTION) {
+			if (this.loggued)
+				this.logout();
 			System.exit(0);
+		}
 	}
 
 	/*
@@ -236,14 +249,22 @@ public class UIClients extends JFrame {
 	/*
 	 * Abre la ventana de Login
 	 */
-	private void openLoginWindow() {
-		this.file.read();
-		if (file.getIP() != null && file.getIP() != "" && file.getPuerto() > 0)
-			new UILogin(this);
-		else {
-			JOptionPane.showMessageDialog(this,
-					"Antes de conectar debe configurar una IP y un Puerto en el menú de Configuración", "Configuración",
-					JOptionPane.INFORMATION_MESSAGE);
+	private void openLoginLogoutWindow() {
+
+		if (!this.loggued) {
+			this.file.read();
+			if (file.getIP() != null && file.getIP() != "" && file.getPuerto() > 0)
+				new UILogin(this);
+			else {
+				JOptionPane.showMessageDialog(this,
+						"Antes de conectar debe configurar una IP y un Puerto en el menú de Configuración",
+						"Configuración", JOptionPane.INFORMATION_MESSAGE);
+			}
+		} else {
+			int opcion = JOptionPane.showConfirmDialog(this, "¿Desea desconectarse del servidor?", "Desconectarse",
+					JOptionPane.YES_NO_OPTION);
+			if (opcion == JOptionPane.YES_OPTION)
+				this.logout();
 		}
 	}
 
@@ -266,12 +287,29 @@ public class UIClients extends JFrame {
 		if (this.client == null)
 			this.client = new Client(this, this.file);
 
-		boolean logged = this.client.Login(username, password);
-		if (logged) {
+		this.loggued = this.client.login(username, password);
+		if (this.loggued) {
 			this.usersList.setEnabled(true);
 			this.usersList.setBackground(Color.WHITE);
+			this.mntmConectar.setText("Desconectar");
+			this.mntmConfigIpPort.setEnabled(false);
+			this.mntmPublicSession.setEnabled(true);
 		}
-		return true;
+		return this.loggued;
+	}
+
+	/*
+	 * Se desloguea usando el cliente
+	 */
+	public void logout() {
+		this.client.logout();
+		this.usersList.setEnabled(false);
+		this.usersList.setBackground(Color.LIGHT_GRAY);
+		this.mntmConectar.setText("Conectar");
+		this.mntmConfigIpPort.setEnabled(true);
+		this.mntmPublicSession.setEnabled(false);
+		this.mntmPrivateSession.setEnabled(false);
+		this.lblUsers.setText("Desconectado.");
 	}
 
 	/*

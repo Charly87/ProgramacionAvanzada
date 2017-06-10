@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
@@ -22,14 +23,18 @@ import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public class UILogin extends JDialog {
 	private JTextField txtUsername;
-	private JTextField txtPassword;
+	private JPasswordField txtPassword;
 	private UIClients uiClients;
+	private JButton btnConnect;
 
 	public UILogin(UIClients uiClients) {
 
@@ -43,14 +48,15 @@ public class UILogin extends JDialog {
 		getContentPane().add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
-		JButton btnConnect = new JButton("Conectar");
+		btnConnect = new JButton("Conectar");
 		btnConnect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				onConnectClick(e);
+				connect();
 			}
 		});
 		btnConnect.setBounds(17, 83, 89, 23);
+		btnConnect.setEnabled(false);
 		getContentPane().add(btnConnect);
 
 		JLabel lblUsername = new JLabel("Usuario:");
@@ -63,12 +69,28 @@ public class UILogin extends JDialog {
 
 		txtUsername = new JTextField();
 		txtUsername.setBounds(114, 11, 116, 20);
-		getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
+		txtUsername.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent VK) {
+				if (canConnect() && VK.getKeyCode() == KeyEvent.VK_ENTER) {
+					connect();
+				}
+			}
+		});
+		getContentPane().add(txtUsername);
 
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		txtPassword.setColumns(10);
 		txtPassword.setBounds(114, 39, 116, 20);
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent VK) {				
+				if (canConnect() && VK.getKeyCode() == KeyEvent.VK_ENTER) {
+					connect();
+				}
+			}
+		});
 		getContentPane().add(txtPassword);
 
 		JButton btnCancel = new JButton("Cancelar");
@@ -84,11 +106,16 @@ public class UILogin extends JDialog {
 		setVisible(true);
 	}
 
+	public boolean canConnect() {
+		boolean canConnect =  !this.txtUsername.getText().isEmpty() && !this.txtPassword.getText().isEmpty();
+		this.btnConnect.setEnabled(canConnect);
+		return canConnect;
+	}
+
 	/*
 	 * Se loguea en el servidor usando la UIClients
 	 */
-	private void onConnectClick(MouseEvent e) {
-
+	private void connect() {
 		try {
 			if (this.uiClients.login(this.txtUsername.getText(), this.txtPassword.getText())) {
 				this.dispose();
@@ -101,6 +128,5 @@ public class UILogin extends JDialog {
 					"No se puede conectar al servidor. Compruebe la dirección y puerto configurados.", "Erro servidor",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-
 	}
 }

@@ -50,11 +50,15 @@ public class Client extends Thread {
 				switch (this.packet.getCommand()) {
 				case LOGOUT: {
 					PacketLogout packetLogout = gson.fromJson(readedObject, PacketLogout.class);
+					this.in.close();
+					this.out.close();
+					this.socket.close();
 					break;
 				}
 				case MESSAGE: {
 					PacketMessage packetMessage = gson.fromJson(readedObject, PacketMessage.class);
-					this.uiClients.receiveMessage(packetMessage.getFrom(), packetMessage.getTo(),packetMessage.getMessage(), packetMessage.isPrivate());
+					this.uiClients.receiveMessage(packetMessage.getFrom(), packetMessage.getTo(),
+							packetMessage.getMessage(), packetMessage.isPrivate());
 					break;
 				}
 				case UPDATE: {
@@ -68,21 +72,19 @@ public class Client extends Thread {
 			}
 
 		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
+			this.uiClients.showMessageDialog("Se ha desconectado del servidor", "Desconexión",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 		// Limpio los usuarios logueados
 		this.uiClients.updateUsers(null);
 		// Elimino este cliente en la UIClient
 		this.uiClients.setClient(null);
-
-		this.uiClients.showMessageDialog("El servidor se ha desconectado", "Desconexión",
-				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/*
 	 * Se conecta al servidor y se loguea
 	 */
-	public boolean Login(String username, String password) throws IOException, ClassNotFoundException {
+	public boolean login(String username, String password) throws IOException, ClassNotFoundException {
 
 		this.socket = new Socket(fileProperties.getIP(), fileProperties.getPuerto());
 
@@ -118,6 +120,15 @@ public class Client extends Thread {
 			}
 		}
 		return true;
+	}
+
+	public void logout() {
+
+		try {
+			this.user.setCommand(Command.LOGOUT);
+			this.out.writeObject(gson.toJson(this.user, PacketUser.class));
+		} catch (IOException e) {
+		}
 	}
 
 	/*

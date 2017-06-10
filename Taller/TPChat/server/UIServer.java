@@ -55,12 +55,11 @@ public class UIServer {
 		panel.setLayout(null);
 
 		btnStart = new JButton("Start");
-
 		btnStart.setBounds(90, 16, 89, 23);
 		panel.add(btnStart);
 
 		btnStop = new JButton("Stop");
-
+		btnStop.setEnabled(false);
 		btnStop.setBounds(239, 16, 89, 23);
 		panel.add(btnStop);
 
@@ -95,6 +94,8 @@ public class UIServer {
 			}
 			log("Iniciando servidor...");
 			server.start();
+			btnStart.setEnabled(false);
+			btnStop.setEnabled(true);
 		} catch (IOException ex) {
 			log("Excepción en el servidor:" + ex.toString());
 		}
@@ -106,6 +107,8 @@ public class UIServer {
 			server.stop();
 			server = null;
 		}
+		btnStart.setEnabled(true);
+		btnStop.setEnabled(false);
 	}
 
 	public void log(String text) {

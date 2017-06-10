@@ -73,7 +73,8 @@ public class UIConfiguration extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						if (txtIp.getText().length() > 0 && txtPort.getText().length() > 0)
 						{
-							file.write(txtIp.getText(), Integer.parseInt(txtPort.getText()));							
+							file.write(txtIp.getText(), Integer.parseInt(txtPort.getText()));
+							file.read();
 						}
 						dispose();
 					}

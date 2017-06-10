@@ -2,12 +2,16 @@ package server;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.google.gson.Gson;
 
@@ -56,11 +60,11 @@ public class Client extends Thread {
 				switch (packet.getCommand()) {
 				case LOGIN: {
 					PacketUser packetUser = gson.fromJson(readedObject, PacketUser.class);
-
+					// Guardo el usuario
+					this.user = packetUser;
 					// Valido si es correcto el usuario y contraseña.
-					if (packetUser.getUsername() != "") {
-						// Guardo el usuario
-						this.user = packetUser;
+					if (this.validateUser(packetUser)) {
+
 						// Seteo al usuario como logueado
 						this.user.setLogged(true);
 
@@ -75,8 +79,8 @@ public class Client extends Thread {
 						this.uiServer.log("Usuario " + this.user.getUsername() + " logueado correctamente.");
 					} else {
 						packet.setStatus(false);
-						this.uiServer.log("Usuario o passwrod incorrecto. Usuario: " + this.user.getUsername()
-								+ " Password:" + this.user.getPassword());
+						this.uiServer.log("Usuario o passwrod incorrecto. Usuario: " + packetUser.getUsername()
+								+ " Password:" + packetUser.getPassword());
 					}
 
 					// Envio el paquete al cliente
@@ -92,8 +96,13 @@ public class Client extends Thread {
 					break;
 				}
 				case LOGOUT: {
-					PacketLogout packetLogout = gson.fromJson(readedObject, PacketLogout.class);
+					// Deslogueo usuario
 					this.user.setLogged(false);
+					// Confirmo el comando
+					this.packet.setStatus(true);
+					// Reenvio comando
+					this.out.writeObject(this.gson.toJson(this.packet, Packet.class));
+					// Logueo
 					this.uiServer.log("Usuario " + this.user.getUsername() + " deslogueado.");
 					break;
 				}
@@ -146,6 +155,14 @@ public class Client extends Thread {
 
 		// Logueo en el server la desconexion
 		this.uiServer.log("Cliente " + this.user.getUsername() + " desconectado.");
+	}
+
+	private boolean validateUser(PacketUser packetUser) {
+		if (this.server.getUsers().containsKey(packetUser.getUsername())) {
+			String password = this.server.getUsers().get(packetUser.getUsername());
+			return packetUser.getPassword().equals(password);
+		}
+		return false;
 	}
 
 	/*
