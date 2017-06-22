@@ -44,6 +44,7 @@ public class MatrizSimetrica {
 		for (int i = 0; i < this.vector.length; i++) {
 			System.out.print(this.vector[i]);
 		}		
+		System.out.println();
 	}
 	
 	public void visualizar() {
@@ -54,5 +55,6 @@ public class MatrizSimetrica {
 			}
 			System.out.println();
 		}		
+		System.out.println();
 	}
 }
