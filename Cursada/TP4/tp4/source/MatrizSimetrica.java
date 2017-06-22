@@ -2,32 +2,33 @@ package tp4.source;
 
 public class MatrizSimetrica {
 	private int[] vector;
-	private int orden;
+	private int dimension;
 
 	/*
 	 * Crea una instancia de matriz simétrica
 	 * @param dimension es la cantidad de filas o columnas de la matriz simétrica.
 	 */
 	public MatrizSimetrica(int dimension) throws Exception {
-		if(dimension < 0)
-			throw new Exception("La matriz debe tener como mínimo de tamaño 1");
-		this.orden = dimension * dimension;
-		int tamaño = (int) ((Math.pow(this.orden, 2) - this.orden) / 2);
+		if(dimension < 2)
+			throw new Exception("La matriz debe ser mayor o igual a dimension 2");
+		this.dimension = dimension;
+		int tamaño = (int) ((Math.pow(this.dimension, 2) - this.dimension) / 2);
 		this.vector = new int[tamaño];
 	}
 
 	private int getIndice(int fila, int columna) {
-		return fila * this.orden + columna - (int) ((Math.pow(fila, 2) + 3 * fila + 2) / 2);
+		return fila * this.dimension + columna - (int) ((Math.pow(fila, 2) + 3 * fila + 2) / 2);
 	}
 
+	//No deberiamos usarlo este método
 	private int getFila(int indice) {
 		return this.vector.length - (int) Math.ceil(1 + (1 + 8 * Math.pow((this.vector.length - indice), 0.5)) / 2);
 	}
 
+	//No deberiamos usarlo este método
 	private int getColumna(int indice) {
 		int fila = this.getFila(indice);
-		return this.orden
-				- (this.vector.length - indice - (int) ((this.orden - fila - 1) * 2 - (this.orden - fila - 1)) / 2);
+		return this.dimension - (this.vector.length - indice - (int) ((this.dimension - fila - 1) * 2 - (this.dimension - fila - 1)) / 2);
 	}
 
 	public int getValor(int fila, int columna) {
@@ -36,5 +37,22 @@ public class MatrizSimetrica {
 
 	public void setValor(int fila, int columna, int valor) {
 		this.vector[this.getIndice(fila, columna)] = valor;
+	}
+	
+	public void visualizarVector() {
+		System.out.print("Vector[i]: ");
+		for (int i = 0; i < this.vector.length; i++) {
+			System.out.print(this.vector[i]);
+		}		
+	}
+	
+	public void visualizar() {
+		System.out.println("Vector[i]: ");
+		for (int i = 0; i < this.dimension - 1; i++) {
+			for (int j = i + 1; j < this.dimension; j++) {
+				System.out.print(getValor(i, j) + " ");
+			}
+			System.out.println();
+		}		
 	}
 }
