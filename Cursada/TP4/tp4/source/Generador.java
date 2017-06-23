@@ -31,13 +31,4 @@ public class Generador {
 		}
 	}
 	
-	
-	public void guardarMatrizSimetrica(MatrizSimetrica ms,String path) throws IOException{
-		PrintWriter out = new PrintWriter(new FileWriter("path/grafo.in"));
-		out.print(ms.getCantidadNodos()+"");
-		out.print(ms.getCantidadAristas()+"");
-		out.print(ms.getPorcentajeAdyacencia()+"");
-		out.print(ms.getGradoMax()+"");
-		out.println(ms.getGradoMin());
-	}
 }
