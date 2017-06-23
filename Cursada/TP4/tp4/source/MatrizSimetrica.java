@@ -32,10 +32,18 @@ public class MatrizSimetrica {
 	}
 
 	public int getValor(int fila, int columna) {
+		if (fila == columna)
+			return 0;
+		if(fila > columna)
+			return this.vector[this.getIndice(columna, fila)];
 		return this.vector[this.getIndice(fila, columna)];
 	}
 
 	public void setValor(int fila, int columna, int valor) {
+		if (fila == columna)
+			return ;
+		if(fila > columna)
+			this.vector[this.getIndice(columna, fila)] = valor;
 		this.vector[this.getIndice(fila, columna)] = valor;
 	}
 	
@@ -49,8 +57,8 @@ public class MatrizSimetrica {
 	
 	public void visualizar() {
 		System.out.println("Vector[i]: ");
-		for (int i = 0; i < this.dimension - 1; i++) {
-			for (int j = i + 1; j < this.dimension; j++) {
+		for (int i = 0; i < this.dimension; i++) {
+			for (int j = 0; j < this.dimension; j++) {
 				System.out.print(getValor(i, j) + " ");
 			}
 			System.out.println();
