@@ -70,7 +70,7 @@ public class MatrizSimetrica {
 	}
 
 	public int getCantidadNodos() {
-		return this.dimension/2;
+		return this.dimension;
 	}
 
 	public int getCantidadAristasTotales() {
@@ -120,7 +120,4 @@ public class MatrizSimetrica {
 		return this.getCantidadAristas()*100/this.getCantidadAristasTotales();
 	}
 	
-	public int getNodoOrigen(){
-		return
-	}
 }
