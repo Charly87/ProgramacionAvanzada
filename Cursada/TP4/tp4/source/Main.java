@@ -28,14 +28,17 @@ public class Main {
 			 */
 
 			// A veces funciona bien y a veces no, debe haber alguna boludez por la que falla.
-			ms = gen.generarGrafoRegularNPartitos(6, 3);
+			ms = gen.generarGrafoRegularNPartitos(6, 5);
 			if (ms == null) {
 				System.out.println("No se puede realizar un grafo N Partitos con nodos y aristas impares");
 			} else
 				ms.visualizar();
-		} catch (
 
-		Exception e) {
+			ms = gen.generarGrafoRegularPorAdy(50, 50);
+			ms.visualizarVector();
+			ms.visualizar();
+		} catch (Exception e) {
+
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

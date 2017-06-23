@@ -100,7 +100,7 @@ public class MatrizSimetrica {
 
 	public int getGradoMin() {
 		int min = 0;
-		int minant = 0;
+		int minant = nodos;
 		for (int i = 0; i < nodos; i++) {
 			for (int j = i + 1; j < nodos; j++) {
 				if (getValor(i, j) != 0 && ++min <= minant) {
