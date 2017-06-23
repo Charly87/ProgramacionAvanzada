@@ -38,7 +38,8 @@ public class MatrizSimetrica {
 			return 0;
 		if (fila > columna)
 			return this.vector[this.getIndice(columna, fila)];
-		return this.vector[this.getIndice(fila, columna)];
+		else
+			return this.vector[this.getIndice(fila, columna)];
 	}
 
 	public void setValor(int fila, int columna, int valor) {
@@ -46,7 +47,8 @@ public class MatrizSimetrica {
 			return;
 		if (fila > columna)
 			this.vector[this.getIndice(columna, fila)] = valor;
-		this.vector[this.getIndice(fila, columna)] = valor;
+		else
+			this.vector[this.getIndice(fila, columna)] = valor;
 	}
 
 	public void visualizarVector() {

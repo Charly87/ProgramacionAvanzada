@@ -5,6 +5,10 @@ public class Main {
 	public static void main(String[] args) {
 		MatrizSimetrica ms = null;
 		Generador gen;
+		
+		String pathIn  = "TP4/tp4/entrada/";
+		String pathOut = "TP4/tp4/salida/";
+		
 		try {
 
 			/*
@@ -37,10 +41,24 @@ public class Main {
 			ms = gen.generarGrafoRegularPorAdy(50, 50);
 			ms.visualizarVector();
 			ms.visualizar();
+			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo.in");
+			g.aplicarColoreoSecuencialAleatorio();
+			g.mostrarGrafoColoreado(pathOut + "grafoSecuencialAleatorio.out");
+			
+			GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo.in");
+			g2.aplicarColoreoWelshPowell();
+			g2.mostrarGrafoColoreado(pathOut + "grafoWelshPowell.out");
+			
+			GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo.in");
+			g3.aplicarColoreoMatula();
+			g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
+			
+			
+						
 		} catch (Exception e) {
-
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			
 		}
 	}
 }
