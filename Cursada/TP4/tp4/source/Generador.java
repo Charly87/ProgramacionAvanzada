@@ -122,8 +122,8 @@ public class Generador {
 		return ms;
 	}
 
-	public void guardarMatrizSimetrica(MatrizSimetrica ms, String path) throws IOException {
-		PrintWriter out = new PrintWriter(new FileWriter("path/grafo.in"));
+	public void guardarMatrizSimetrica(MatrizSimetrica ms, String file) throws IOException {
+		PrintWriter out = new PrintWriter(new FileWriter(file));
 		out.print(ms.getCantidadNodos() + "");
 		out.print(ms.getCantidadAristas() + "");
 		out.print(ms.getPorcentajeAdyacencia() + "");
