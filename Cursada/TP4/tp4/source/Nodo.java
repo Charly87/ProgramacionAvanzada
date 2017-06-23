@@ -1,8 +1,10 @@
 package tp4.source;
 
-public class Nodo implements Comparable<Nodo> {
+public class Nodo {
 	
 	private int id;
+	private int grado;
+	private int color;
 	
 	public Nodo(int id) {		
 		this.id = id;		
@@ -14,18 +16,22 @@ public class Nodo implements Comparable<Nodo> {
 
 	public void setId(int id) {
 		this.id = id;
+	}	
+
+	public int getGrado() {
+		return grado;
 	}
 
-	@Override
-	public int compareTo(Nodo otroNodo) {
-		
-		if (this.id < otroNodo.id)
-			return -1;
-		else if (this.id > otroNodo.id)
-			return 1;
-		else
-			return 0;
-		
+	public void setGrado(int grado) {
+		this.grado = grado;
+	}
+
+	public int getColor() {
+		return color;
+	}
+
+	public void setColor(int color) {
+		this.color = color;
 	}
 	
 }
