@@ -6,18 +6,15 @@ public class Nodo implements Comparable<Nodo> {
 	
 	public Nodo(int id) {		
 		this.id = id;		
-	}
-	
+	}	
 
 	public int getId() {
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	@Override
 	public int compareTo(Nodo otroNodo) {

@@ -2,6 +2,7 @@ package tp4.source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,9 +14,9 @@ public class GrafoNDNP {
 	private int gradoMax;
 	private int gradoMin;
 	private List<Nodo> nodos;
-	private int[][] matrizAdy;
+	private MatrizSimetrica matrizAdy;
 	
-	public GrafoNDNP(String fileName) throws FileNotFoundException {
+	public GrafoNDNP(String fileName) throws Exception {
 		
 		Scanner input = new Scanner(new File(fileName));
 		
@@ -25,7 +26,9 @@ public class GrafoNDNP {
 		gradoMax = input.nextInt();
 		gradoMin = input.nextInt();
 		
-		inicializarMatrizAdyacencia();
+		nodos = new ArrayList<Nodo>();
+		
+		matrizAdy = new MatrizSimetrica(cantNodos);
 		
 		while (input.hasNextLine()) {
 						
@@ -38,16 +41,7 @@ public class GrafoNDNP {
 	}
 
 	private void agregarConexion(int idNodoOrigen, int idNodoDestino) {
-		
-		matrizAdy[idNodoOrigen][idNodoDestino] = 1;		
-		
-	}
-
-	private void inicializarMatrizAdyacencia() {
-		
-		for (int i = 0 ; i < cantNodos ; i++)
-			for (int j = 0 ; j < cantNodos ; j++)
-				matrizAdy[i][j] = 0;
+			
 		
 	}
 	

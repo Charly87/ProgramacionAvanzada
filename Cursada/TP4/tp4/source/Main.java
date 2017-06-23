@@ -7,14 +7,14 @@ public class Main {
 		try {
 			ms = new MatrizSimetrica(4);
 			// No se si los indices deben comenzar en 0 o en 1
-			ms.setValor(0,1, 1);
-			ms.setValor(0,2, 2);
-			ms.setValor(0,3, 3);
-			ms.setValor(1,2, 4);
-			ms.setValor(1,3, 5);
-			ms.setValor(2,3, 6);
-			
-			ms.visualizarVector();
+//			ms.setValor(0,1, 1);
+//			ms.setValor(0,2, 2);
+//			ms.setValor(0,3, 3);
+//			ms.setValor(1,2, 4);
+//			ms.setValor(1,3, 5);
+//			ms.setValor(2,3, 6);
+//			
+//			ms.visualizarVector();
 			ms.visualizar();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
