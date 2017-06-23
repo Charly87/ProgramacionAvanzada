@@ -31,6 +31,10 @@ public class Main {
 			ms.visualizar();
 			System.out.println(ms.getGradoMin());
 			System.out.println(ms.getGradoMax());
+			
+			ms = gen.generarGrafoRegularPorAdy(50, 50);
+			ms.visualizarVector();
+			ms.visualizar();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

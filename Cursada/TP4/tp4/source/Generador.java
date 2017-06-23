@@ -81,6 +81,44 @@ public class Generador {
 		}
 		return ms;
 	}
+	
+	public MatrizSimetrica generarGrafoRegularPorAdy(int nodos, int porcentaje) {
+		MatrizSimetrica ms = null;
+		int[] aux = null;
+		int nodoAnt;
+		int i;
+		int j;
+		int aristasTotales = nodos * (nodos - 1) / 2;
+		int aristasAdyacentes = porcentaje * aristasTotales / 100;
+		if (nodos % 2 != 0 && (nodos - 1) * porcentaje / 100 % 2 != 0) {
+			return ms;
+		}
+		try {
+			ms = new MatrizSimetrica(nodos);
+			aux = new int[nodos];
+			i = nodos;
+			nodoAnt = -1;
+			do {
+				j = i;
+				do {
+					if (Math.random() <= (float) porcentaje/100 && aux[nodos - i] < (nodos - 1) * porcentaje / 100 && aux[nodos - j]
+								< (nodos - 1)  * porcentaje / 100 && nodoAnt != nodos - j && i != j) {
+						aux[nodos - i]++;
+						aux[nodos - j]++;
+						ms.setValor(nodos - i, nodos - j, 1);
+						nodoAnt = nodos - j;
+						aristasAdyacentes--;
+					}
+				} while (--j != 0 && aristasAdyacentes != 0);
+			} while (--i != 0 && aristasAdyacentes != 0);
+			
+		return ms;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ms;
+	}
 
 	public int getProm(int[] vec) {
 		int sum = 0;
