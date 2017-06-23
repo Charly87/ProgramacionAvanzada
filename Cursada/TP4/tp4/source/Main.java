@@ -29,6 +29,8 @@ public class Main {
 			ms = gen.generarGrafoRegular(4, 2);
 			ms.visualizarVector();
 			ms.visualizar();
+			System.out.println(ms.getGradoMin());
+			System.out.println(ms.getGradoMax());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
