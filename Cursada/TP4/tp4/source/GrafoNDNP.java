@@ -51,6 +51,28 @@ public class GrafoNDNP {
 		inicializarGradoNodos();
 
 	}
+	
+	public void mostrarNodos() {
+		
+		for (Nodo nodo : nodos) {
+			System.out.println(nodo.getGrado() + " " + nodo.getRandom() + " " + nodo.getId());
+		}
+		
+		System.out.println("\n\n\n\n\n");
+		
+	}
+
+	public int getCantNodos() {
+		return cantNodos;
+	}
+
+
+
+	public int getCantidadColoresAsignados() {
+		return cantidadColoresAsignados;
+	}
+
+
 
 	private void inicializarColores() {
 
@@ -93,35 +115,60 @@ public class GrafoNDNP {
 		// El id esta directamente relacionado con el indice dentro de la lista
 		// (nodo con ID 0 ---> index 0 ; nodo con ID 1 ---> index 1 ; etc.)
 		// En caso de que no se encuentre, lo doy de alta.
+		
+		if (nodos[idNodoOrigen] == null)
+			nodos[idNodoOrigen] = new Nodo(idNodoOrigen);
 
-		// try {
-		//
-		// nodos.get(idNodoOrigen);
-		//
-		// } catch (IndexOutOfBoundsException e) {
-
-		nodos[idNodoOrigen] = new Nodo(idNodoOrigen);
-
-		// }
-
-		// try {
-		//
-		// nodos.get(idNodoDestino);
-		//
-		// } catch (IndexOutOfBoundsException e) {
-
-		nodos[idNodoDestino] = new Nodo(idNodoOrigen);
-
-		// }
+			
+		if (nodos[idNodoDestino] == null)
+			nodos[idNodoDestino] = new Nodo(idNodoDestino);
 
 		// Establezco la conexion
 
 		matrizAdy.setValor(idNodoOrigen, idNodoDestino, 1);
 
 	}
+	
+	public void mezclarNodos() {
+		
+		for(Nodo nodo : this.nodos)
+			nodo.setRandom(Math.random());
+		
+		try {
+		
+		Arrays.sort(this.nodos, new Comparator<Nodo>(){
+
+			@Override
+			public int compare(Nodo o1, Nodo o2) {
+				
+				if(o1.getGrado() < o2.getGrado())
+					return -1;
+				
+				if(o1.getGrado() > o2.getGrado())
+					return 1;
+				
+				if (o1.getRandom() < o2.getRandom())
+					return -1;
+				
+				if (o1.getRandom() > o2.getRandom())
+					return 1;
+				
+				return 0;
+			}
+			
+		});
+		
+		}catch (IllegalArgumentException e) {
+			
+			e.printStackTrace();
+		}
+
+	}
 
 	private void aplicarColoreo() {
 
+		cantidadColoresAsignados = 0;
+		
 		// Recorro los nodos del grafo secuencialmente por id
 
 		for (Nodo nodo : nodos) {
@@ -168,29 +215,13 @@ public class GrafoNDNP {
 
 	public void aplicarColoreoSecuencialAleatorio() {
 
-		// Ordeno los nodos menor a mayor ID
-		Arrays.sort(nodos, new Comparator<Nodo>() {
-
-			public int compare(Nodo n1, Nodo n2) {
-
-				try {
-					if (n1.getId() < n2.getId())
-						return -1;
-					else if (n1.getId() > n2.getId())
-						return 1;
-				} catch (Exception e) {
-					System.out.println(e.toString());
-				}
-				return 0;
-			}
-
-		});
-
 		// Aplico el algoritmo
 
 		aplicarColoreo();
 
 	}
+	
+
 
 	public void aplicarColoreoWelshPowell() {
 
