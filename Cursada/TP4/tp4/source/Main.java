@@ -44,26 +44,52 @@ public class Main {
 			
 			ms = gen.generarGrafoAleatorioPorcentaje(1000, 80);
 			gen.guardarMatrizSimetrica(ms, pathIn + "grafo2.in");
-			ms = gen.generarGrafoAleatorioProbabilidad(1000, 80);
-			gen.guardarMatrizSimetrica(ms, pathIn + "grafo3.in");
-			ms = gen.generarGrafoRegular(1000, 4);
-			gen.guardarMatrizSimetrica(ms, pathIn + "grafo4.in");
-			ms = gen.generarGrafoRegularPorAdy(1000, 60);
-			gen.guardarMatrizSimetrica(ms, pathIn + "grafo5.in");
+//			ms = gen.generarGrafoAleatorioProbabilidad(1000, 80);
+//			gen.guardarMatrizSimetrica(ms, pathIn + "grafo3.in");
+//			ms = gen.generarGrafoRegular(1000, 4);
+//			gen.guardarMatrizSimetrica(ms, pathIn + "grafo4.in");
+//			ms = gen.generarGrafoRegularPorAdy(1000, 60);
+//			gen.guardarMatrizSimetrica(ms, pathIn + "grafo5.in");
+//			
+//			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
+//			g.aplicarColoreoSecuencialAleatorio();
+//			g.mostrarGrafoColoreado(pathOut + "grafoSecuencialAleatorio.out");
+//			
+//			GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo2.in");
+//			g2.aplicarColoreoWelshPowell();
+//			g2.mostrarGrafoColoreado(pathOut + "grafoWelshPowell.out");
+//			
+//			GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo2.in");
+//			g3.aplicarColoreoMatula();
+//			g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
 			
 			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
-			g.aplicarColoreoSecuencialAleatorio();
-			g.mostrarGrafoColoreado(pathOut + "grafoSecuencialAleatorio.out");
 			
-			GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo2.in");
-			g2.aplicarColoreoWelshPowell();
-			g2.mostrarGrafoColoreado(pathOut + "grafoWelshPowell.out");
+			int[] coloresUtilizados = new int[g.getCantNodos()];
 			
-			GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo2.in");
-			g3.aplicarColoreoMatula();
-			g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
+			int i = 0;
 			
+			while (i < 1000) {
+				
+				g.mezclarNodos();
+				g.aplicarColoreoSecuencialAleatorio();
+				coloresUtilizados[g.getCantidadColoresAsignados()-1]++;
+				i++;
+				
+			}
 			
+			for (int j = 0 ; j < coloresUtilizados.length ; j++) {
+				
+				System.out.println(coloresUtilizados[j]);
+			}
+			
+
+//			for (int j = 0 ; j < 3 ; j++) {
+//				
+//				g.mezclarNodos();
+//				g.mostrarNodos();
+//				
+//			}
 						
 		} catch (Exception e) {
 			
