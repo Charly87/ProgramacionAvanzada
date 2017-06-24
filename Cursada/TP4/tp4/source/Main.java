@@ -33,23 +33,33 @@ public class Main {
 
 			// A veces funciona bien y a veces no, debe haber alguna boludez por la que falla.
 			ms = gen.generarGrafoRegularNPartitos(6, 5);
-			if (ms == null) {
+			/*if (ms == null) {
 				System.out.println("No se puede realizar un grafo N Partitos con nodos y aristas impares");
 			} else
-				ms.visualizar();
+				ms.visualizar();*/			
 
-			ms = gen.generarGrafoRegularPorAdy(50, 50);
+			/*ms = gen.generarGrafoRegularPorAdy(50, 50);
 			ms.visualizarVector();
-			ms.visualizar();
-			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo.in");
+			ms.visualizar();*/
+			
+			ms = gen.generarGrafoAleatorioPorcentaje(1000, 80);
+			gen.guardarMatrizSimetrica(ms, pathIn + "grafo2.in");
+			ms = gen.generarGrafoAleatorioProbabilidad(1000, 80);
+			gen.guardarMatrizSimetrica(ms, pathIn + "grafo3.in");
+			ms = gen.generarGrafoRegular(1000, 4);
+			gen.guardarMatrizSimetrica(ms, pathIn + "grafo4.in");
+			ms = gen.generarGrafoRegularPorAdy(1000, 60);
+			gen.guardarMatrizSimetrica(ms, pathIn + "grafo5.in");
+			
+			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
 			g.aplicarColoreoSecuencialAleatorio();
 			g.mostrarGrafoColoreado(pathOut + "grafoSecuencialAleatorio.out");
 			
-			GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo.in");
+			GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo2.in");
 			g2.aplicarColoreoWelshPowell();
 			g2.mostrarGrafoColoreado(pathOut + "grafoWelshPowell.out");
 			
-			GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo.in");
+			GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo2.in");
 			g3.aplicarColoreoMatula();
 			g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
 			

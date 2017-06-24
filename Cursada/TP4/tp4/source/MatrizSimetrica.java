@@ -114,7 +114,7 @@ public class MatrizSimetrica {
 		return minant;
 	}
 
-	public double getPorcentajeAdyacencia() {
+	public int getPorcentajeAdyacencia() {
 		return this.getCantidadAristas() * 100 / this.getCantidadAristasTotales();
 	}
 

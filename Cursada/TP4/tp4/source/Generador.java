@@ -58,7 +58,7 @@ public class Generador {
 		try {
 			ms = new MatrizSimetrica(nodos);
 			aux = new int[nodos];
-			do {
+			//do {
 				i = nodos;
 				nodoAnt = -1;
 				do {
@@ -73,7 +73,7 @@ public class Generador {
 						}
 					} while (--j != 0);
 				} while (--i != 0);
-			} while (getProm(aux) != grado);
+			//} while (getProm(aux) != grado);
 			return ms;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -202,15 +202,15 @@ public class Generador {
 
 	public void guardarMatrizSimetrica(MatrizSimetrica ms, String file) throws IOException {
 		PrintWriter out = new PrintWriter(new FileWriter(file));
-		out.print(ms.getCantidadNodos() + "");
-		out.print(ms.getCantidadAristas() + "");
-		out.print(ms.getPorcentajeAdyacencia() + "");
-		out.print(ms.getGradoMax() + "");
+		out.print(ms.getCantidadNodos() + " ");
+		out.print(ms.getCantidadAristas() + " ");
+		out.print(ms.getPorcentajeAdyacencia() + " ");
+		out.print(ms.getGradoMax() + " ");
 		out.println(ms.getGradoMin());
 		for (int i = 0; i < ms.getCantidadNodos(); i++) {
 			for (int j = i + 1; j < ms.getCantidadNodos(); j++) {
 				if (ms.getValor(i, j) != 0) {
-					out.println(i + "" + j);
+					out.println(i + " " + j);
 				}
 			}
 		}
