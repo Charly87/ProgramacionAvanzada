@@ -22,6 +22,7 @@ public class GrafoNDNP {
 	private int gradoMin;
 	private MatrizSimetrica matrizAdy;
 
+	private int cantColores;
 	private short[] colores;
 	private Nodo[] nodos;
 
@@ -126,7 +127,8 @@ public class GrafoNDNP {
 		// Limpia los colores asignados
 		for (Nodo nodo : nodos)
 			nodo.setColor(0);
-		return coloresUsados.size();
+		this.cantColores = coloresUsados.size();		
+		return this.cantColores;
 	}
 
 	private int obtenerColor(List<Integer> coloresUsados, SortedSet<Integer> coloresAdyacentes) {
@@ -146,7 +148,7 @@ public class GrafoNDNP {
 		return coloresUsados.get(indice);
 	}
 
-	public int aplicarColoreoSecuencialAleatorio() {
+	public int generarColoreoSecuencialAleatorio(String archivo) throws IOException {
 
 		// Genero random
 		for (Nodo nodo : this.nodos)
@@ -166,10 +168,10 @@ public class GrafoNDNP {
 		});
 
 		// Coloreo
-		return aplicarColoreo();
+		return aplicarColoreo(); 
 	}
 
-	public int aplicarColoreoWelshPowell() {
+	public int generarColoreoWelshPowell(String archivo) throws IOException {
 
 		// Genero random
 		for (Nodo nodo : this.nodos)
@@ -191,38 +193,37 @@ public class GrafoNDNP {
 					return 1;
 				return 0;
 			}
-		});	
+		});
 
 		// Coloreo
-		return aplicarColoreo();
+		return aplicarColoreo(); 
 	}
 
-	public int aplicarColoreoMatula() {
+	public int generarColoreoMatula(String archivo) throws IOException {
 
 		// Genero random
-				for (Nodo nodo : this.nodos)
-					nodo.setRandom((int) (Math.random() * 100));
+		for (Nodo nodo : this.nodos)
+			nodo.setRandom((int) (Math.random() * 100));
 
-				// Ordeno
-				Arrays.sort(this.nodos, new Comparator<Nodo>() {
-					@Override
-					public int compare(Nodo o1, Nodo o2) {
-						if (o1.getGrado() < o2.getGrado())
-							return -1;
-						else if (o1.getGrado() > o2.getGrado())
-							return 1;
+		// Ordeno
+		Arrays.sort(this.nodos, new Comparator<Nodo>() {
+			@Override
+			public int compare(Nodo o1, Nodo o2) {
+				if (o1.getGrado() < o2.getGrado())
+					return -1;
+				else if (o1.getGrado() > o2.getGrado())
+					return 1;
 
-						if (o1.getRandom() < o2.getRandom())
-							return -1;
+				if (o1.getRandom() < o2.getRandom())
+					return -1;
 
-						if (o1.getRandom() > o2.getRandom())
-							return 1;
-						return 0;
-					}
-				});
-
-		// Aplico el algoritmo
-		return aplicarColoreo();
+				if (o1.getRandom() > o2.getRandom())
+					return 1;
+				return 0;
+			}
+		});		
+		
+		return aplicarColoreo(); 
 	}
 
 	public int getCantidadNodos() {
@@ -245,19 +246,14 @@ public class GrafoNDNP {
 		return gradoMin;
 	}
 
-	public void mostrarGrafoColoreado(String fileName, int colores) throws IOException {
+	public void guardarColoreo(String fileName) throws IOException {
 
 		PrintWriter output = new PrintWriter(new FileWriter(fileName));
-
-		// Linea 1
-		output.println(cantidadNodos + " " + colores + " " + cantidadAristas + " " + porcentajeAdyacencia + " "
+		output.println(cantidadNodos + " " + cantColores + " " + cantidadAristas + " " + porcentajeAdyacencia + " "
 				+ gradoMax + " " + gradoMin);
-
-		// Linea 2 hasta cantNodos
 		for (Nodo nodo : nodos)
 			output.println(nodo.getId() + " " + nodo.getColor());
 
 		output.close();
 	}
-
 }

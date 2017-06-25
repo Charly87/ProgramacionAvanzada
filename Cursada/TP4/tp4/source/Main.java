@@ -9,111 +9,49 @@ public class Main {
 
 		try {
 
-//			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo.in");
-//			g.aplicarColoreoSecuencialAleatorio();
-//			System.out.println("Cantidad de colores asignados: " + g.getCantidadColoresAsignados());
-//			g.mostrarGrafoColoreado(pathOut + "pruebaProbador.out");
-			
-			
-			Probador p = new Probador(pathIn + "grafo.in", pathOut + "pruebaProbador.out");
-			p.verificarSalida();
-			
-			
+			Generador g = new Generador();
+			System.out.println("Generando grafo aleatorio porcentaje 40");
+			g.generarGrafoAleatorioPorcentaje(600, 40, pathIn + "grafoAleatorioPorcentaje40.in");
+			System.out.println("Generando grafo aleatorio porcentaje 60");
+			g.generarGrafoAleatorioPorcentaje(600, 60, pathIn + "grafoAleatorioPorcentaje60.in");
+			System.out.println("Generando grafo aleatorio porcentaje 90");
+			g.generarGrafoAleatorioPorcentaje(600, 90, pathIn + "grafoAleatorioPorcentaje90.in");
 
+			GrafoNDNP grafoAleatorio40 = new GrafoNDNP(pathIn + "grafoAleatorioPorcentaje40.in");
+			GrafoNDNP grafoAleatorio60 = new GrafoNDNP(pathIn + "grafoAleatorioPorcentaje60.in");
+			GrafoNDNP grafoAleatorio90 = new GrafoNDNP(pathIn + "grafoAleatorioPorcentaje90.in");
 
-			// A veces funciona bien y a veces no, debe haber alguna boludez por la que falla.
-			ms = gen.generarGrafoRegularNPartitos(6, 5);
-			/*
-			 * if (ms == null) {
-			 * System.out.println("No se puede realizar un grafo N Partitos con nodos y aristas impares");
-			 * } else
-			 * ms.visualizar();
-			 */
+			System.out.println("Generando coloreo aleatorio porcentaje 40");
+			grafoAleatorio40.generarColoreoSecuencialAleatorio(pathOut + "coloreoAleatorioPorcentaje40.out");
+			System.out.println("Generando coloreo aleatorio porcentaje 60");
+			grafoAleatorio60.generarColoreoSecuencialAleatorio(pathOut + "coloreoAleatorioPorcentaje60.out");
+			System.out.println("Generando coloreo aleatorio porcentaje 90");
+			grafoAleatorio90.generarColoreoSecuencialAleatorio(pathOut + "coloreoAleatorioPorcentaje90.out");
 
-			/*
-			 * ms = gen.generarGrafoRegularPorAdy(50, 50);
-			 * ms.visualizarVector();
-			 * ms.visualizar();
-			 */
+			Probador pAleatorio40 = new Probador(pathIn + "grafoAleatorioPorcentaje40.in",
+					pathOut + "coloreoAleatorioPorcentaje40.out");
+			Probador pAleatorio60 = new Probador(pathIn + "grafoAleatorioPorcentaje40.in",
+					pathOut + "coloreoAleatorioPorcentaje40.out");
+			Probador pAleatorio90 = new Probador(pathIn + "grafoAleatorioPorcentaje40.in",
+					pathOut + "coloreoAleatorioPorcentaje40.out");
 
-			ms = gen.generarGrafoAleatorioPorcentaje(1000, 80);
-			gen.guardarMatrizSimetrica(ms, pathIn + "grafo2.in");
-			// ms = gen.generarGrafoAleatorioProbabilidad(1000, 80);
-			// gen.guardarMatrizSimetrica(ms, pathIn + "grafo3.in");
-			// ms = gen.generarGrafoRegular(1000, 4);
-			// gen.guardarMatrizSimetrica(ms, pathIn + "grafo4.in");
-			// ms = gen.generarGrafoRegularPorAdy(1000, 60);
-			// gen.guardarMatrizSimetrica(ms, pathIn + "grafo5.in");
-			//
-			// GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
-			// g.aplicarColoreoSecuencialAleatorio();
-			// g.mostrarGrafoColoreado(pathOut + "grafoSecuencialAleatorio.out");
-			//
-			// GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo2.in");
-			// g2.aplicarColoreoWelshPowell();
-			// g2.mostrarGrafoColoreado(pathOut + "grafoWelshPowell.out");
-			//
-			// GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo2.in");
-			// g3.aplicarColoreoMatula();
-			// g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
+			pAleatorio40.verificarSalida();
+			pAleatorio60.verificarSalida();
+			pAleatorio90.verificarSalida();
 
-			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
-			int repeticiones = 1000;
-			int[] coloresUtilizados = new int[g.getCantidadNodos()];
+			System.out.println("Generando coloreo welsh powel porcentaje 40");
+			grafoAleatorio40.generarColoreoWelshPowell(pathOut + "coloreoWelshPowelPorcentaje40.out");
+			System.out.println("Generando coloreo welsh powel porcentaje 60");
+			grafoAleatorio60.generarColoreoWelshPowell(pathOut + "coloreoWelshPowelPorcentaje60.out");
+			System.out.println("Generando coloreo welsh powel porcentaje 90");
+			grafoAleatorio90.generarColoreoWelshPowell(pathOut + "coloreoWelshPowelPorcentaje90.out");
 
-			int i = 0;
-			int colores;
-			int informe = 99;
-			while (i < repeticiones) {
-				System.out.println("Secuencial Aleatorio");
-				long inicio = System.nanoTime();
-
-				colores = g.aplicarColoreoSecuencialAleatorio();
-				coloresUtilizados[colores - 1]++;
-				i++;
-				if (i > informe) {
-					informe += 100;
-					System.out.println("Pasadas: " + i + " Colores:" + colores + " Tiempo: "
-							+ (System.nanoTime() - inicio) / 1000000 + "ms");
-				}
-			}
-
-			i = 0;
-			informe = 99;
-			coloresUtilizados = new int[g.getCantidadNodos()];
-			while (i < repeticiones) {
-				System.out.println("WelshPowell");
-				long inicio = System.nanoTime();
-
-				colores = g.aplicarColoreoWelshPowell();
-				coloresUtilizados[colores - 1]++;
-				i++;
-				if (i > informe) {
-					informe += 100;
-					System.out.println("Pasadas: " + i + " Colores:" + colores + " Tiempo: "
-							+ (System.nanoTime() - inicio) / 1000000 + "ms");
-				}
-			}
-			
-			i = 0;
-			informe = 99;
-			coloresUtilizados = new int[g.getCantidadNodos()];
-			while (i < repeticiones) {
-				System.out.println("Matula");
-				long inicio = System.nanoTime();
-
-				colores = g.aplicarColoreoMatula();
-				coloresUtilizados[colores - 1]++;
-				i++;
-				if (i > informe) {
-					informe += 100;
-					System.out.println("Pasadas: " + i + " Colores:" + colores + " Tiempo: "
-							+ (System.nanoTime() - inicio) / 1000000 + "ms");
-				}
-			}
-
-//			for (int j = 0; j < coloresUtilizados.length; j++)
-//				System.out.println(coloresUtilizados[j]);
+			System.out.println("Generando coloreo matula porcentaje 40");
+			grafoAleatorio40.generarColoreoMatula(pathOut + "coloreoMatulaPorcentaje40.in");
+			System.out.println("Generando coloreo matula porcentaje 60");
+			grafoAleatorio60.generarColoreoMatula(pathOut + "coloreoMatulaPorcentaje40.in");
+			System.out.println("Generando coloreo matula porcentaje 90");
+			grafoAleatorio90.generarColoreoMatula(pathOut + "coloreoMatulaPorcentaje40.in");
 
 		} catch (Exception e) {
 
