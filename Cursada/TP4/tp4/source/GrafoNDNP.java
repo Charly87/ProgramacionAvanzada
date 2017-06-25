@@ -11,17 +11,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class GrafoNDNP {
 
-	private int cantNodos;
-	private int cantAristas;
+	private int cantidadNodos;
+	private int cantidadAristas;
 	private int porcentajeAdyacencia;
 	private int gradoMax;
 	private int gradoMin;
 	private MatrizSimetrica matrizAdy;
 
-	private int coloresAsignados;
 	private short[] colores;
 	private Nodo[] nodos;
 
@@ -29,13 +29,13 @@ public class GrafoNDNP {
 
 		Scanner input = new Scanner(new File(fileName));
 
-		this.cantNodos = input.nextInt();
-		this.cantAristas = input.nextInt();
+		this.cantidadNodos = input.nextInt();
+		this.cantidadAristas = input.nextInt();
 		this.porcentajeAdyacencia = input.nextInt();
 		this.gradoMax = input.nextInt();
 		this.gradoMin = input.nextInt();
-		this.nodos = new Nodo[this.cantNodos];
-		this.matrizAdy = new MatrizSimetrica(this.cantNodos);
+		this.nodos = new Nodo[this.cantidadNodos];
+		this.matrizAdy = new MatrizSimetrica(this.cantidadNodos);
 		while (input.hasNextInt())
 			agregarConexion(input.nextInt(), input.nextInt());
 
@@ -65,15 +65,15 @@ public class GrafoNDNP {
 	}
 
 	private void inicializarColores() {
-		colores = new short[this.cantNodos];
+		colores = new short[this.cantidadNodos];
 		for (short c = 0; c < colores.length; c++)
 			colores[c] = (short) (c + 1);
 	}
 
 	private void inicializarGradoNodos() {
 		int grado = 0;
-		for (int i = 0; i < cantNodos; i++) {
-			for (int j = 0; j < cantNodos; j++)
+		for (int i = 0; i < cantidadNodos; i++) {
+			for (int j = 0; j < cantidadNodos; j++)
 				if (matrizAdy.getValor(i, j) == 1)
 					grado++;
 			nodos[i].setGrado(grado);
@@ -81,58 +81,27 @@ public class GrafoNDNP {
 		}
 	}
 
-	public int getCantidadNodos() {
-		return cantNodos;
-	}
-
-	public int getCantidadColoresAsignados() {
-		return coloresAsignados;
-	}
-
 	public void mostrarNodos() {
 
-		for (Nodo nodo : nodos) {
+		for (Nodo nodo : nodos)
 			System.out.println(nodo.getGrado() + " " + nodo.getRandom() + " " + nodo.getId());
-		}
 
 		System.out.println("\n\n\n\n\n");
-
 	}
 
-	public void mezclarNodos() {
+	private int aplicarColoreo() {
 
-		for (Nodo nodo : this.nodos)
-			nodo.setRandom((int) Math.random() * 100);
-
-		Arrays.sort(this.nodos, new Comparator<Nodo>() {
-			@Override
-			public int compare(Nodo o1, Nodo o2) {
-
-				if (o1.getRandom() < o2.getRandom())
-					return -1;
-
-				if (o1.getRandom() > o2.getRandom())
-					return 1;
-
-				if (o1.getGrado() < o2.getGrado())
-					return -1;
-
-				if (o1.getGrado() > o2.getGrado())
-					return 1;
-				return 0;
-			}
-		});
-	}
-
-	private void aplicarColoreoCharly() {
-		int color = 1;
-		this.nodos[0].setColor(color);
 		List<Integer> coloresUsados = new ArrayList<Integer>();
-		List<Integer> coloresAdyacentes = new ArrayList<Integer>();
-		coloresUsados.add(color);
+		// No inserta valores que ya existen
+		SortedSet<Integer> coloresAdyacentes = new TreeSet<Integer>();
+		coloresUsados.add(1);
+		this.nodos[0].setColor(coloresUsados.get(0));
 
+		// Recorro todos los nodos
 		for (int i = 1; i < this.nodos.length; i++) {
+			// Recorro todos los nodos adyacentes al nodo
 			for (int j = 0; j < this.nodos.length; j++) {
+				// Agrego los nodos adyacentes coloreados
 				if (this.nodos[i].getId() != j && matrizAdy.getValor(this.nodos[i].getId(), j) == 1) {
 
 					int colorAdyacente = this.nodos[j].getColor();
@@ -140,26 +109,35 @@ public class GrafoNDNP {
 						coloresAdyacentes.add(colorAdyacente);
 					}
 				}
+			}
 
-				if (coloresAdyacentes.isEmpty())
-					this.nodos[i].setColor(coloresUsados.get(0));
-				else {
-					this.nodos[i].setColor(obtenerColor(coloresUsados, coloresAdyacentes));
-					;
-					if (this.nodos[i].getColor() == coloresUsados.size() + 1)
-						coloresUsados.add(coloresUsados.size() + 1);
-					coloresAdyacentes.clear();
-				}
+			// Si no hay nodos coloreados asigno el primer color
+			if (coloresAdyacentes.isEmpty())
+				this.nodos[i].setColor(coloresUsados.get(0));
+			// Sino busco el primero que pueda usar
+			else {
+				this.nodos[i].setColor(obtenerColor(coloresUsados, coloresAdyacentes));
+				if (this.nodos[i].getColor() == coloresUsados.size() + 1)
+					coloresUsados.add(coloresUsados.size() + 1);
+				coloresAdyacentes.clear();
 			}
 		}
+
+		// Limpia los colores asignados
+		for (Nodo nodo : nodos)
+			nodo.setColor(0);
+		return coloresUsados.size();
 	}
 
-	private int obtenerColor(List<Integer> coloresUsados, List<Integer> coloresAdyacentes) {
-		int indice = 0;
+	private int obtenerColor(List<Integer> coloresUsados, SortedSet<Integer> coloresAdyacentes) {
 
 		if (coloresUsados.size() == coloresAdyacentes.size())
 			return coloresUsados.size() + 1;
 
+		// 1 - 1
+		// 2 - 2
+		// 3 - 4 -> devuelve el 3
+		int indice = 0;
 		for (Integer integer : coloresAdyacentes) {
 			if (coloresUsados.get(indice) != integer)
 				return coloresUsados.get(indice);
@@ -168,168 +146,118 @@ public class GrafoNDNP {
 		return coloresUsados.get(indice);
 	}
 
-	private void aplicarColoreo() {
+	public int aplicarColoreoSecuencialAleatorio() {
 
-		coloresAsignados = 0;
+		// Genero random
+		for (Nodo nodo : this.nodos)
+			nodo.setRandom((int) (Math.random() * 100));
 
-		// Recorro los nodos del grafo secuencialmente por id
-		System.out.println("Inicio Coloreo: 0 ");
-
-		int c = 0;
-		boolean colorAsignado = false;
-		for (Nodo nodo : nodos) {
-			long inicio = System.nanoTime();
-
-			c = 0;
-			colorAsignado = false;
-
-			while (c < colores.length && colorAsignado == false) {
-
-				if (sePuedeAsignarColor(nodo, colores[c])) {
-
-					nodo.setColor(colores[c]);
-					colorAsignado = true;
-
-					// Esto es para obtener la cantidad de colores
-					// asignados.
-					// La variable se ira reemplazando en la medida que el
-					// indice
-					// alcanza valores mas altos.
-
-					if (c > coloresAsignados)
-						coloresAsignados = c;
-				}
-
-				c++;
-			}
-			// System.out.println("Coloreo Nodo (Micro):" + (System.nanoTime() - inicio) / 1000);
-		}
-
-		coloresAsignados++; // Incremento para que quede con el valor
-							// real y no el valor del indice.
-	}
-
-	public void quitarColoreo() {
-		this.coloresAsignados = 0;
-		for (Nodo nodo : nodos)
-			nodo.setColor(0);
-	}
-
-	public void aplicarColoreoSecuencialAleatorio() {
-
-		// Aplico el algoritmo
-		aplicarColoreo();
-	}
-
-	public void aplicarColoreoWelshPowell() {
-
-		// Ordeno los nodos de mayor a menor grado
-
-		Arrays.sort(nodos, new Comparator<Nodo>() {
-
-			public int compare(Nodo n1, Nodo n2) {
-
-				if (n1.getGrado() > n2.getGrado())
+		// Ordeno
+		Arrays.sort(this.nodos, new Comparator<Nodo>() {
+			@Override
+			public int compare(Nodo o1, Nodo o2) {
+				if (o1.getRandom() < o2.getRandom())
 					return -1;
-				else if (n1.getGrado() < n2.getGrado())
+
+				if (o1.getRandom() > o2.getRandom())
 					return 1;
-				else
-					return 0;
-
+				return 0;
 			}
-
 		});
 
-		// Aplico el algoritmo
-
-		aplicarColoreo();
-
+		// Coloreo
+		return aplicarColoreo();
 	}
 
-	public void aplicarColoreoMatula() {
+	public int aplicarColoreoWelshPowell() {
 
-		// Ordeno los nodos de menor a mayor grado
+		// Genero random
+		for (Nodo nodo : this.nodos)
+			nodo.setRandom((int) (Math.random() * 100));
 
-		Arrays.sort(nodos, new Comparator<Nodo>() {
-
-			public int compare(Nodo n1, Nodo n2) {
-
-				if (n1.getGrado() < n2.getGrado())
+		// Ordeno
+		Arrays.sort(this.nodos, new Comparator<Nodo>() {
+			@Override
+			public int compare(Nodo o1, Nodo o2) {
+				if (o1.getGrado() > o2.getGrado())
 					return -1;
-				else if (n1.getGrado() > n2.getGrado())
+				else if (o1.getGrado() < o2.getGrado())
 					return 1;
-				else
-					return 0;
 
+				if (o1.getRandom() < o2.getRandom())
+					return -1;
+
+				if (o1.getRandom() > o2.getRandom())
+					return 1;
+				return 0;
 			}
+		});	
 
-		});
+		// Coloreo
+		return aplicarColoreo();
+	}
+
+	public int aplicarColoreoMatula() {
+
+		// Genero random
+				for (Nodo nodo : this.nodos)
+					nodo.setRandom((int) (Math.random() * 100));
+
+				// Ordeno
+				Arrays.sort(this.nodos, new Comparator<Nodo>() {
+					@Override
+					public int compare(Nodo o1, Nodo o2) {
+						if (o1.getGrado() < o2.getGrado())
+							return -1;
+						else if (o1.getGrado() > o2.getGrado())
+							return 1;
+
+						if (o1.getRandom() < o2.getRandom())
+							return -1;
+
+						if (o1.getRandom() > o2.getRandom())
+							return 1;
+						return 0;
+					}
+				});
 
 		// Aplico el algoritmo
-
-		aplicarColoreo();
-
+		return aplicarColoreo();
 	}
 
-	/** Verifica si se puede asignar un determinado color a un nodo. Para esta
-	 * tarea, verifica qué color tienen asignados los nodos adyacentes.
-	 * 
-	 * @param nodo
-	 * - nodo al cual se le asignara el color, en caso de ser
-	 * posible.
-	 * @param colorAAsignar
-	 * - identificador de color dentro de todos los posibles que esta
-	 * siendo evaluado para ser asignado.
-	 * @return true si se puede asignar el color; false en caso contrario. */
-	private boolean sePuedeAsignarColor(Nodo nodo, int colorAAsignar) {
-
-		// Busco nodos adyacentes
-		int colorNodoAdyacente;
-		for (int j = 0; j < cantNodos; j++) {
-
-			// Si hay un nodo adyacente...
-			if (matrizAdy.getValor(nodo.getId(), j) == 1) {
-
-				// Evaluo color de nodo adyacente
-				colorNodoAdyacente = nodos[j].getColor();
-
-				// Si el nodo adyacente todavia no tiene un color asignado o si
-				// ya tiene uno asignado pero es distinto al que quiero asignar
-				if (colorNodoAdyacente != 0 && colorNodoAdyacente == colorAAsignar) {
-
-					return false;
-
-				}
-
-			}
-
-		}
-
-		// Si recorri todos los nodos adyacentes y no encontre ninguno que tenga
-		// ese color asignado, entonces se puede asignar dicho color.
-
-		return true;
+	public int getCantidadNodos() {
+		return cantidadNodos;
 	}
 
-	public void mostrarGrafoColoreado(String fileName) throws IOException {
+	public int getCantidadAristas() {
+		return cantidadAristas;
+	}
+
+	public int getPorcentajeAdyacencia() {
+		return porcentajeAdyacencia;
+	}
+
+	public int getGradoMax() {
+		return gradoMax;
+	}
+
+	public int getGradoMin() {
+		return gradoMin;
+	}
+
+	public void mostrarGrafoColoreado(String fileName, int colores) throws IOException {
 
 		PrintWriter output = new PrintWriter(new FileWriter(fileName));
 
 		// Linea 1
-
-		output.println(cantNodos + " " + coloresAsignados + " " + cantAristas + " " + porcentajeAdyacencia + " "
+		output.println(cantidadNodos + " " + colores + " " + cantidadAristas + " " + porcentajeAdyacencia + " "
 				+ gradoMax + " " + gradoMin);
 
 		// Linea 2 hasta cantNodos
-
-		for (Nodo nodo : nodos) {
-
+		for (Nodo nodo : nodos)
 			output.println(nodo.getId() + " " + nodo.getColor());
 
-		}
-
 		output.close();
-
 	}
 
 }

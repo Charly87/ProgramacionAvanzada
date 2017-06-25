@@ -68,38 +68,62 @@ public class Main {
 			// g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
 
 			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
-
+			int repeticiones = 1000;
 			int[] coloresUtilizados = new int[g.getCantidadNodos()];
 
 			int i = 0;
+			int colores;
+			int informe = 99;
+			while (i < repeticiones) {
+				System.out.println("Secuencial Aleatorio");
+				long inicio = System.nanoTime();
 
-			long inicio = System.nanoTime();
-			while (i < 1000) {
-				System.out.println(0);
-				g.mezclarNodos();
-				System.out.println("Mezclado:" + (System.nanoTime() - inicio)/1000000);
-				inicio = System.nanoTime();
-				g.aplicarColoreoSecuencialAleatorio();
-				System.out.println("Coloreado:" + (System.nanoTime() - inicio)/1000000);
-				inicio = System.nanoTime();
-				coloresUtilizados[g.getCantidadColoresAsignados() - 1]++;
-				g.quitarColoreo();
-				System.out.println("Eliminar Coloreo:" + (System.nanoTime() - inicio)/1000000);
+				colores = g.aplicarColoreoSecuencialAleatorio();
+				coloresUtilizados[colores - 1]++;
 				i++;
-				System.out.println();
+				if (i > informe) {
+					informe += 100;
+					System.out.println("Pasadas: " + i + " Colores:" + colores + " Tiempo: "
+							+ (System.nanoTime() - inicio) / 1000000 + "ms");
+				}
 			}
 
-			for (int j = 0; j < coloresUtilizados.length; j++) {
+			i = 0;
+			informe = 99;
+			coloresUtilizados = new int[g.getCantidadNodos()];
+			while (i < repeticiones) {
+				System.out.println("WelshPowell");
+				long inicio = System.nanoTime();
 
-				System.out.println(coloresUtilizados[j]);
+				colores = g.aplicarColoreoWelshPowell();
+				coloresUtilizados[colores - 1]++;
+				i++;
+				if (i > informe) {
+					informe += 100;
+					System.out.println("Pasadas: " + i + " Colores:" + colores + " Tiempo: "
+							+ (System.nanoTime() - inicio) / 1000000 + "ms");
+				}
+			}
+			
+			i = 0;
+			informe = 99;
+			coloresUtilizados = new int[g.getCantidadNodos()];
+			while (i < repeticiones) {
+				System.out.println("Matula");
+				long inicio = System.nanoTime();
+
+				colores = g.aplicarColoreoMatula();
+				coloresUtilizados[colores - 1]++;
+				i++;
+				if (i > informe) {
+					informe += 100;
+					System.out.println("Pasadas: " + i + " Colores:" + colores + " Tiempo: "
+							+ (System.nanoTime() - inicio) / 1000000 + "ms");
+				}
 			}
 
-			// for (int j = 0 ; j < 3 ; j++) {
-			//
-			// g.mezclarNodos();
-			// g.mostrarNodos();
-			//
-			// }
+//			for (int j = 0; j < coloresUtilizados.length; j++)
+//				System.out.println(coloresUtilizados[j]);
 
 		} catch (Exception e) {
 
