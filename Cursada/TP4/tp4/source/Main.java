@@ -3,33 +3,23 @@ package tp4.source;
 public class Main {
 
 	public static void main(String[] args) {
-		MatrizSimetrica ms = null;
-		Generador gen;
 
 		String pathIn = "TP4/tp4/entrada/";
 		String pathOut = "TP4/tp4/salida/";
 
 		try {
 
-			/*
-			 * ms = new MatrizSimetrica(4); ms.setValor(0,1, 1);
-			 * ms.setValor(0,2, 2); ms.setValor(0,3, 3);
-			 * ms.setValor(1,2, 4); ms.setValor(1,3, 5);
-			 * ms.setValor(2,3, 6); ms.visualizarVector();
-			 * ms.visualizar();
-			 */
+//			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo.in");
+//			g.aplicarColoreoSecuencialAleatorio();
+//			System.out.println("Cantidad de colores asignados: " + g.getCantidadColoresAsignados());
+//			g.mostrarGrafoColoreado(pathOut + "pruebaProbador.out");
+			
+			
+			Probador p = new Probador(pathIn + "grafo.in", pathOut + "pruebaProbador.out");
+			p.verificarSalida();
+			
+			
 
-			gen = new Generador();
-			/*
-			 * ms = gen.generarGrafoAleatorioProbabilidad(5, 70);
-			 * ms.visualizarVector();
-			 * ms.visualizar();
-			 * ms = gen.generarGrafoAleatorioPorcentaje(3, 90);
-			 * ms.visualizarVector();
-			 * ms.visualizar(); ms =gen.generarGrafoRegular(4, 2);
-			 * ms.visualizarVector();
-			 * ms.visualizar();
-			 */
 
 			// A veces funciona bien y a veces no, debe haber alguna boludez por la que falla.
 			 gen.generarGrafoRegularNPartitos(6, 5,"TP4/tp4/salida/partito.out");
@@ -72,26 +62,28 @@ public class Main {
 			int[] coloresUtilizados = new int[g.getCantidadNodos()];
 
 			int i = 0;
+			int colores;
+			int informe = 99;
+			while (i < repeticiones) {
+				System.out.println("Secuencial Aleatorio");
+				long inicio = System.nanoTime();
 
-			long inicio = System.nanoTime();
-			while (i < 1000) {
-				System.out.println(0);
-				g.mezclarNodos();
-				System.out.println("Mezclado:" + (System.nanoTime() - inicio)/1000000);
-				inicio = System.nanoTime();
-				g.aplicarColoreoSecuencialAleatorio();
-				System.out.println("Coloreado:" + (System.nanoTime() - inicio)/1000000);
-				inicio = System.nanoTime();
-				coloresUtilizados[g.getCantidadColoresAsignados() - 1]++;
-				g.quitarColoreo();
-				System.out.println("Eliminar Coloreo:" + (System.nanoTime() - inicio)/1000000);
+				colores = g.aplicarColoreoSecuencialAleatorio();
+				coloresUtilizados[colores - 1]++;
 				i++;
 				System.out.println();
 			}*/
 
 			/*for (int j = 0; j < coloresUtilizados.length; j++) {
 
-				System.out.println(coloresUtilizados[j]);
+				colores = g.aplicarColoreoWelshPowell();
+				coloresUtilizados[colores - 1]++;
+				i++;
+				if (i > informe) {
+					informe += 100;
+					System.out.println("Pasadas: " + i + " Colores:" + colores + " Tiempo: "
+							+ (System.nanoTime() - inicio) / 1000000 + "ms");
+				}
 			}
 */
 			// for (int j = 0 ; j < 3 ; j++) {
@@ -101,10 +93,12 @@ public class Main {
 			//
 			// }
 
+//			for (int j = 0; j < coloresUtilizados.length; j++)
+//				System.out.println(coloresUtilizados[j]);
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
-
 		}
 	}
 }

@@ -69,6 +69,9 @@ public class GrafoNDNP {
 		ArrayList<Integer> color = new ArrayList<Integer>();
 		SortedSet<Integer> auxiliar = new TreeSet<Integer>();
 		color.add(1);
+		// Nodo secuencia : 5 , 2 ,3, 4 ,1
+		// nodosColoreados[5] = 1
+		//
 		nodosColoreados[nodosSecuencia.get(0)] = color.get(0);
 		for (int i = 1; i < nodosSecuencia.size(); i++) {
 			for (int j = 0; j < matriz.getCantNodos(); j++) {

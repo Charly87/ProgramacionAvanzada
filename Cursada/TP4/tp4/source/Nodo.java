@@ -36,7 +36,7 @@ public class Nodo {
 	}
 
 	public int getRandom() {
-		return (int)Math.random() * 100;
+		return this.random;
 	}
 
 	public void setRandom(int random) {
