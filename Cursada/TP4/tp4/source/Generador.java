@@ -128,77 +128,13 @@ public class Generador {
 		return sum /= vec.length;
 	}
 
-	public MatrizSimetrica generarGrafoRegularNPartitos(int nodos, int nPartitos) {
-		MatrizSimetrica ms = null;
-		try {
-			if (nodos % 2 != 0 && nPartitos % 2 != 0)
-				return ms;
+	public void generarGrafoRegularNPartitos(int nodos, int nPartitos, String archivo) throws Exception {
+		MatrizSimetrica ms= new MatrizSimetrica(nodos);
+		for (int i = 0; i < ms.getCantidadNodos() - 1; i++)
+			ms.setValor(i, i+1, 1);
+	    guardarMatrizSimetrica(ms, archivo);
+	}
 
-			ms = new MatrizSimetrica(nodos);
-
-			// Cargo cada arista con pesos aleatorios
-			for (int i = 0; i < nodos; i++)
-				for (int j = i + 1; j < nodos; j++)
-					ms.setValor(i, j, (int) (Math.random() * 100));
-
-			// Vector para almacenar la cantidad de aristas por cada nodo.
-			int[] aristasEnNodos = new int[nodos];
-			// Creo un vector para almacenar los nodos ordenados
-			int[] nOrdenados = new int[nodos - 1];
-			// Ordeno las aristas por el peso y fila
-			for (int i = 0; i < nodos; i++) {
-				for (int j = i + 1; j < nodos; j++) {
-					// Guardo el nodo que voy a apuntar
-					int nodo = j;
-					// Si estoy parado en la primer posición
-					if (nodo == i + 1) {
-						nOrdenados[0] = nodo;
-					} else {
-						for (int k = 0; k < j - i; k++) {
-							// Si estoy parado en la última posición
-							if (k == j - i - 1) {
-								nOrdenados[k] = nodo;
-							} else {
-								// Comparo si el nodo actual del vector es mayor al nodo apuntado
-								if (ms.getValor(i, nOrdenados[k]) > ms.getValor(i, nodo)) {
-									// Guardo el nodo actual del vector
-									int nodoAux = nOrdenados[k];
-									// Lo piso con el nodo que estoy apuntando
-									nOrdenados[k] = nodo;
-									// Guardo el nodo que estaba en el vector para seguir comparando
-									nodo = nodoAux;
-								}
-							}
-						}
-					}
-				}
-
-				// Asigno 1 si no llegué a nPartitos de aristas para nodo columna y fila.
-				// Asigno 0 si ya llegué a nPartitos de aristas para nodo columna y fila.
-				int fila = i;
-				int columna = 0;
-				for (int m = 0; m < nodos - i - 1; m++) {
-					columna = nOrdenados[m];
-					if (aristasEnNodos[fila] < nPartitos && aristasEnNodos[columna] < nPartitos) {
-						if (aristasEnNodos[fila] + aristasEnNodos[columna] < nPartitos || m == nodos - i - 2) {
-							aristasEnNodos[fila]++;
-							aristasEnNodos[columna]++;
-							ms.setValor(fila, columna, 1);
-						} else
-							ms.setValor(fila, columna, 0);
-					} else
-						ms.setValor(fila, columna, 0);
-				}
-
-			}
-
-		} catch (
-
-		Exception e) {
-			e.printStackTrace();
-		}
-		return ms;
-	}	
 
 	public void guardarMatrizSimetrica(MatrizSimetrica ms, String file) throws IOException {
 		PrintWriter out = new PrintWriter(new FileWriter(file));

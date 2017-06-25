@@ -32,7 +32,7 @@ public class Main {
 			 */
 
 			// A veces funciona bien y a veces no, debe haber alguna boludez por la que falla.
-			ms = gen.generarGrafoRegularNPartitos(6, 5);
+			 gen.generarGrafoRegularNPartitos(6, 5,"TP4/tp4/salida/partito.out");
 			/*
 			 * if (ms == null) {
 			 * System.out.println("No se puede realizar un grafo N Partitos con nodos y aristas impares");
@@ -46,8 +46,8 @@ public class Main {
 			 * ms.visualizar();
 			 */
 
-			ms = gen.generarGrafoAleatorioPorcentaje(1000, 80);
-			gen.guardarMatrizSimetrica(ms, pathIn + "grafo2.in");
+			/*ms = gen.generarGrafoAleatorioPorcentaje(1000, 80);
+			gen.guardarMatrizSimetrica(ms, pathIn + "grafo2.in");*/
 			// ms = gen.generarGrafoAleatorioProbabilidad(1000, 80);
 			// gen.guardarMatrizSimetrica(ms, pathIn + "grafo3.in");
 			// ms = gen.generarGrafoRegular(1000, 4);
@@ -67,7 +67,7 @@ public class Main {
 			// g3.aplicarColoreoMatula();
 			// g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
 
-			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
+			/*GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
 
 			int[] coloresUtilizados = new int[g.getCantidadNodos()];
 
@@ -87,13 +87,13 @@ public class Main {
 				System.out.println("Eliminar Coloreo:" + (System.nanoTime() - inicio)/1000000);
 				i++;
 				System.out.println();
-			}
+			}*/
 
-			for (int j = 0; j < coloresUtilizados.length; j++) {
+			/*for (int j = 0; j < coloresUtilizados.length; j++) {
 
 				System.out.println(coloresUtilizados[j]);
 			}
-
+*/
 			// for (int j = 0 ; j < 3 ; j++) {
 			//
 			// g.mezclarNodos();
