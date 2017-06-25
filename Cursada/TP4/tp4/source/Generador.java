@@ -3,6 +3,10 @@ package tp4.source;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import tp4bis.src.tp4.Arista;
 
 public class Generador {
 
@@ -19,21 +23,20 @@ public class Generador {
 
 	public void generarGrafoAleatorioPorcentaje(int nodos, int porcentaje, String archivo) throws Exception {
 
-		int i = nodos;
-		int j;
-		int aristasTotales = nodos * (nodos - 1) / 2;
-		int aristasAdyacentes = porcentaje * aristasTotales / 100;
 		MatrizSimetrica ms = new MatrizSimetrica(nodos);
-		do {
-			j = i;
-			do {
-				if (Math.random() <= (float) porcentaje / 100) {
-					ms.setValor(nodos - i, nodos - j, 1);
-					if (i != j)
-						aristasAdyacentes--;
-				}
-			} while (--j != 0 && aristasAdyacentes != 0);
-		} while (--i != 0 && aristasAdyacentes != 0);
+		ArrayList<Arista> aristas = new ArrayList<Arista>();
+		for (int i = 0; i < ms.getCantidadNodos() + 2; i++) {
+			for (int j = i + 1; j < ms.getCantidadNodos(); j++) {
+				aristas.add(new Arista(i, j, Math.random()));
+			}
+		}
+
+		Collections.sort(aristas);
+		for (Arista arista : aristas) {
+			if ((int) (arista.getProbabilidad() * 100) < porcentaje) {
+				ms.setValor(arista.getDesde(), arista.getHasta(), 1);
+			}
+		}
 
 		this.guardarMatrizSimetrica(ms, archivo);
 	}
@@ -93,6 +96,13 @@ public class Generador {
 		} while (--i != 0 && aristasAdyacentes != 0);
 
 		this.guardarMatrizSimetrica(ms, archivo);
+	}
+
+	public void generarGrafoRegularNPartitos(int nodos, int nPartitos, String archivo) throws Exception {
+		MatrizSimetrica ms = new MatrizSimetrica(nodos);
+		for (int i = 0; i < ms.getCantidadNodos() - 1; i++)
+			ms.setValor(i, i + 1, 1);
+		guardarMatrizSimetrica(ms, archivo);
 	}
 
 	public void guardarMatrizSimetrica(MatrizSimetrica ms, String file) throws IOException {

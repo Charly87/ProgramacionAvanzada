@@ -127,7 +127,7 @@ public class GrafoNDNP {
 		// Limpia los colores asignados
 		for (Nodo nodo : nodos)
 			nodo.setColor(0);
-		this.cantColores = coloresUsados.size();		
+		this.cantColores = coloresUsados.size();
 		return this.cantColores;
 	}
 
@@ -148,7 +148,7 @@ public class GrafoNDNP {
 		return coloresUsados.get(indice);
 	}
 
-	public int generarColoreoSecuencialAleatorio(String archivo) throws IOException {
+	public int generarColoreoSecuencialAleatorio() {
 
 		// Genero random
 		for (Nodo nodo : this.nodos)
@@ -168,10 +168,10 @@ public class GrafoNDNP {
 		});
 
 		// Coloreo
-		return aplicarColoreo(); 
+		return aplicarColoreo();
 	}
 
-	public int generarColoreoWelshPowell(String archivo) throws IOException {
+	public int generarColoreoWelshPowell() {
 
 		// Genero random
 		for (Nodo nodo : this.nodos)
@@ -196,10 +196,10 @@ public class GrafoNDNP {
 		});
 
 		// Coloreo
-		return aplicarColoreo(); 
+		return aplicarColoreo();
 	}
 
-	public int generarColoreoMatula(String archivo) throws IOException {
+	public int generarColoreoMatula() {
 
 		// Genero random
 		for (Nodo nodo : this.nodos)
@@ -221,9 +221,9 @@ public class GrafoNDNP {
 					return 1;
 				return 0;
 			}
-		});		
-		
-		return aplicarColoreo(); 
+		});
+
+		return aplicarColoreo();
 	}
 
 	public int getCantidadNodos() {
