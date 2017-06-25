@@ -5,7 +5,7 @@ public class Nodo {
 	private int id;
 	private int grado;
 	private int color;
-	private double random;
+	private int random;
 	
 	public Nodo(int id) {		
 		this.id = id;		
@@ -35,11 +35,11 @@ public class Nodo {
 		this.color = color;
 	}
 
-	public double getRandom() {
-		return Math.random();
+	public int getRandom() {
+		return (int)Math.random() * 100;
 	}
 
-	public void setRandom(double random) {
+	public void setRandom(int random) {
 		this.random = random;
 	}
 	

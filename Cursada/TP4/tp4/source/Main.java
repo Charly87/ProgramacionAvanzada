@@ -5,10 +5,10 @@ public class Main {
 	public static void main(String[] args) {
 		MatrizSimetrica ms = null;
 		Generador gen;
-		
-		String pathIn  = "TP4/tp4/entrada/";
+
+		String pathIn = "TP4/tp4/entrada/";
 		String pathOut = "TP4/tp4/salida/";
-		
+
 		try {
 
 			/*
@@ -33,68 +33,78 @@ public class Main {
 
 			// A veces funciona bien y a veces no, debe haber alguna boludez por la que falla.
 			ms = gen.generarGrafoRegularNPartitos(6, 5);
-			/*if (ms == null) {
-				System.out.println("No se puede realizar un grafo N Partitos con nodos y aristas impares");
-			} else
-				ms.visualizar();*/			
+			/*
+			 * if (ms == null) {
+			 * System.out.println("No se puede realizar un grafo N Partitos con nodos y aristas impares");
+			 * } else
+			 * ms.visualizar();
+			 */
 
-			/*ms = gen.generarGrafoRegularPorAdy(50, 50);
-			ms.visualizarVector();
-			ms.visualizar();*/
-			
+			/*
+			 * ms = gen.generarGrafoRegularPorAdy(50, 50);
+			 * ms.visualizarVector();
+			 * ms.visualizar();
+			 */
+
 			ms = gen.generarGrafoAleatorioPorcentaje(1000, 80);
 			gen.guardarMatrizSimetrica(ms, pathIn + "grafo2.in");
-//			ms = gen.generarGrafoAleatorioProbabilidad(1000, 80);
-//			gen.guardarMatrizSimetrica(ms, pathIn + "grafo3.in");
-//			ms = gen.generarGrafoRegular(1000, 4);
-//			gen.guardarMatrizSimetrica(ms, pathIn + "grafo4.in");
-//			ms = gen.generarGrafoRegularPorAdy(1000, 60);
-//			gen.guardarMatrizSimetrica(ms, pathIn + "grafo5.in");
-//			
-//			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
-//			g.aplicarColoreoSecuencialAleatorio();
-//			g.mostrarGrafoColoreado(pathOut + "grafoSecuencialAleatorio.out");
-//			
-//			GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo2.in");
-//			g2.aplicarColoreoWelshPowell();
-//			g2.mostrarGrafoColoreado(pathOut + "grafoWelshPowell.out");
-//			
-//			GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo2.in");
-//			g3.aplicarColoreoMatula();
-//			g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
-			
+			// ms = gen.generarGrafoAleatorioProbabilidad(1000, 80);
+			// gen.guardarMatrizSimetrica(ms, pathIn + "grafo3.in");
+			// ms = gen.generarGrafoRegular(1000, 4);
+			// gen.guardarMatrizSimetrica(ms, pathIn + "grafo4.in");
+			// ms = gen.generarGrafoRegularPorAdy(1000, 60);
+			// gen.guardarMatrizSimetrica(ms, pathIn + "grafo5.in");
+			//
+			// GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
+			// g.aplicarColoreoSecuencialAleatorio();
+			// g.mostrarGrafoColoreado(pathOut + "grafoSecuencialAleatorio.out");
+			//
+			// GrafoNDNP g2 = new GrafoNDNP(pathIn + "grafo2.in");
+			// g2.aplicarColoreoWelshPowell();
+			// g2.mostrarGrafoColoreado(pathOut + "grafoWelshPowell.out");
+			//
+			// GrafoNDNP g3 = new GrafoNDNP(pathIn + "grafo2.in");
+			// g3.aplicarColoreoMatula();
+			// g3.mostrarGrafoColoreado(pathOut + "grafoMatula.out");
+
 			GrafoNDNP g = new GrafoNDNP(pathIn + "grafo2.in");
-			
-			int[] coloresUtilizados = new int[g.getCantNodos()];
-			
+
+			int[] coloresUtilizados = new int[g.getCantidadNodos()];
+
 			int i = 0;
-			
+
+			long inicio = System.nanoTime();
 			while (i < 1000) {
-				
+				System.out.println(0);
 				g.mezclarNodos();
+				System.out.println("Mezclado:" + (System.nanoTime() - inicio)/1000000);
+				inicio = System.nanoTime();
 				g.aplicarColoreoSecuencialAleatorio();
-				coloresUtilizados[g.getCantidadColoresAsignados()-1]++;
+				System.out.println("Coloreado:" + (System.nanoTime() - inicio)/1000000);
+				inicio = System.nanoTime();
+				coloresUtilizados[g.getCantidadColoresAsignados() - 1]++;
+				g.quitarColoreo();
+				System.out.println("Eliminar Coloreo:" + (System.nanoTime() - inicio)/1000000);
 				i++;
-				
+				System.out.println();
 			}
-			
-			for (int j = 0 ; j < coloresUtilizados.length ; j++) {
-				
+
+			for (int j = 0; j < coloresUtilizados.length; j++) {
+
 				System.out.println(coloresUtilizados[j]);
 			}
-			
 
-//			for (int j = 0 ; j < 3 ; j++) {
-//				
-//				g.mezclarNodos();
-//				g.mostrarNodos();
-//				
-//			}
-						
+			// for (int j = 0 ; j < 3 ; j++) {
+			//
+			// g.mezclarNodos();
+			// g.mostrarNodos();
+			//
+			// }
+
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
-			
+
 		}
 	}
 }
