@@ -71,45 +71,71 @@ public class Probador {
 		return matrizAdy;
 	}
 
-	public void verificarSalida() {
+//	public void verificarSalida() {
+//		
+//		if (cantNodosIn == cantNodosOut)
+//			System.out.println("Cantidad de nodos OK.");
+//		else
+//			System.out.println("La cantidad de nodos es distinta.");
+//			
+//		if (cantAristasIn == cantAristasOut)
+//			System.out.println("Cantidad de aristas OK.");
+//		else
+//			System.out.println("La cantidad de aristas es distinta.");
+//		
+//		if (porcentajeAdyacenciaIn == porcentajeAdyacenciaOut)
+//			System.out.println("Porcentaje de adyacencia OK.");
+//		else
+//			System.out.println("El porcentaje de adyacencia es distinto");
+//			
+//		if (gradoMaxIn == gradoMaxOut)
+//			System.out.println("Grado maximo OK.");
+//		else
+//			System.out.println("El grado maximo es distinto.");
+//		
+//		if (gradoMinIn == gradoMinOut) 
+//			System.out.println("Grado minimo OK.");
+//		else
+//			System.out.println("El grado minimo es distinto.");
+//		
+//		if (cantidadColoresAsignados == coloresUtilizados.size())
+//			System.out.println("Cantidad de colores utilizados OK.");
+//		else
+//			System.out.println("La cantidad de colores no es correcta");
+//		
+//		if (coloresAsignadosCorrectamente())
+//			System.out.println("Coloreo OK.");
+//		else
+//			System.out.println("El coloreo no es correcto.");
+//				
+//	}
+	
+	public void verificarSalida() throws Exception {
 		
-		if (cantNodosIn == cantNodosOut)
-			System.out.println("Cantidad de nodos OK.");
-		else
-			System.out.println("La cantidad de nodos es distinta.");
+		if (cantNodosIn != cantNodosOut)
+			throw new Exception("La cantidad de nodos es distinta.");
 			
-		if (cantAristasIn == cantAristasOut)
-			System.out.println("Cantidad de aristas OK.");
-		else
-			System.out.println("La cantidad de aristas es distinta.");
+		if (cantAristasIn != cantAristasOut)
+			throw new Exception("La cantidad de aristas es distinta.");
 		
-		if (porcentajeAdyacenciaIn == porcentajeAdyacenciaOut)
-			System.out.println("Porcentaje de adyacencia OK.");
-		else
-			System.out.println("El porcentaje de adyacencia es distinto");
+		if (porcentajeAdyacenciaIn != porcentajeAdyacenciaOut)
+			throw new Exception("El porcentaje de adyacencia es distinto");
 			
-		if (gradoMaxIn == gradoMaxOut)
-			System.out.println("Grado maximo OK.");
-		else
-			System.out.println("El grado maximo es distinto.");
+		if (gradoMaxIn != gradoMaxOut)
+			throw new Exception("El grado maximo es distinto.");
 		
-		if (gradoMinIn == gradoMinOut) 
-			System.out.println("Grado minimo OK.");
-		else
-			System.out.println("El grado minimo es distinto.");
+		if (gradoMinIn != gradoMinOut) 
+			throw new Exception("El grado minimo es distinto.");
 		
-		if (cantidadColoresAsignados == coloresUtilizados.size())
-			System.out.println("Cantidad de colores utilizados OK.");
-		else
-			System.out.println("La cantidad de colores no es correcta");
+		if (cantidadColoresAsignados != coloresUtilizados.size())
+			throw new Exception("La cantidad de colores no es correcta");
 		
-		if (coloresAsignadosCorrectamente())
-			System.out.println("Coloreo OK.");
-		else
-			System.out.println("El coloreo no es correcto.");
+		if ( ! coloresAsignadosCorrectamente() )
+			throw new Exception("El coloreo no es correcto.");
 				
 	}
-
+	
+	
 	private boolean coloresAsignadosCorrectamente() {
 		
 		/** Verifico por cada nodo, si el color que tiene asignado no es igual al color de alguno de sus adyacentes **/
