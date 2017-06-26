@@ -1,7 +1,11 @@
 package tp4.source;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MatrizSimetrica {
 	private int[] vector;
+	private List<Integer> adyacentes =new ArrayList<Integer>();
 	private int nodos;
 
 	/*
@@ -74,7 +78,7 @@ public class MatrizSimetrica {
 		return this.nodos;
 	}
 
-	public int getCantidadAristasTotales() {		
+	public int getCantidadAristasTotales() {
 		return this.nodos * (this.nodos - 1) / 2;
 	}
 
@@ -116,6 +120,19 @@ public class MatrizSimetrica {
 
 	public int getPorcentajeAdyacencia() {
 		return this.getCantidadAristas() * 100 / this.getCantidadAristasTotales();
+
+	}
+
+	public List<Integer> adyacentes(int valor) {
+		for (int i = valor; i <= valor; i++) {
+			for (int j = 0; j < getCantidadNodos(); j++) {
+				if (getValor(i, j) != 0) {
+					adyacentes.add(j);
+				}
+			}
+		}
+		
+		return adyacentes;
 	}
 
 }

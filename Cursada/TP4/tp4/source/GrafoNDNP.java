@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -24,7 +25,8 @@ public class GrafoNDNP {
 
 	private int cantColores;
 	private short[] colores;
-	private Nodo[] nodos;
+	private Nodo[] nodos,nodosM;
+	private List<Nodo> nodosMezcla = new ArrayList<Nodo>();
 
 	public GrafoNDNP(String fileName) throws Exception {
 
@@ -93,22 +95,22 @@ public class GrafoNDNP {
 	private int aplicarColoreo() {
 
 		// Inicializo el color de los nodos
-		for (Nodo nodo : nodos)
+		for (Nodo nodo : nodosM)
 			nodo.setColor(0);
 		
 		List<Integer> coloresUsados = new ArrayList<Integer>();		
 		SortedSet<Integer> coloresAdyacentes = new TreeSet<Integer>(); // No inserta valores que ya existen
 		coloresUsados.add(1); // Al primer nodo le asigno el primer id de color
-		this.nodos[0].setColor(coloresUsados.get(0));
+		this.nodosM[0].setColor(coloresUsados.get(0));
 
 		// Recorro todos los nodos
-		for (int i = 1; i < this.nodos.length; i++) {
+		for (int i = 1; i < this.nodosM.length; i++) {
 			// Recorro todos los nodos adyacentes al nodo
-			for (int j = 0; j < this.nodos.length; j++) {
+			for (int j = 0; j < matrizAdy.getCantidadNodos(); j++) {
 				// Agrego los nodos adyacentes coloreados
 				if (this.nodos[i].getId() != j && matrizAdy.getValor(this.nodos[i].getId(), j) == 1) {
-
-					int colorAdyacente = this.nodos[j].getColor();
+                    
+					int colorAdyacente = this.nodosM[j].getColor();
 					if (colorAdyacente != 0) {
 						coloresAdyacentes.add(colorAdyacente);
 					}
@@ -116,13 +118,13 @@ public class GrafoNDNP {
 			}
 
 			// Si no hay nodos coloreados asigno el primer color
-			if (coloresAdyacentes.isEmpty())
-				this.nodos[i].setColor(coloresUsados.get(0));
-			
+			if (coloresAdyacentes.isEmpty()){
+				this.nodosM[i].setColor(coloresUsados.get(0));
+			}
 			// Sino busco el primero que pueda usar
 			else {
-				this.nodos[i].setColor(obtenerColor(coloresUsados, coloresAdyacentes));
-				if (this.nodos[i].getColor() == coloresUsados.size() + 1)
+				this.nodosM[i].setColor(obtenerColor(coloresUsados, coloresAdyacentes));
+				if (this.nodosM[i].getColor() == coloresUsados.size() + 1)
 					coloresUsados.add(coloresUsados.size() + 1);
 				coloresAdyacentes.clear();
 			}
@@ -136,7 +138,7 @@ public class GrafoNDNP {
 	private int obtenerColor(List<Integer> coloresUsados, SortedSet<Integer> coloresAdyacentes) {
 
 		if (coloresUsados.size() == coloresAdyacentes.size())
-			return coloresUsados.size() + 1;
+			return coloresUsados.size()+1;
 
 		// 1 - 1
 		// 2 - 2
@@ -153,26 +155,31 @@ public class GrafoNDNP {
 
 	public int generarColoreoSecuencialAleatorio() {
 		
-		// Genero random
-		for (Nodo nodo : this.nodos)
-			nodo.setRandom((int) (Math.random() * 100));
-
-		// Ordeno
-		Arrays.sort(this.nodos, new Comparator<Nodo>() {
-			
-			@Override
-			public int compare(Nodo o1, Nodo o2) {
-				
-				if (o1.getRandom() < o2.getRandom())
-					return -1;
-
-				if (o1.getRandom() > o2.getRandom())
-					return 1;
-				
-				return 0;
-				
-			}
-		});
+//		// Genero random
+//		for (Nodo nodo : this.nodos)
+//			nodo.setRandom((int) (Math.random() * 100));
+//
+//		// Ordeno
+//		Arrays.sort(this.nodos, new Comparator<Nodo>() {
+//			
+//			@Override
+//			public int compare(Nodo o1, Nodo o2) {
+//				
+//				if (o1.getRandom() < o2.getRandom())
+//					return -1;
+//
+//				if (o1.getRandom() > o2.getRandom())
+//					return 1;
+//				
+//				return 0;
+//				
+//			}
+//		});
+		nodosMezcla = Arrays.asList(nodos);	
+		
+	    Collections.shuffle(nodosMezcla, new Random(100));
+		
+		nodosM=(Nodo[]) nodosMezcla.toArray();
 
 		// Coloreo
 		return aplicarColoreo();

@@ -14,7 +14,7 @@ public class Main {
 			Generador g = new Generador();		
 
 			System.out.println("Generando grafo aleatorio porcentaje 40...");
-			g.generarGrafoAleatorioPorcentaje(600, 40, pathIn + "grafoAleatorioPorcentaje40.in");
+			g.generarGrafoAleatorioPorcentaje(5, 40, pathIn + "grafoAleatorioPorcentaje40.in");
 			
 			System.out.println("Generando grafo aleatorio porcentaje 60...");
 			g.generarGrafoAleatorioPorcentaje(600, 60, pathIn + "grafoAleatorioPorcentaje60.in");
@@ -32,6 +32,7 @@ public class Main {
 			Probador probadorAleatorio40 = new Probador(pathIn + "grafoAleatorioPorcentaje40.in", pathOut + "coloreoAleatorioPorcentaje40.out");
 			System.out.println("\n\nResultados coloreo Secuencial Aleatorio porcentaje 40:");			
 			probadorAleatorio40.verificarSalida();
+			//probadorAleatorio40.getMatrizAdy().visualizar();
 			
 			
 //			g.generarGrafoAleatorioProbabilidad(20, 50, pathIn + "prueba.in");

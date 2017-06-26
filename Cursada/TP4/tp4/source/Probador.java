@@ -67,6 +67,10 @@ public class Probador {
 		inputOut.close();
 	}
 
+	public MatrizSimetrica getMatrizAdy() {
+		return matrizAdy;
+	}
+
 	public void verificarSalida() {
 		
 		if (cantNodosIn == cantNodosOut)
