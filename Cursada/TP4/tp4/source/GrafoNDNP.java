@@ -92,10 +92,13 @@ public class GrafoNDNP {
 
 	private int aplicarColoreo() {
 
-		List<Integer> coloresUsados = new ArrayList<Integer>();
-		// No inserta valores que ya existen
-		SortedSet<Integer> coloresAdyacentes = new TreeSet<Integer>();
-		coloresUsados.add(1);
+		// Inicializo el color de los nodos
+		for (Nodo nodo : nodos)
+			nodo.setColor(0);
+		
+		List<Integer> coloresUsados = new ArrayList<Integer>();		
+		SortedSet<Integer> coloresAdyacentes = new TreeSet<Integer>(); // No inserta valores que ya existen
+		coloresUsados.add(1); // Al primer nodo le asigno el primer id de color
 		this.nodos[0].setColor(coloresUsados.get(0));
 
 		// Recorro todos los nodos
@@ -115,6 +118,7 @@ public class GrafoNDNP {
 			// Si no hay nodos coloreados asigno el primer color
 			if (coloresAdyacentes.isEmpty())
 				this.nodos[i].setColor(coloresUsados.get(0));
+			
 			// Sino busco el primero que pueda usar
 			else {
 				this.nodos[i].setColor(obtenerColor(coloresUsados, coloresAdyacentes));
@@ -124,13 +128,11 @@ public class GrafoNDNP {
 			}
 		}
 
-		// Limpia los colores asignados
-		for (Nodo nodo : nodos)
-			nodo.setColor(0);
 		this.cantColores = coloresUsados.size();
 		return this.cantColores;
 	}
 
+	
 	private int obtenerColor(List<Integer> coloresUsados, SortedSet<Integer> coloresAdyacentes) {
 
 		if (coloresUsados.size() == coloresAdyacentes.size())
@@ -147,23 +149,28 @@ public class GrafoNDNP {
 		}
 		return coloresUsados.get(indice);
 	}
+		
 
 	public int generarColoreoSecuencialAleatorio() {
-
+		
 		// Genero random
 		for (Nodo nodo : this.nodos)
 			nodo.setRandom((int) (Math.random() * 100));
 
 		// Ordeno
 		Arrays.sort(this.nodos, new Comparator<Nodo>() {
+			
 			@Override
 			public int compare(Nodo o1, Nodo o2) {
+				
 				if (o1.getRandom() < o2.getRandom())
 					return -1;
 
 				if (o1.getRandom() > o2.getRandom())
 					return 1;
+				
 				return 0;
+				
 			}
 		});
 
@@ -197,6 +204,7 @@ public class GrafoNDNP {
 
 		// Coloreo
 		return aplicarColoreo();
+
 	}
 
 	public int generarColoreoMatula() {
@@ -244,6 +252,10 @@ public class GrafoNDNP {
 
 	public int getGradoMin() {
 		return gradoMin;
+	}
+
+	public MatrizSimetrica getMatrizAdy() {
+		return matrizAdy;
 	}
 
 	public void guardarColoreo(String fileName) throws IOException {
