@@ -110,6 +110,14 @@ public class Probador {
 //				
 //	}
 	
+	public int[] getColoresAsignados() {
+		return coloresAsignados;
+	}
+
+	public Set<Integer> getColoresUtilizados() {
+		return coloresUtilizados;
+	}
+
 	public void verificarSalida() throws Exception {
 		
 		if (cantNodosIn != cantNodosOut)

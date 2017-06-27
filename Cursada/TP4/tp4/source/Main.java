@@ -1,10 +1,14 @@
 package tp4.source;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
 	public static void main(String[] args) {
 		
 		final int CANTIDAD_EJECUCIONES = 1000;
+		List<Integer> coloresUsados = new ArrayList<Integer>();	
 		
 		String pathIn = "TP4/tp4/entrada/";
 		String pathOut = "TP4/tp4/salida/";
@@ -32,15 +36,17 @@ public class Main {
 			for (int e = 0 ; e < CANTIDAD_EJECUCIONES ; e++) {
 								
 				coloresColoreoSecuencialAleatorio40[grafoAleatorio40.generarColoreoSecuencialAleatorio()]++;			
+				coloresUsados=grafoAleatorio40.getcUsados();
 				grafoAleatorio40.guardarColoreo(pathOut + "coloreoAleatorioPorcentaje40.out");
 				Probador probadorColoreoSecuencialAleatorio40 = new Probador(pathIn + "grafoAleatorioPorcentaje40.in", pathOut + "coloreoAleatorioPorcentaje40.out");
 				probadorColoreoSecuencialAleatorio40.verificarSalida();
 				
 			}
 			
-			for (int i = 0 ; i < coloresColoreoSecuencialAleatorio40.length ; i++)
-				System.out.println(coloresColoreoSecuencialAleatorio40[i]);
+            DatosGraficos dato = new DatosGraficos();
+            dato.generarDatosGrafico(coloresUsados,coloresColoreoSecuencialAleatorio40,"grafoAleatorio40SECUENCIAL");
 			
+			coloresUsados.clear();
 			
 			//// Coloreo Welsh-Powell
 			int[] coloresColoreoWelshPowell40 = new int[CANTIDAD_EJECUCIONES];
@@ -48,15 +54,15 @@ public class Main {
 			for (int e = 0 ; e < CANTIDAD_EJECUCIONES ; e++) {
 				
 				coloresColoreoWelshPowell40[grafoAleatorio40.generarColoreoWelshPowell()]++;			
+				coloresUsados=grafoAleatorio40.getcUsados();
 				grafoAleatorio40.guardarColoreo(pathOut + "coloreoAleatorioPorcentaje40.out");										
 				Probador probadorColoreoWelshPowell40 = new Probador(pathIn + "grafoAleatorioPorcentaje40.in", pathOut + "coloreoAleatorioPorcentaje40.out");
 				probadorColoreoWelshPowell40.verificarSalida();				
 				
 			}
 			
-			for (int i = 0 ; i < coloresColoreoWelshPowell40.length ; i++)
-				System.out.println(coloresColoreoWelshPowell40[i]);
-			
+            dato.generarDatosGrafico(coloresUsados,coloresColoreoWelshPowell40,"grafoAleatorio40POWELL");
+            coloresUsados.clear();
 			
 			//// Coloreo Matula
 			int[] coloresColoreoMatula40 = new int[CANTIDAD_EJECUCIONES];
@@ -64,14 +70,15 @@ public class Main {
 			for (int e = 0 ; e < CANTIDAD_EJECUCIONES ; e++) {
 				
 				coloresColoreoMatula40[grafoAleatorio40.generarColoreoMatula()]++;
+				coloresUsados=grafoAleatorio40.getcUsados();
 				grafoAleatorio40.guardarColoreo(pathOut + "coloreoAleatorioPorcentaje40.out");
 				Probador probadorColoreoMatula40 = new Probador(pathIn + "grafoAleatorioPorcentaje40.in", pathOut + "coloreoAleatorioPorcentaje40.out");
 				probadorColoreoMatula40.verificarSalida();				
 				
 			}
 			
-			for (int i = 0 ; i < coloresColoreoMatula40.length ; i++)
-				System.out.println(coloresColoreoMatula40[i]);
+			dato.generarDatosGrafico(coloresUsados,coloresColoreoMatula40,"grafoAleatorio40MATULA");
+            coloresUsados.clear();
 			
 			
 

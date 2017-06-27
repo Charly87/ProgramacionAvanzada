@@ -26,6 +26,7 @@ public class GrafoNDNP {
 	private Nodo[] nodos;
 	private int[] nodosColoreados; // Este es un vector que tendra el color asignado a cada nodo. El indice es el id de nodo y el contenido es el color asignado a ese nodo.
 	private int cantColores;
+	private List<Integer> cUsados = new ArrayList<Integer>();	
 
 	public GrafoNDNP(String fileName) throws Exception {
 
@@ -127,10 +128,15 @@ public class GrafoNDNP {
 		}
 
 		this.cantColores = coloresUsados.size();
+		this.cUsados=coloresUsados;
 		return this.cantColores;
 	}
 
 	
+	public List<Integer> getcUsados() {
+		return cUsados;
+	}
+
 	private int obtenerColor(List<Integer> coloresUsados, SortedSet<Integer> coloresAdyacentes) {
 
 		// Si ya estan usados todos los colores doy de alta uno nuevo
@@ -234,14 +240,15 @@ public class GrafoNDNP {
 	public void guardarColoreo(String fileName) throws IOException {
 
 		PrintWriter output = new PrintWriter(new FileWriter(fileName));
-		
+
 		// Primera linea del archivo de salida
 		output.println(cantidadNodos + " " + cantColores + " " + cantidadAristas + " " + porcentajeAdyacencia + " "
 				+ gradoMax + " " + gradoMin);
 		
 		// Segunda linea del archivo de salida hasta cantNodos lineas
-		for (Nodo nodo : nodos)
+		for (Nodo nodo : nodos){
 			output.println(nodo.getId() + " " + nodosColoreados[nodo.getId()]);
+		}
 
 		output.close();
 	}
