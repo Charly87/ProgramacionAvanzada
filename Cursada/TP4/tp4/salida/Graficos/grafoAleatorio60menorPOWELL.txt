@@ -1,0 +1,12 @@
+cantidad=95 repeticiones=3
+MENOR= cantidad=95 repeticiones=3
+cantidad=96 repeticiones=38
+cantidad=97 repeticiones=313
+cantidad=98 repeticiones=1160
+cantidad=99 repeticiones=2327
+cantidad=100 repeticiones=2987
+cantidad=101 repeticiones=2059
+cantidad=102 repeticiones=883
+cantidad=103 repeticiones=197
+cantidad=104 repeticiones=32
+cantidad=105 repeticiones=1

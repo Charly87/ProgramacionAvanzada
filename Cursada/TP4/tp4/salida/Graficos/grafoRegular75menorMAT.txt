@@ -1,0 +1,10 @@
+cantidad=109 repeticiones=2
+MENOR= cantidad=109 repeticiones=2en la corrida:103
+cantidad=110 repeticiones=16
+cantidad=111 repeticiones=95
+cantidad=112 repeticiones=211
+cantidad=113 repeticiones=315
+cantidad=114 repeticiones=225
+cantidad=115 repeticiones=95
+cantidad=116 repeticiones=39
+cantidad=117 repeticiones=2

@@ -1,0 +1,13 @@
+cantidad=101 repeticiones=1
+MENOR= cantidad=101 repeticiones=1
+cantidad=102 repeticiones=27
+cantidad=103 repeticiones=154
+cantidad=104 repeticiones=602
+cantidad=105 repeticiones=1550
+cantidad=106 repeticiones=2422
+cantidad=107 repeticiones=2501
+cantidad=108 repeticiones=1748
+cantidad=109 repeticiones=711
+cantidad=110 repeticiones=243
+cantidad=111 repeticiones=39
+cantidad=112 repeticiones=2

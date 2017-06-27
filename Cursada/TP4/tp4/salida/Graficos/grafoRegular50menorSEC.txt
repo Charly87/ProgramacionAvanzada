@@ -1,0 +1,11 @@
+cantidad=120 repeticiones=3
+MENOR= cantidad=120 repeticiones=3en la corrida:130
+cantidad=121 repeticiones=31
+cantidad=122 repeticiones=118
+cantidad=123 repeticiones=224
+cantidad=124 repeticiones=289
+cantidad=125 repeticiones=209
+cantidad=126 repeticiones=100
+cantidad=127 repeticiones=20
+cantidad=128 repeticiones=5
+cantidad=130 repeticiones=1

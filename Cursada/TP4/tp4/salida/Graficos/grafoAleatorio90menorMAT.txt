@@ -1,0 +1,15 @@
+cantidad=100 repeticiones=1
+MENOR= cantidad=100 repeticiones=1en la corrida:111
+cantidad=101 repeticiones=3
+cantidad=102 repeticiones=25
+cantidad=103 repeticiones=103
+cantidad=104 repeticiones=419
+cantidad=105 repeticiones=1182
+cantidad=106 repeticiones=2181
+cantidad=107 repeticiones=2565
+cantidad=108 repeticiones=2001
+cantidad=109 repeticiones=1058
+cantidad=110 repeticiones=376
+cantidad=111 repeticiones=72
+cantidad=112 repeticiones=10
+cantidad=113 repeticiones=4

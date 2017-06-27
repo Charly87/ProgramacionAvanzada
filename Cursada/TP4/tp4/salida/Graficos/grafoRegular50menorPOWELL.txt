@@ -1,0 +1,10 @@
+cantidad=115 repeticiones=2
+MENOR= cantidad=115 repeticiones=2 corrida:123
+cantidad=116 repeticiones=8
+cantidad=117 repeticiones=55
+cantidad=118 repeticiones=158
+cantidad=119 repeticiones=289
+cantidad=120 repeticiones=284
+cantidad=121 repeticiones=146
+cantidad=122 repeticiones=51
+cantidad=123 repeticiones=7

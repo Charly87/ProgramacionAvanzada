@@ -1,0 +1,13 @@
+cantidad=94 repeticiones=2
+MENOR= cantidad=94 repeticiones=2en la corrida:107
+cantidad=95 repeticiones=8
+cantidad=96 repeticiones=108
+cantidad=97 repeticiones=548
+cantidad=98 repeticiones=1679
+cantidad=99 repeticiones=2908
+cantidad=100 repeticiones=2679
+cantidad=101 repeticiones=1525
+cantidad=102 repeticiones=449
+cantidad=103 repeticiones=82
+cantidad=104 repeticiones=8
+cantidad=105 repeticiones=4

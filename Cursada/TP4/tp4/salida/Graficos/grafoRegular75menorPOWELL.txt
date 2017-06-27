@@ -1,0 +1,9 @@
+cantidad=103 repeticiones=6
+MENOR= cantidad=103 repeticiones=6en la corrida:103
+cantidad=104 repeticiones=44
+cantidad=105 repeticiones=198
+cantidad=106 repeticiones=341
+cantidad=107 repeticiones=255
+cantidad=108 repeticiones=127
+cantidad=109 repeticiones=28
+cantidad=110 repeticiones=1
