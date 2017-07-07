@@ -6,15 +6,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Prim {
-	private int grado;
+	private int orden;
 	private int[][] matriz;
 	private List<Integer> arbol;
 	private int costo;
 	private SortedSet<Integer> nodosEvaluados;
 	private SortedSet<Integer> nodosNoEvaluados;
 
-	public Prim(int grado) {
-		this.grado = grado;
+	public Prim(int orden) {
+		this.orden = orden;
 		this.arbol = new LinkedList<Integer>();
 		this.nodosEvaluados = new TreeSet<Integer>();
 		this.nodosNoEvaluados = new TreeSet<Integer>();
@@ -22,9 +22,9 @@ public class Prim {
 	}
 
 	private void inicializarMatriz() {
-		this.matriz = new int[this.grado][this.grado];
-		for (int i = 0; i < this.grado; i++)
-			for (int j = 0; j < this.grado; j++)
+		this.matriz = new int[this.orden][this.orden];
+		for (int i = 0; i < this.orden; i++)
+			for (int j = 0; j < this.orden; j++)
 				this.matriz[i][j] = Integer.MAX_VALUE;
 	}
 
@@ -55,7 +55,6 @@ public class Prim {
 						nodoMin = nodoNoEvaluado;
 					}
 				}
-
 			}
 
 			costo += min;
@@ -69,10 +68,7 @@ public class Prim {
 	public void mostrarArbol()
 	{
 		for(int nodo : this.arbol)
-		{
-			System.out.print(nodo + ", ") ;
-		}
-		
+			System.out.print(nodo + ", ") ;		
 		System.out.println("Costo Mínimo: " + this.costo);
 	}
 }
